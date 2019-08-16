@@ -11,23 +11,13 @@ const RouteMap = () => {
         component={DynamicImport(() => import("./components/pages/main"))}
       />
       <Route
-        path="/orders"
-        component={DynamicImport(() => import("./components/pages/orderList"))}
-      />
-      <Route
         path="/signin"
         component={DynamicImport(() => import("./components/pages/signIn"))}
       />
-      <Route
-        path="/order/:id"
-        component={DynamicImport(() =>
-          import("./components/pages/orderDetail")
-        )}
-      />
-      <Route
+      {/* <Route
         path="/map"
         component={DynamicImport(() => import("./components/pages/map"))}
-      />
+      /> */}
     </Switch>
   );
 };

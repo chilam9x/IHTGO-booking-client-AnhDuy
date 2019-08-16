@@ -5,7 +5,12 @@ const { SubMenu } = Menu;
 
 const Header = () => {
   return (
-    <Layout style={{ backgroundColor: "white", padding: 0 }}>
+    <Layout
+      style={{
+        backgroundColor: "white",
+        borderBottom: "1px solid #ccc"
+      }}
+    >
       <Menu
         selectedKeys={[1]}
         mode="horizontal"

@@ -8,13 +8,9 @@ const useFormInput = (init = "") => {
     else setValue(e.target.value);
   }
 
-  function reset() {
-    setValue("");
-  }
-
   return {
     value,
-    reset,
+    setValue,
     onChange: handleChange
   };
 };

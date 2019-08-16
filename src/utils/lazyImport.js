@@ -4,10 +4,10 @@ import { Spin } from "antd";
 
 const LoadingComponent = () => <Spin size="large" />;
 
-const LazyImport = LoaderComponent =>
+const DynamicImport = LoaderComponent =>
   Loadable({
     loader: LoaderComponent,
     loading: LoadingComponent
   });
 
-export default LazyImport;
+export default DynamicImport;

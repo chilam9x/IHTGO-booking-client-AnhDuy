@@ -18,24 +18,24 @@ const SideBar = props => {
   };
 
   return (
-    <Sider collapsible collapsed={state.collapsed} onCollapse={onCollapse}>
-      <Menu
-        theme="dark"
-        mode="inline"
-        defaultSelectedKeys={["1"]}
-        style={{ height: "100%", borderRight: 0 }}
-      >
+    <Sider
+      trigger={
+        state.collapsed ? (
+          <Icon type="menu-unfold" style={{ fontSize: 20 }} />
+        ) : (
+          <Icon type="menu-fold" style={{ fontSize: 30 }} />
+        )
+      }
+      collapsible
+      collapsed={state.collapsed}
+      onCollapse={onCollapse}
+      width="10%"
+      theme="dark"
+    >
+      <Menu defaultSelectedKeys={["1"]} theme="dark" mode="inline">
         <Menu.Item key="1" onClick={() => redirectTo("/")}>
           <Icon type="dashboard" />
           <span className="nav-text">Dashboard</span>
-        </Menu.Item>
-        <Menu.Item key="2" onClick={() => redirectTo("/orders")}>
-          <Icon type="shopping-cart" />
-          <span className="nav-text">Đơn hàng</span>
-        </Menu.Item>
-        <Menu.Item key="3" onClick={() => redirectTo("/map")}>
-          <Icon type="shopping-cart" />
-          <span className="nav-text">Bản đồ</span>
         </Menu.Item>
       </Menu>
     </Sider>

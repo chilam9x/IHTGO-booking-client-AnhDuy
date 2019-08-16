@@ -21,17 +21,19 @@ const App = () => {
         {console.log(localStorage.getItem("user_info"))}
         {localStorage.getItem("user_info") ? (
           <Layout>
-            <SideBar />
+            <SideBar style={{ width: 500 }} />
             <Layout>
-              <Header />
+              {/* <Header /> */}
               <Content
                 style={{
-                  margin: "10px",
-                  overflow: "initial",
-                  height: height
+                  overflow: "initial"
                 }}
               >
-                <div style={{ padding: 24, background: "#fff" }}>
+                <div
+                  style={{
+                    background: "#fff"
+                  }}
+                >
                   <RouteMap />
                 </div>
               </Content>

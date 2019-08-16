@@ -78,10 +78,11 @@ const GettingStartedGoogleMap = withScriptjs(
 const CustomerMap = () => {
   return (
     <GettingStartedGoogleMap
-      googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyCap6yvwVBHnEv1mfJdyvK__A7nTXOkHLY&v=3.exp&libraries=geometry,drawing,places"
-      loadingElement={<div style={{ height: "1000px" }} />}
-      containerElement={<div style={{ height: "1000px" }} />}
-      mapElement={<div style={{ height: "1000px" }} />}
+      googleMapURL="https://maps.googleapis.com/maps/api/js?key=&v=3.exp&libraries=geometry,drawing,places"
+      // googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKOI-xG8LmUxZVZEAIO-n42_qCQ312cyQ&v=3.exp&libraries=geometry,drawing,places"
+      loadingElement={<div style={{ height: window.innerHeight }} />}
+      containerElement={<div style={{ height: window.innerHeight }} />}
+      mapElement={<div style={{ height: window.innerHeight }} />}
     />
   );
 };
