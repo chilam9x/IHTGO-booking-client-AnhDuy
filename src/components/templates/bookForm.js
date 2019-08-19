@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import DynamicImport from "../../utils/lazyImport";
 import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng
@@ -14,12 +13,20 @@ import {
   Button,
   Alert,
   Icon,
-  Statistic
+  Statistic,
+  Switch
 } from "antd";
 
-const PlaceSuggestion = props => {
+const formatter = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+  minimumFractionDigits: 2
+});
+
+const BookingForm = props => {
   const [state, setState] = useState({
-    address: ""
+    address: "",
+    isDocument: false
   });
 
   const handleChange = address => {
@@ -37,14 +44,21 @@ const PlaceSuggestion = props => {
     props.next();
   };
 
+  const changeOrderType = () => {
+    setState({
+      ...state,
+      isDocument: !state.isDocument
+    });
+  };
+
   return (
     <>
-      <Carousel autoplay={true}>
+      <Carousel autoplay={true} dots={false}>
         <div>
-          <img style={{ height: "150px" }} src="./img/bike.PNG" />
+          <img style={{ height: "150px" }} src="./img/bike.PNG" alt="" />
         </div>
         <div>
-          <img style={{ height: "150px" }} src="./img/truck.PNG" />
+          <img style={{ height: "150px" }} src="./img/truck.PNG" alt="" />
         </div>
       </Carousel>
 
@@ -150,66 +164,74 @@ const PlaceSuggestion = props => {
           )}
         </PlacesAutocomplete>
         <Divider orientation="left">Thông số đơn hàng</Divider>
+        <Switch
+          checkedChildren="Giao chứng từ"
+          unCheckedChildren="Giao hàng hóa"
+          checked={state.isDocument}
+          onClick={changeOrderType}
+        />
         <Input
           addonBefore="Lộ trình giao hàng"
-          style={{ width: "100%", marginBottom: 20 }}
+          style={{ width: "100%", marginBottom: 10, marginTop: 10 }}
           value={10}
           addonAfter="km"
           disabled
         />
-        <Alert
-          message="Vui lòng nhập đầy đủ thông tin"
-          type="error"
-          showIcon
-          closable
-        />
-        <Input.Group compact style={{ marginBottom: 20 }}>
-          <Input allowClear style={{ width: "30%" }} placeholder="Dài" />
-          <Input allowClear style={{ width: "30%" }} placeholder="Rộng" />
-          <Input
-            allowClear
-            style={{ width: "40%" }}
-            placeholder="Cao"
-            addonAfter="cm"
-          />
-        </Input.Group>
-        <Alert
-          message="Vui lòng nhập đầy đủ thông tin"
-          type="error"
-          showIcon
-          closable
-        />
-        <Input
-          allowClear
-          style={{ width: "100%" }}
-          placeholder="Cân nặng"
-          addonAfter="kg"
-        />
-        <Divider orientation="left">Tùy chọn thêm</Divider>
-        <>
+
+        {!state.isDocument && (
           <>
-            <Row>
-              <Checkbox>Giao tận tay</Checkbox>
-              <Checkbox>Giao hỏa tốc</Checkbox>
-            </Row>
-            <br />
-            <Row>
-              <Checkbox>Bốc xếp hộ</Checkbox>
-            </Row>
-            <br />
+            <Alert
+              message="Vui lòng nhập đầy đủ thông tin"
+              type="error"
+              showIcon
+              closable
+            />
+            <Input.Group compact style={{ marginBottom: 10 }}>
+              <Input allowClear style={{ width: "30%" }} placeholder="Dài" />
+              <Input allowClear style={{ width: "30%" }} placeholder="Rộng" />
+              <Input
+                allowClear
+                style={{ width: "40%" }}
+                placeholder="Cao"
+                addonAfter="cm"
+              />
+            </Input.Group>
           </>
-          <Row>
-            <Checkbox>Làm hàng siêu thị</Checkbox>
-          </Row>
-        </>
-        <Divider orientation="left">Ghi chú</Divider>
+        )}
+
+        {!state.isDocument && (
+          <>
+            <Alert
+              message="Vui lòng nhập đầy đủ thông tin"
+              type="error"
+              showIcon
+              closable
+            />
+            <Input
+              allowClear
+              style={{ width: "100%" }}
+              placeholder="Cân nặng"
+              addonAfter="kg"
+            />
+          </>
+        )}
+        <Divider orientation="left">Tùy chọn thêm</Divider>
+        <Row>
+          <Checkbox>Giao tận tay</Checkbox>
+          <Checkbox>Giao hỏa tốc</Checkbox>
+          {!state.isDocument && <Checkbox>Bốc xếp hộ</Checkbox>}
+        </Row>
+        <br />
+        <Row>{!state.isDocument && <Checkbox>Làm hàng siêu thị</Checkbox>}</Row>
+        {/* <Divider orientation="left">Ghi chú</Divider>
         <Input.TextArea
           placeholder="Ghi chú của khách hàng"
           autosize={{ minRows: 2, maxRows: 6 }}
-        />
+        /> */}
+        <br />
         <Statistic
           title="Cước phí tạm tính (VND)"
-          value={112893 + " VNĐ"}
+          value={formatter.format(112893)}
           style={{ marginTop: 10 }}
           valueStyle={{ color: "#68bd45" }}
         />
@@ -219,12 +241,13 @@ const PlaceSuggestion = props => {
           type="danger"
           onClick={next}
         >
-          <b>Tiếp tục đơn hàng</b>
-          <Icon type="right" />
+          <b>
+            Tiếp tục đơn hàng <Icon type="right" />
+          </b>
         </Button>
       </div>
     </>
   );
 };
 
-export default PlaceSuggestion;
+export default BookingForm;

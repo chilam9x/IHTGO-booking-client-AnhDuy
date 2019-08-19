@@ -9,10 +9,8 @@ import { BrowserRouter as Router } from "react-router-dom";
 
 const { Content } = Layout;
 
-const Header = DynamicImport(() => import("./components/templates/header"));
 const SideBar = DynamicImport(() => import("./components/templates/sideBar"));
 const SignIn = DynamicImport(() => import("./components/pages/signIn"));
-const height = window.innerHeight;
 
 const App = () => {
   return (
@@ -23,7 +21,6 @@ const App = () => {
           <Layout>
             <SideBar style={{ width: 500 }} />
             <Layout>
-              {/* <Header /> */}
               <Content
                 style={{
                   overflow: "initial"

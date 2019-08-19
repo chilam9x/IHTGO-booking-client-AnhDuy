@@ -14,10 +14,9 @@ const RouteMap = () => {
         path="/signin"
         component={DynamicImport(() => import("./components/pages/signIn"))}
       />
-      {/* <Route
-        path="/map"
-        component={DynamicImport(() => import("./components/pages/map"))}
-      /> */}
+      <Route
+        component={DynamicImport(() => import("./components/pages/404"))}
+      />
     </Switch>
   );
 };

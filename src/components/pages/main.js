@@ -1,31 +1,13 @@
 import React, { useState } from "react";
 import DynamicImport from "../../utils/lazyImport";
-import {
-  Layout,
-  Menu,
-  Breadcrumb,
-  Statistic,
-  Card,
-  Row,
-  Col,
-  Icon,
-  Affix,
-  Select,
-  Carousel,
-  Button,
-  Steps,
-  Input
-} from "antd";
+import { Layout, Affix, Select, Steps } from "antd";
 
-const { SubMenu } = Menu;
-const { Header, Content, Footer, Sider } = Layout;
+const { Content, Sider } = Layout;
 const { Option } = Select;
 const { Step } = Steps;
 
 const Map = DynamicImport(() => import("../templates/customerMap"));
-const PlaceSuggestion = DynamicImport(() =>
-  import("../templates/placeSuggestion")
-);
+const PlaceSuggestion = DynamicImport(() => import("../templates/bookForm"));
 const OrderConfirm = DynamicImport(() => import("../templates/orderConfirm"));
 
 const steps = [
@@ -36,7 +18,7 @@ const steps = [
     title: "Thêm thông tin"
   },
   {
-    title: "Xác nhận"
+    title: "Hoàn thành"
   }
 ];
 
@@ -44,6 +26,7 @@ const Main = () => {
   const [state, setState] = useState({
     current: 0
   });
+
   const next = () => {
     const current = state.current + 1;
     setState({ ...state, current });
@@ -52,6 +35,10 @@ const Main = () => {
   const prev = () => {
     const current = state.current - 1;
     setState({ ...state, current });
+  };
+
+  const reset = () => {
+    setState({ ...state, current: 0 });
   };
 
   return (
@@ -72,14 +59,14 @@ const Main = () => {
           ))}
         </Steps>
         <div className="steps-content">
-          {state.current == 0 ? (
+          {state.current === 0 ? (
             <PlaceSuggestion next={next} />
-          ) : state.current == 1 ? (
-            <OrderConfirm />
-          ) : state.current == 2 ? (
-            <OrderConfirm finish />
+          ) : state.current === 1 ? (
+            <OrderConfirm next={next} prev={prev} />
+          ) : state.current === 2 ? (
+            <OrderConfirm finish reset={reset} />
           ) : (
-            <OrderConfirm finish />
+            <PlaceSuggestion next={next} />
           )}
         </div>
       </Sider>

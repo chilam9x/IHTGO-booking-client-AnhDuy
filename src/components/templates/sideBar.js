@@ -6,7 +6,7 @@ const { Sider } = Layout;
 
 const SideBar = props => {
   const [state, setState] = useState({
-    collapsed: false
+    collapsed: true
   });
 
   const onCollapse = () => {
