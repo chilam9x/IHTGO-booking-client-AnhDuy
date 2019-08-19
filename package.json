@@ -9,6 +9,7 @@
     "google-map-react": "^1.1.4",
     "lodash.isempty": "^4.4.0",
     "react": "^16.8.6",
+    "react-async-script-loader": "^0.3.0",
     "react-dom": "^16.8.6",
     "react-google-maps": "^9.4.5",
     "react-hooks-global-state": "^0.9.0",

@@ -7,7 +7,7 @@ const { Option } = Select;
 const { Step } = Steps;
 
 const Map = DynamicImport(() => import("../templates/customerMap"));
-const PlaceSuggestion = DynamicImport(() => import("../templates/bookForm"));
+const PlaceSuggestion = DynamicImport(() => import("../templates/bookingForm"));
 const OrderConfirm = DynamicImport(() => import("../templates/orderConfirm"));
 
 const steps = [

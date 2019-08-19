@@ -4,7 +4,6 @@ import PlacesAutocomplete, {
   getLatLng
 } from "react-places-autocomplete";
 import {
-  Carousel,
   Input,
   Spin,
   Divider,
@@ -16,6 +15,17 @@ import {
   Statistic,
   Switch
 } from "antd";
+import { PriceListCarousel } from "../atoms";
+import DynamicImport from "../../utils/lazyImport";
+import scriptLoader from "react-async-script-loader";
+
+const SourceLocationInput = DynamicImport(() =>
+  import("../organisms/sourceLocationInput")
+);
+
+const DesLocationInput = DynamicImport(() =>
+  import("../organisms/desLocationInput")
+);
 
 const formatter = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -53,15 +63,7 @@ const BookingForm = props => {
 
   return (
     <>
-      <Carousel autoplay={true} dots={false}>
-        <div>
-          <img style={{ height: "150px" }} src="./img/bike.PNG" alt="" />
-        </div>
-        <div>
-          <img style={{ height: "150px" }} src="./img/truck.PNG" alt="" />
-        </div>
-      </Carousel>
-
+      <PriceListCarousel />
       <div
         style={{
           width: "90%",
@@ -70,99 +72,9 @@ const BookingForm = props => {
         }}
       >
         <Divider orientation="left">Chọn lộ trình</Divider>
-        <PlacesAutocomplete
-          value={state.address}
-          onChange={handleChange}
-          onSelect={handleSelect}
-        >
-          {({
-            getInputProps,
-            suggestions,
-            getSuggestionItemProps,
-            loading
-          }) => (
-            <div>
-              <Input
-                allowClear
-                {...getInputProps({
-                  placeholder: "Điểm nhận hàng"
-                })}
-              />
-              {loading ? (
-                <Spin />
-              ) : (
-                <div
-                  style={{
-                    border: "1px solid #ccc",
-                    borderTop: "none"
-                  }}
-                >
-                  {suggestions.map(suggestion => {
-                    const style = suggestion.active
-                      ? { backgroundColor: "#ccc", cursor: "pointer" }
-                      : { backgroundColor: "#ffffff", cursor: "pointer" };
-                    return (
-                      <div
-                        {...getSuggestionItemProps(suggestion, {
-                          style
-                        })}
-                      >
-                        <span>{suggestion.description}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-          )}
-        </PlacesAutocomplete>
+        <SourceLocationInput />
         <br />
-        <PlacesAutocomplete
-          value={state.address}
-          onChange={handleChange}
-          onSelect={handleSelect}
-        >
-          {({
-            getInputProps,
-            suggestions,
-            getSuggestionItemProps,
-            loading
-          }) => (
-            <div>
-              <Input
-                allowClear
-                {...getInputProps({
-                  placeholder: "Điểm trả hàng"
-                })}
-              />
-              {loading ? (
-                <Spin />
-              ) : (
-                <div
-                  style={{
-                    border: "1px solid #ccc",
-                    borderTop: "none"
-                  }}
-                >
-                  {suggestions.map(suggestion => {
-                    const style = suggestion.active
-                      ? { backgroundColor: "#ccc", cursor: "pointer" }
-                      : { backgroundColor: "#ffffff", cursor: "pointer" };
-                    return (
-                      <div
-                        {...getSuggestionItemProps(suggestion, {
-                          style
-                        })}
-                      >
-                        <span>{suggestion.description}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-          )}
-        </PlacesAutocomplete>
+        {/* <DesLocationInput /> */}
         <Divider orientation="left">Thông số đơn hàng</Divider>
         <Switch
           checkedChildren="Giao chứng từ"

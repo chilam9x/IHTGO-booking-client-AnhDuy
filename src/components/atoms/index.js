@@ -1,1 +1,1 @@
-export { default as CardPopup } from "./cardPopup";
+export { default as PriceListCarousel } from "./priceListCarousel";

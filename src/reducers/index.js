@@ -1,5 +1,8 @@
 import { combineReducers } from "redux";
+import sourceLocation from "./sourceLocation";
 
-const reducer = combineReducers({});
+const reducer = combineReducers({
+  sourceLocation: sourceLocation
+});
 
 export default reducer;

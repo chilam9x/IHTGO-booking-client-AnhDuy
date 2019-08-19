@@ -78,8 +78,7 @@ const GettingStartedGoogleMap = withScriptjs(
 const CustomerMap = () => {
   return (
     <GettingStartedGoogleMap
-      googleMapURL="https://maps.googleapis.com/maps/api/js?key=&v=3.exp&libraries=geometry,drawing,places"
-      // googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKOI-xG8LmUxZVZEAIO-n42_qCQ312cyQ&v=3.exp&libraries=geometry,drawing,places"
+      googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKOI-xG8LmUxZVZEAIO-n42_qCQ312cyQ1&v=3.exp&libraries=geometry,drawing,places"
       loadingElement={<div style={{ height: window.innerHeight }} />}
       containerElement={<div style={{ height: window.innerHeight }} />}
       mapElement={<div style={{ height: window.innerHeight }} />}
