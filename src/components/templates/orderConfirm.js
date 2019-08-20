@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Input, Divider, Row, Button, Icon, Result, Statistic } from "antd";
 
 const formatter = new Intl.NumberFormat("en-US", {

@@ -6,10 +6,19 @@ import {
   DirectionsRenderer
 } from "react-google-maps";
 import { message } from "antd";
+import { useGlobalState, dispatch } from "../../Store";
+import {
+  SET_ORDER_INFO,
+  SET_SOURCE_LOCATION,
+  SET_DES_LOCATION
+} from "../../utils/actions";
 
 const GettingStartedGoogleMap = withScriptjs(
   withGoogleMap(props => {
     const directionsRef = useRef(null);
+
+    const [sourceLocation] = useGlobalState("sourceLocation");
+    const [desLocation] = useGlobalState("desLocation");
 
     const [state, setState] = useState({
       directions: {
@@ -22,19 +31,30 @@ const GettingStartedGoogleMap = withScriptjs(
       const DirectionsService = new window.google.maps.DirectionsService();
       DirectionsService.route(
         {
-          origin: new window.google.maps.LatLng(...state.directions.origin),
+          origin: new window.google.maps.LatLng(
+            sourceLocation.lat,
+            sourceLocation.lng
+          ),
           destination: new window.google.maps.LatLng(
-            ...state.directions.destination
+            desLocation.lat,
+            desLocation.lng
           ),
           travelMode: window.google.maps.TravelMode.DRIVING
         },
         (result, status) => {
           if (status === window.google.maps.DirectionsStatus.OK) {
+            console.log(result);
             setState({
               directions: result
             });
+            dispatch({
+              type: SET_ORDER_INFO,
+              order: {
+                distance: result.routes[0].legs[0].distance.value / 1000.0
+              }
+            });
           } else {
-            console.error(`error fetching directions ${result}`);
+            console.error(result);
           }
         }
       );
@@ -42,7 +62,7 @@ const GettingStartedGoogleMap = withScriptjs(
 
     useEffect(() => {
       initRoute();
-    }, []);
+    }, [sourceLocation.lat, desLocation.lat]);
 
     return (
       <GoogleMap
@@ -58,15 +78,31 @@ const GettingStartedGoogleMap = withScriptjs(
               const currentDirections =
                 directionsRef.current.state
                   .__SECRET_DIRECTIONS_RENDERER_DO_NOT_USE_OR_YOU_WILL_BE_FIRED
-                  .directions.routes[0].legs[0];
-              const payment = parseInt(currentDirections.distance.text) * 4000;
-              message.info(
-                "Số km tạm tính = " +
-                  currentDirections.distance.text +
-                  " tổng tiền = " +
-                  payment +
-                  "VND"
-              );
+                  .directions;
+              const distance =
+                currentDirections.routes[0].legs[0].distance.value / 1000.0;
+              dispatch({
+                type: SET_SOURCE_LOCATION,
+                location: {
+                  place: currentDirections.routes[0].legs[0].start_address
+                }
+              });
+
+              dispatch({
+                type: SET_DES_LOCATION,
+                location: {
+                  place: currentDirections.routes[0].legs[0].end_address
+                }
+              });
+
+              dispatch({
+                type: SET_ORDER_INFO,
+                order: {
+                  distance: distance
+                }
+              });
+
+              message.info("Quãng đường = " + distance + " km");
             }}
           />
         )}
@@ -78,7 +114,7 @@ const GettingStartedGoogleMap = withScriptjs(
 const CustomerMap = () => {
   return (
     <GettingStartedGoogleMap
-      googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKOI-xG8LmUxZVZEAIO-n42_qCQ312cyQ1&v=3.exp&libraries=geometry,drawing,places"
+      googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKOI-xG8LmUxZVZEAIO-n42_qCQ312cyQ&v=3.exp&libraries=geometry,drawing,places"
       loadingElement={<div style={{ height: window.innerHeight }} />}
       containerElement={<div style={{ height: window.innerHeight }} />}
       mapElement={<div style={{ height: window.innerHeight }} />}

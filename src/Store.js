@@ -7,6 +7,24 @@ const initialState = {
     lat: null,
     lng: null,
     place: null
+  },
+  desLocation: {
+    lat: null,
+    lng: null,
+    place: null
+  },
+  orderInfo: {
+    name: null,
+    distance: null,
+    height: null,
+    width: null,
+    weight: null,
+    len: null,
+    isSpeed: false,
+    isHandOn: false,
+    isDischarge: false,
+    isInventory: false,
+    totalPrice: 0
   }
 };
 

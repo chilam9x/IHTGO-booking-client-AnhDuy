@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import DynamicImport from "../../utils/lazyImport";
-import { Layout, Affix, Select, Steps } from "antd";
+import { Layout, Affix, Select, Steps, Result } from "antd";
+import { useGlobalState } from "../../Store";
+import ClipLoader from "react-spinners/ScaleLoader";
 
 const { Content, Sider } = Layout;
 const { Option } = Select;
@@ -27,6 +29,9 @@ const Main = () => {
     current: 0
   });
 
+  const [sourceLocation] = useGlobalState("sourceLocation");
+  const [desLocation] = useGlobalState("desLocation");
+
   const next = () => {
     const current = state.current + 1;
     setState({ ...state, current });
@@ -52,7 +57,7 @@ const Main = () => {
           size="small"
           progressDot
           current={state.current}
-          style={{ margin: "20px 0" }}
+          style={{ margin: "20px -20px" }}
         >
           {steps.map(item => (
             <Step key={item.title} title={item.title} />
@@ -71,15 +76,42 @@ const Main = () => {
         </div>
       </Sider>
       <Content style={{ minHeight: 280 }}>
-        <Affix offsetTop={10} style={{ position: "absolute", marginLeft: 5 }}>
-          <Select defaultValue="hcm" style={{ width: 180 }} size="large">
-            <Option value="hcm">Hồ Chí Minh</Option>
-            <Option value="bd">Bình Dương</Option>
-            <Option value="la">Long An</Option>
-            <Option value="dn">Đồng Nai</Option>
-          </Select>
-        </Affix>
-        <Map />
+        {sourceLocation.lat &&
+        sourceLocation.lng &&
+        desLocation.lat &&
+        desLocation.lng ? (
+          <>
+            {/* <Affix
+              offsetTop={10}
+              style={{ position: "absolute", marginLeft: 5 }}
+            >
+              <Select defaultValue="hcm" style={{ width: 180 }} size="large">
+                <Option value="hcm">Hồ Chí Minh</Option>
+                <Option value="bd">Bình Dương</Option>
+                <Option value="la">Long An</Option>
+                <Option value="dn">Đồng Nai</Option>
+              </Select>
+            </Affix> */}
+            <Map />
+          </>
+        ) : (
+          <Result
+            title={
+              <>
+                Vị trí chưa xác định <br />
+                Vui lòng nhập đầy đủ thông tin để xác định vị trí!
+              </>
+            }
+            extra={
+              <ClipLoader
+                sizeUnit={"px"}
+                size={100}
+                color={"#ccc"}
+                loading={true}
+              />
+            }
+          />
+        )}
       </Content>
     </Layout>
   );

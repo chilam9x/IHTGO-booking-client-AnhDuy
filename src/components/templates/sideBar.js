@@ -30,9 +30,10 @@ const SideBar = props => {
       collapsed={state.collapsed}
       onCollapse={onCollapse}
       width="10%"
-      theme="dark"
+      theme="light"
+      style={{ borderRight: "1px solid #ccc" }}
     >
-      <Menu defaultSelectedKeys={["1"]} theme="dark" mode="inline">
+      <Menu defaultSelectedKeys={["1"]} theme="light" mode="inline">
         <Menu.Item key="1" onClick={() => redirectTo("/")}>
           <Icon type="dashboard" />
           <span className="nav-text">Dashboard</span>
