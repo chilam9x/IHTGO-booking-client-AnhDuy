@@ -19,6 +19,10 @@ const RouteMap = () => {
         component={DynamicImport(() => import("./components/pages/map"))}
       />
       <Route
+        path="/orders"
+        component={DynamicImport(() => import("./components/pages/orders"))}
+      />
+      <Route
         component={DynamicImport(() => import("./components/pages/404"))}
       />
     </Switch>

@@ -16,15 +16,20 @@ const initialState = {
   orderInfo: {
     name: null,
     distance: null,
-    height: 1,
-    width: 1,
+    height: null,
+    width: null,
     weight: null,
-    len: 1,
+    len: null,
     isSpeed: false,
     isHandOn: false,
     isDischarge: false,
     isInventory: false,
-    totalPrice: 0
+    totalPrice: null,
+    sender_name: null,
+    sender_phone: null,
+    receiver_name: null,
+    receiver_phone: null,
+    note: null
   }
 };
 

@@ -3,7 +3,7 @@ import { GlobalStateProvider } from "./Store";
 import "antd/dist/antd.css";
 import DynamicImport from "./utils/lazyImport";
 import "./utils/firebase";
-import { Layout } from "antd";
+import { Layout, BackTop } from "antd";
 import RouteMap from "./Route";
 import { BrowserRouter as Router } from "react-router-dom";
 
@@ -16,6 +16,7 @@ const App = () => {
   return (
     <GlobalStateProvider>
       <Router>
+        <BackTop />
         {console.log(localStorage.getItem("user_info"))}
         {localStorage.getItem("user_info") ? (
           <Layout>

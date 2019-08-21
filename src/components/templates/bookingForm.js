@@ -75,10 +75,6 @@ const BookingForm = props => {
     }
 
     if (!state.isDocument) {
-      if (!orderInfo.height || !orderInfo.len || !orderInfo.width) {
-        validate.sizeInvalid = true;
-        isValid = false;
-      }
       if (!orderInfo.weight) {
         validate.weightInvalid = true;
         isValid = false;
@@ -123,9 +119,13 @@ const BookingForm = props => {
           price = _140K;
         }
       } else {
-        const tempW =
-          (orderInfo.len * orderInfo.width * orderInfo.height) / 5000.0;
-        weight = tempW > orderInfo.weight ? tempW : orderInfo.weight;
+        if (!orderInfo.height || !orderInfo.len || !orderInfo.width) {
+          weight = orderInfo.weight;
+        } else {
+          const tempW =
+            (orderInfo.len * orderInfo.width * orderInfo.height) / 5000.0;
+          weight = tempW > orderInfo.weight ? tempW : orderInfo.weight;
+        }
 
         //BIKE
         if (
@@ -196,8 +196,7 @@ const BookingForm = props => {
   };
 
   const toNextPage = () => {
-    // if (isValid()) props.next();
-    console.log(isValid());
+    if (isValid()) props.next();
   };
 
   return (

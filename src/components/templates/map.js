@@ -9,7 +9,6 @@ const IHTGO_CENTER = [10.7575142, 106.6602461];
 class Map extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       places: []
     };
