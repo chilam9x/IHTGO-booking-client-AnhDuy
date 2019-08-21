@@ -6,7 +6,7 @@ axios.defaults.baseURL = API_URL;
 axios.defaults.headers.common.Accept = "application/x-www-form-urlencoded";
 
 axios.interceptors.request.use(async function(config) {
-  config.headers.Authorization = LocalStorage.getItem("@token");
+  config.headers.Authorization = localStorage.getItem("@token");
   return config;
 });
 

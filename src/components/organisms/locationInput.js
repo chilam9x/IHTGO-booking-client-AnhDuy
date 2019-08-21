@@ -32,16 +32,12 @@ const LocationInput = props => {
     Geocode.fromAddress(address).then(
       response => {
         const { lat, lng } = response.results[0].geometry.location;
-        console.log(response.results[0]);
         dispatch({
           type: props.destination ? SET_DES_LOCATION : SET_SOURCE_LOCATION,
           location: {
             lat,
             lng,
-            place: response.results[0].plus_code
-              ? response.results[0].formatted_address +
-                response.results[0].plus_code.compound_code
-              : response.results[0].formatted_address
+            place: response.results[0].formatted_address
           }
         });
 
@@ -49,7 +45,6 @@ const LocationInput = props => {
           ...state,
           isLoading: false
         });
-        props.calc();
       },
       error => {
         console.error(error);

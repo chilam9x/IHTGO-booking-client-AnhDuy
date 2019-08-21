@@ -8,9 +8,6 @@ firebase.initializeApp({
 var messaging = firebase.messaging();
 
 messaging.setBackgroundMessageHandler(function(payload) {
-  // console.log(
-  //   payload
-  // );
   var notificationTitle = payload.notification.title;
   var notificationOptions = {
     body: payload.notification.body,

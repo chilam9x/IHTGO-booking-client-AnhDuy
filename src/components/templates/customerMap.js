@@ -43,7 +43,6 @@ const GettingStartedGoogleMap = withScriptjs(
         },
         (result, status) => {
           if (status === window.google.maps.DirectionsStatus.OK) {
-            console.log(result);
             setState({
               directions: result
             });

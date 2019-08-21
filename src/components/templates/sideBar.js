@@ -31,7 +31,6 @@ const SideBar = props => {
       onCollapse={onCollapse}
       width="10%"
       theme="light"
-      style={{ borderRight: "1px solid #ccc" }}
     >
       <Menu defaultSelectedKeys={["1"]} theme="light" mode="inline">
         <Menu.Item key="1" onClick={() => redirectTo("/")}>

@@ -8,8 +8,7 @@ import {
   Alert,
   Icon,
   Statistic,
-  Switch,
-  Col
+  Switch
 } from "antd";
 import { PriceListCarousel } from "../atoms";
 import DynamicImport from "../../utils/lazyImport";
@@ -17,12 +16,6 @@ import { useGlobalState, dispatch } from "../../Store";
 import { SET_ORDER_INFO } from "../../utils/actions";
 
 const LocationInput = DynamicImport(() => import("../organisms/locationInput"));
-
-const formatter = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-  minimumFractionDigits: 0
-});
 
 const BD = "bình dương";
 const _BD = "binh duong";
@@ -37,6 +30,10 @@ const _140K = 140000;
 const _1K = 1000;
 const _10K = 10000;
 const _250K = 250000;
+
+const formatMoney = money => {
+  return parseInt(money / 1000) * 1000;
+};
 
 const BookingForm = props => {
   const [state, setState] = useState({
@@ -204,7 +201,14 @@ const BookingForm = props => {
   };
 
   return (
-    <>
+    <div
+      style={{
+        backgroundColor: "#f6f6f6",
+        height: window.innerHeight,
+        borderLeft: "1px solid #ccc",
+        borderRight: "1px solid #ccc"
+      }}
+    >
       <PriceListCarousel />
       <div
         style={{
@@ -248,13 +252,15 @@ const BookingForm = props => {
           checked={state.isDocument}
           onClick={changeOrderType}
         />
-        <Input
-          addonBefore="Quãng đường"
-          style={{ width: "100%", marginBottom: 10, marginTop: 10 }}
-          value={orderInfo.distance}
-          addonAfter="km"
-          disabled
-        />
+        {!state.isDocument && (
+          <Input
+            addonBefore="Quãng đường"
+            style={{ width: "100%", marginBottom: 10, marginTop: 10 }}
+            value={orderInfo.distance}
+            addonAfter="km"
+            disabled
+          />
+        )}
 
         {!state.isDocument && (
           <>
@@ -350,7 +356,9 @@ const BookingForm = props => {
         <br />
 
         <Statistic
-          suffix={<div style={{ color: "red", fontSize: 12 }}>(+10% VAT)</div>}
+          suffix={
+            <div style={{ color: "red", fontSize: 12 }}>(đã cộng 10% VAT)</div>
+          }
           title={
             <Row>
               Cước phí tạm tính (VNĐ)
@@ -360,7 +368,7 @@ const BookingForm = props => {
               </Button>
             </Row>
           }
-          value={formatter.format(
+          value={formatMoney(
             orderInfo.totalPrice + orderInfo.totalPrice / 10.0
           )}
           style={{ marginTop: 10 }}
@@ -378,7 +386,7 @@ const BookingForm = props => {
           </b>
         </Button>
       </div>
-    </>
+    </div>
   );
 };
 

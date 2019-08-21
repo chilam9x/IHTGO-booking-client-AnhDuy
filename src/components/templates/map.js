@@ -26,18 +26,18 @@ class Map extends Component {
   }
 
   fetchMarker = () => {
-    fetch("http://api.ihtgo.com.vn/find")
+    fetch("https://ihtgo.com.vn/api/driver/find", {
+      crossDomain: true,
+      method: "GET",
+      headers: { "Content-Type": "application/json" }
+    })
       .then(response => response.json())
       .then(data => {
-        data.forEach(result => {
+        data.data.map(result => {
           result.show = true;
         });
-        this.setState({ places: data });
+        this.setState({ places: data.data });
       });
-  };
-
-  handleApiLoaded = (map, maps) => {
-    // use map and maps objects
   };
 
   render() {
@@ -49,14 +49,12 @@ class Map extends Component {
           defaultZoom={10}
           defaultCenter={IHTGO_CENTER}
           bootstrapURLKeys={{
-            key: "AIzaSyDNWwflFjXv5leyqg8tIYAHA5maszdokig"
+            key: "AIzaSyCKOI-xG8LmUxZVZEAIO-n42_qCQ312cyQ"
           }}
-          yesIWantToUseGoogleMapApiInternals
-          onGoogleApiLoaded={({ map, maps }) => this.handleApiLoaded(map, maps)}
         >
           {places.map(place => (
             <Marker
-              key={place.user_id}
+              key={place.id}
               lat={place.lat}
               lng={place.lng}
               show={place.show}

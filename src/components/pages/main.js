@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import DynamicImport from "../../utils/lazyImport";
-import { Layout, Affix, Select, Steps, Result } from "antd";
+import { Layout, Steps, Result } from "antd";
 import { useGlobalState } from "../../Store";
 import ClipLoader from "react-spinners/ScaleLoader";
 
 const { Content, Sider } = Layout;
-const { Option } = Select;
 const { Step } = Steps;
 
 const Map = DynamicImport(() => import("../templates/customerMap"));
-const PlaceSuggestion = DynamicImport(() => import("../templates/bookingForm"));
+const BookingForm = DynamicImport(() => import("../templates/bookingForm"));
 const OrderConfirm = DynamicImport(() => import("../templates/orderConfirm"));
 
 const steps = [
@@ -49,7 +48,7 @@ const Main = () => {
   return (
     <Layout
       style={{
-        background: "#fff"
+        background: "#f4f3ef"
       }}
     >
       <Sider width="25%" theme="light">
@@ -57,7 +56,12 @@ const Main = () => {
           size="small"
           progressDot
           current={state.current}
-          style={{ margin: "20px -20px" }}
+          style={{
+            padding: "20px 0",
+            backgroundColor: "#f6f6f6",
+            borderLeft: "1px solid #ccc",
+            borderRight: "1px solid #ccc"
+          }}
         >
           {steps.map(item => (
             <Step key={item.title} title={item.title} />
@@ -65,13 +69,13 @@ const Main = () => {
         </Steps>
         <div className="steps-content">
           {state.current === 0 ? (
-            <PlaceSuggestion next={next} />
+            <BookingForm next={next} />
           ) : state.current === 1 ? (
             <OrderConfirm next={next} prev={prev} />
           ) : state.current === 2 ? (
             <OrderConfirm finish reset={reset} />
           ) : (
-            <PlaceSuggestion next={next} />
+            <BookingForm next={next} />
           )}
         </div>
       </Sider>

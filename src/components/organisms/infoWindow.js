@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { message } from "antd";
 
 const InfoWindow = props => {
   const { place } = props;
@@ -16,9 +17,13 @@ const InfoWindow = props => {
     borderRadius: 5
   };
 
+  const info = name => {
+    message.info(name);
+  };
+
   return (
-    <div style={infoWindowStyle}>
-      <div style={{ fontSize: 16 }}>{place.user_id}</div>
+    <div style={infoWindowStyle} onClick={() => info(place.name)}>
+      <div style={{ fontSize: 12 }}>{place.id}</div>
     </div>
   );
 };
