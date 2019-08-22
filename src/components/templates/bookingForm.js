@@ -161,6 +161,7 @@ const BookingForm = props => {
       //check options
       if (orderInfo.isSpeed) price *= 2;
       if (orderInfo.isHandOn) price += _10K;
+      if (parseInt(orderInfo.cod) > 1000) price += _10K;
       if (!state.isDocument) {
         if (orderInfo.isDischarge) {
           if (weight > 50 && weight < 151) price += _50K;
@@ -192,6 +193,7 @@ const BookingForm = props => {
       else if (name === "width") setOrder({ width: value });
       else if (name === "height") setOrder({ height: value });
       else if (name === "weight") setOrder({ weight: value });
+      else if (name === "cod") setOrder({ cod: value });
     }
   };
 
@@ -341,8 +343,7 @@ const BookingForm = props => {
             </Checkbox>
           )}
         </Row>
-        <br />
-        <Row>
+        <Row style={{ marginTop: 5 }}>
           {!state.isDocument && (
             <Checkbox
               checked={orderInfo.isInventory ? true : false}
@@ -352,8 +353,15 @@ const BookingForm = props => {
             </Checkbox>
           )}
         </Row>
-        <br />
-
+        <Input
+          allowClear
+          style={{ marginTop: 5 }}
+          placeholder="Thu hộ"
+          addonBefore="Thu hộ"
+          addonAfter="VNĐ"
+          value={orderInfo.cod}
+          onChange={e => inputChange("cod", e.target.value)}
+        />
         <Statistic
           suffix={
             <div style={{ color: "red", fontSize: 12 }}>(đã cộng 10% VAT)</div>

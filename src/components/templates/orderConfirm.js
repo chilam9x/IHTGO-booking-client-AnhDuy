@@ -7,7 +7,8 @@ import {
   Icon,
   Result,
   Statistic,
-  Alert
+  Alert,
+  Radio
 } from "antd";
 import { dispatch, useGlobalState } from "../../Store";
 import { SET_ORDER_INFO } from "../../utils/actions";
@@ -21,10 +22,17 @@ const OrderConfirm = props => {
     senderInvalid: false,
     receiverInvalid: false,
     senderPhone: false,
-    receiverPhone: false
+    receiverPhone: false,
+    value: 1
   });
 
   const [orderInfo] = useGlobalState("orderInfo");
+
+  const onChange = e => {
+    setState({
+      value: e.target.value
+    });
+  };
 
   const setOrder = data => {
     dispatch({
@@ -100,10 +108,21 @@ const OrderConfirm = props => {
       <Divider orientation="left">Tên đơn hàng (nếu có)</Divider>
       <Input
         placeholder="Tên đơn hàng"
-        style={{ width: "100%" }}
+        style={{ width: "100%", marginBottom: 10 }}
         value={orderInfo.name}
         onChange={e => setOrder({ name: e.target.value })}
       />
+      <Input
+        placeholder="Mã đơn hàng (được in sẵn trên hóa đơn)"
+        style={{ width: "100%" }}
+        value={orderInfo.coupon_code}
+        onChange={e => setOrder({ name: e.target.value })}
+      />
+      <Divider orientation="left">Người thanh toán cước</Divider>
+      <Radio.Group onChange={onChange} value={state.value}>
+        <Radio value={1}>Người gửi trả</Radio>
+        <Radio value={2}>Người nhận trả</Radio>
+      </Radio.Group>
       <Divider orientation="left">Thông tin người gửi</Divider>
       {state.senderInvalid && (
         <Alert
@@ -116,6 +135,7 @@ const OrderConfirm = props => {
       <Input
         allowClear
         addonBefore="Họ tên"
+        placeholder="Họ tên"
         style={{ width: "100%", marginBottom: 10 }}
         value={orderInfo.sender_name}
         onChange={e => setOrder({ sender_name: e.target.value })}
@@ -131,6 +151,7 @@ const OrderConfirm = props => {
       <Input
         allowClear
         addonBefore="Số điện thoại"
+        placeholder="Số điện thoại"
         style={{ width: "100%" }}
         value={orderInfo.sender_phone}
         onChange={e => {
@@ -150,6 +171,7 @@ const OrderConfirm = props => {
       <Input
         allowClear
         addonBefore="Họ tên"
+        placeholder="Họ tên"
         style={{ width: "100%", marginBottom: 10 }}
         value={orderInfo.receiver_name}
         onChange={e => setOrder({ receiver_name: e.target.value })}
@@ -165,6 +187,7 @@ const OrderConfirm = props => {
       <Input
         allowClear
         addonBefore="Số điện thoại"
+        placeholder="Số điện thoại"
         style={{ width: "100%" }}
         value={orderInfo.receiver_phone}
         onChange={e => {

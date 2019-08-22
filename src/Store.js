@@ -29,7 +29,9 @@ const initialState = {
     sender_phone: null,
     receiver_name: null,
     receiver_phone: null,
-    note: null
+    note: null,
+    coupon_code: null,
+    cod: null
   }
 };
 

@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { Layout, Menu, Icon } from "antd";
 import { withRouter } from "react-router-dom";
+import styled from "styled-components";
 
+const CustomIcon = styled(Icon)`
+  color: #3fa0e4;
+`;
 const { Sider } = Layout;
 
 const SideBar = props => {
@@ -39,15 +43,15 @@ const SideBar = props => {
         style={{ height: "100%" }}
       >
         <Menu.Item key="1" onClick={() => redirectTo("/")}>
-          <Icon type="form" style={{ fontSize: 24 }} />
+          <CustomIcon type="form" style={{ fontSize: 22 }} />
           <span className="nav-text">Đặt hàng</span>
         </Menu.Item>
         <Menu.Item key="2" onClick={() => redirectTo("/orders")}>
-          <Icon type="profile" style={{ fontSize: 24 }} />
+          <CustomIcon type="profile" style={{ fontSize: 22 }} />
           <span className="nav-text">Danh sách đơn</span>
         </Menu.Item>
         <Menu.Item key="3" onClick={() => redirectTo("/logout")}>
-          <Icon type="logout" style={{ fontSize: 24 }} />
+          <CustomIcon type="logout" style={{ fontSize: 22 }} />
           <span className="nav-text">Đăng xuất</span>
         </Menu.Item>
       </Menu>
