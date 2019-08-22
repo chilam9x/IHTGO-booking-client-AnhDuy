@@ -32,7 +32,8 @@ const SignIn = props => {
         localStorage.setItem("@token", res.data.token);
         props.history.push("");
       })
-      .catch(err => console.log(err));
+      .catch(err => {})
+      .finally(setState({ ...state, loading: false }));
   };
 
   const onChange = data => {

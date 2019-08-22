@@ -4,6 +4,7 @@ const API_URL = "https://ihtgo.com.vn/api/";
 
 axios.defaults.baseURL = API_URL;
 axios.defaults.headers.common.Accept = "application/x-www-form-urlencoded";
+axios.defaults.headers.post["Access-Control-Allow-Origin"] = "*";
 
 axios.interceptors.request.use(async function(config) {
   config.headers.Authorization = localStorage.getItem("@token");
@@ -15,6 +16,7 @@ axios.interceptors.response.use(
     return response;
   },
   error => {
+    console.log("err", error);
     if (error.response.status === 401) {
       window.location.href = "/signin";
     }

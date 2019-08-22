@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import isEmpty from "lodash.isempty";
-
 import GoogleMap from "../organisms/googleMap";
 import Marker from "../organisms/marker";
+import axios from "../../utils/axios";
 
 const IHTGO_CENTER = [10.7575142, 106.6602461];
 
@@ -25,11 +25,8 @@ class Map extends Component {
   }
 
   fetchMarker = () => {
-    fetch("https://ihtgo.com.vn/api/driver/find", {
-      crossDomain: true,
-      method: "GET",
-      headers: { "Content-Type": "application/json" }
-    })
+    axios
+      .get("driver/find")
       .then(response => response.json())
       .then(data => {
         data.data.map(result => {
