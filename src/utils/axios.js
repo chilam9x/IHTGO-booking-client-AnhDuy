@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "https://go.ihtvn.com/api/";
+const API_URL = "https://ihtgo.com.vn/api/";
 
 axios.defaults.baseURL = API_URL;
 axios.defaults.headers.common.Accept = "application/x-www-form-urlencoded";
@@ -11,9 +11,14 @@ axios.interceptors.request.use(async function(config) {
 });
 
 axios.interceptors.response.use(
-  response => response,
+  response => {
+    return response;
+  },
   error => {
-    return Promise.reject(error);
+    if (error.response.status === 401) {
+      window.location.href = "/signin";
+    }
+    return error;
   }
 );
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Result, Modal, Button, Form, Icon, Input } from "antd";
+import axios from "../../utils/axios";
 
 const SignIn = props => {
   const [state, setState] = useState({
@@ -8,23 +9,37 @@ const SignIn = props => {
   });
 
   useEffect(() => {
-    // if (localStorage.getItem("user_info")) window.location.href = "/";
-    // return () => {
-    //   localStorage.removeItem("user_info");
-    // };
-  }, [state]);
+    if (localStorage.getItem("@token")) window.location.href = "/";
+  }, []);
 
   const showModal = () => {
     setState({
       ...state,
-      visible: true
+      visible: true,
+      phone: null,
+      password: null
     });
   };
 
   const handleOk = () => {
     setState({ ...state, loading: true });
-    localStorage.setItem("user_info", 1234);
-    window.location.href = "/";
+    axios
+      .post("customer-login", {
+        phone: state.phone,
+        password: state.password
+      })
+      .then(res => {
+        localStorage.setItem("@token", res.data.token);
+        props.history.push("");
+      })
+      .catch(err => console.log(err));
+  };
+
+  const onChange = data => {
+    setState({
+      ...state,
+      ...data
+    });
   };
 
   const handleCancel = () => {
@@ -66,6 +81,8 @@ const SignIn = props => {
             <Input
               prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
               placeholder="Username"
+              value={state.phone}
+              onChange={e => onChange({ phone: e.target.value })}
             />
           </Form.Item>
           <Form.Item>
@@ -73,6 +90,8 @@ const SignIn = props => {
               prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
               type="password"
               placeholder="Password"
+              value={state.password}
+              onChange={e => onChange({ password: e.target.value })}
             />
           </Form.Item>
         </Form>

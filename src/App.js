@@ -17,8 +17,7 @@ const App = () => {
     <GlobalStateProvider>
       <Router>
         <BackTop />
-        {console.log(localStorage.getItem("user_info"))}
-        {localStorage.getItem("user_info") ? (
+        {localStorage.getItem("@token") ? (
           <Layout>
             <SideBar style={{ width: 500 }} />
             <Layout>

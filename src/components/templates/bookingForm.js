@@ -205,9 +205,7 @@ const BookingForm = props => {
     <div
       style={{
         backgroundColor: "#f6f6f6",
-        height: window.innerHeight,
-        borderLeft: "1px solid #ccc",
-        borderRight: "1px solid #ccc"
+        height: window.innerHeight
       }}
     >
       <PriceListCarousel />
@@ -321,47 +319,51 @@ const BookingForm = props => {
           </>
         )}
         <Divider orientation="left">Tùy chọn thêm</Divider>
-        <Row>
-          <Checkbox
-            checked={orderInfo.isHandOn ? true : false}
-            onChange={e => setOrder({ isHandOn: e.target.checked })}
-          >
-            Giao tận tay
-          </Checkbox>
-          <Checkbox
-            checked={orderInfo.isSpeed ? true : false}
-            onChange={e => setOrder({ isSpeed: e.target.checked })}
-          >
-            Giao hỏa tốc
-          </Checkbox>
-          {!state.isDocument && (
+        {!orderInfo.isInventory && (
+          <Row>
             <Checkbox
-              checked={orderInfo.isDischarge ? true : false}
-              onChange={e => setOrder({ isDischarge: e.target.checked })}
+              checked={orderInfo.isHandOn ? true : false}
+              onChange={e => setOrder({ isHandOn: e.target.checked })}
             >
-              Bốc xếp hộ
+              Giao tận tay
             </Checkbox>
-          )}
-        </Row>
-        <Row style={{ marginTop: 5 }}>
+            <Checkbox
+              checked={orderInfo.isSpeed ? true : false}
+              onChange={e => setOrder({ isSpeed: e.target.checked })}
+            >
+              Giao hỏa tốc
+            </Checkbox>
+            {!state.isDocument && (
+              <Checkbox
+                checked={orderInfo.isDischarge ? true : false}
+                onChange={e => setOrder({ isDischarge: e.target.checked })}
+              >
+                Bốc xếp hộ
+              </Checkbox>
+            )}
+          </Row>
+        )}
+        <Row style={{ marginTop: 10 }}>
           {!state.isDocument && (
             <Checkbox
               checked={orderInfo.isInventory ? true : false}
               onChange={e => setOrder({ isInventory: e.target.checked })}
             >
-              Làm hàng siêu thị
+              Giao hàng vào kho
             </Checkbox>
           )}
         </Row>
-        <Input
-          allowClear
-          style={{ marginTop: 5 }}
-          placeholder="Thu hộ"
-          addonBefore="Thu hộ"
-          addonAfter="VNĐ"
-          value={orderInfo.cod}
-          onChange={e => inputChange("cod", e.target.value)}
-        />
+        {!orderInfo.isInventory && (
+          <Input
+            allowClear
+            style={{ marginTop: 10 }}
+            placeholder="Thu hộ"
+            addonBefore="Thu hộ"
+            addonAfter="VNĐ"
+            value={orderInfo.cod}
+            onChange={e => inputChange("cod", e.target.value)}
+          />
+        )}
         <Statistic
           suffix={
             <div style={{ color: "red", fontSize: 12 }}>(đã cộng 10% VAT)</div>

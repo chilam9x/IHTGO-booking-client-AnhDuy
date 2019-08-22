@@ -12,6 +12,7 @@ import {
 } from "antd";
 import { dispatch, useGlobalState } from "../../Store";
 import { SET_ORDER_INFO } from "../../utils/actions";
+import useReactRouter from "use-react-router";
 
 const formatMoney = money => {
   return parseInt(money / 1000) * 1000;
@@ -25,6 +26,8 @@ const OrderConfirm = props => {
     receiverPhone: false,
     value: 1
   });
+
+  const { history } = useReactRouter();
 
   const [orderInfo] = useGlobalState("orderInfo");
 
@@ -91,7 +94,11 @@ const OrderConfirm = props => {
         </>
       }
       extra={[
-        <Button type="primary" key="console">
+        <Button
+          type="primary"
+          key="console"
+          onClick={() => history.push("/orders")}
+        >
           Danh sách đơn hàng
         </Button>,
         <Button onClick={props.reset}>Tạo đơn hàng</Button>

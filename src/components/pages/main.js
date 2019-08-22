@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import DynamicImport from "../../utils/lazyImport";
-import { Layout, Steps, Result } from "antd";
+import { Layout, Steps, Result, Icon } from "antd";
 import { useGlobalState } from "../../Store";
 import ClipLoader from "react-spinners/ScaleLoader";
 
@@ -25,7 +25,8 @@ const steps = [
 
 const Main = () => {
   const [state, setState] = useState({
-    current: 0
+    current: 0,
+    collapsed: false
   });
 
   const [sourceLocation] = useGlobalState("sourceLocation");
@@ -45,59 +46,62 @@ const Main = () => {
     setState({ ...state, current: 0 });
   };
 
+  const onCollapse = () => {
+    setState({ ...state, collapsed: !state.collapsed });
+  };
+
   return (
-    <Layout
-      style={{
-        background: "#f4f3ef"
-      }}
-    >
-      <Sider width="25%" theme="light">
-        <Steps
-          size="small"
-          progressDot
-          current={state.current}
-          style={{
-            padding: "20px 0",
-            backgroundColor: "#f6f6f6",
-            borderLeft: "1px solid #ccc",
-            borderRight: "1px solid #ccc"
-          }}
-        >
-          {steps.map(item => (
-            <Step key={item.title} title={item.title} />
-          ))}
-        </Steps>
-        <div className="steps-content">
-          {state.current === 0 ? (
-            <BookingForm next={next} />
-          ) : state.current === 1 ? (
-            <OrderConfirm next={next} prev={prev} />
-          ) : state.current === 2 ? (
-            <OrderConfirm finish reset={reset} />
+    <Layout>
+      <Sider
+        theme="light"
+        trigger={
+          state.collapsed ? (
+            <Icon type="right" style={{ fontSize: 20 }} />
           ) : (
-            <BookingForm next={next} />
-          )}
-        </div>
+            <Icon type="left" style={{ fontSize: 20, width: "100px" }} />
+          )
+        }
+        collapsible
+        collapsed={state.collapsed}
+        onCollapse={onCollapse}
+        width={window.innerWidth / 4}
+        theme="light"
+      >
+        {!state.collapsed && (
+          <>
+            <Steps
+              size="small"
+              progressDot
+              current={state.current}
+              style={{
+                padding: "20px 0",
+                backgroundColor: "#f6f6f6"
+              }}
+            >
+              {steps.map(item => (
+                <Step key={item.title} title={item.title} />
+              ))}
+            </Steps>
+            <div className="steps-content">
+              {state.current === 0 ? (
+                <BookingForm next={next} />
+              ) : state.current === 1 ? (
+                <OrderConfirm next={next} prev={prev} />
+              ) : state.current === 2 ? (
+                <OrderConfirm finish reset={reset} />
+              ) : (
+                <BookingForm next={next} />
+              )}
+            </div>
+          </>
+        )}
       </Sider>
-      <Content style={{ minHeight: 280 }}>
+      <Content style={{ minHeight: window.innerHeight }}>
         {sourceLocation.lat &&
         sourceLocation.lng &&
         desLocation.lat &&
         desLocation.lng ? (
-          <>
-            {/* <Affix
-              offsetTop={10}
-              style={{ position: "absolute", marginLeft: 5 }}
-            >
-              <Select defaultValue="hcm" style={{ width: 180 }} size="large">
-                <Option value="hcm">Hồ Chí Minh</Option>
-                <Option value="bd">Bình Dương</Option>
-                <Option value="la">Long An</Option>
-                <Option value="dn">Đồng Nai</Option>
-              </Select>
-            </Affix> */}
-            <Map />
-          </>
+          <Map />
         ) : (
           <Result
             title={

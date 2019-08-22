@@ -50,7 +50,13 @@ const SideBar = props => {
           <CustomIcon type="profile" style={{ fontSize: 22 }} />
           <span className="nav-text">Danh sách đơn</span>
         </Menu.Item>
-        <Menu.Item key="3" onClick={() => redirectTo("/logout")}>
+        <Menu.Item
+          key="3"
+          onClick={() => {
+            localStorage.removeItem("@token");
+            redirectTo("/logout");
+          }}
+        >
           <CustomIcon type="logout" style={{ fontSize: 22 }} />
           <span className="nav-text">Đăng xuất</span>
         </Menu.Item>
