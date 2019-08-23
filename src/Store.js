@@ -24,6 +24,7 @@ const initialState = {
     isHandOn: false,
     isDischarge: false,
     isInventory: false,
+    isDocument: false,
     totalPrice: null,
     sender_name: null,
     sender_phone: null,

@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Result, Modal, Button, Form, Icon, Input } from "antd";
 import axios from "../../utils/axios";
+import useReactRouter from "use-react-router";
 
 const SignIn = props => {
   const [state, setState] = useState({
     loading: false,
     visible: true
   });
+
+  const { history } = useReactRouter();
 
   useEffect(() => {
     if (localStorage.getItem("@token")) window.location.href = "/";
@@ -23,17 +26,19 @@ const SignIn = props => {
 
   const handleOk = () => {
     setState({ ...state, loading: true });
-    axios
-      .post("customer-login", {
-        phone: state.phone,
-        password: state.password
-      })
-      .then(res => {
-        localStorage.setItem("@token", res.data.token);
-        props.history.push("");
-      })
-      .catch(err => {})
-      .finally(setState({ ...state, loading: false }));
+    localStorage.setItem("@token", 123456);
+    history.push("/");
+    // axios
+    //   .post("customer-login", {
+    //     phone: state.phone,
+    //     password: state.password
+    //   })
+    //   .then(res => {
+    //     localStorage.setItem("@token", res.data.token);
+    //     props.history.push("");
+    //   })
+    //   .catch(err => {})
+    //   .finally(setState({ ...state, loading: false }));
   };
 
   const onChange = data => {

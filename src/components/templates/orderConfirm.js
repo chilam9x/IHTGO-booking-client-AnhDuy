@@ -216,7 +216,7 @@ const OrderConfirm = props => {
           <div style={{ color: "red", fontSize: 12 }}>(đã cộng 10% VAT)</div>
         }
         title={<Row>Cước phí tạm tính (VNĐ)</Row>}
-        value={formatMoney(orderInfo.totalPrice + orderInfo.totalPrice / 10.0)}
+        value={formatMoney(orderInfo.totalPrice)}
         style={{ marginTop: 10 }}
         valueStyle={{ color: "#68bd45" }}
       />

@@ -54,7 +54,7 @@ const SideBar = props => {
           key="3"
           onClick={() => {
             localStorage.removeItem("@token");
-            redirectTo("/logout");
+            redirectTo("/signin");
           }}
         >
           <CustomIcon type="logout" style={{ fontSize: 22 }} />

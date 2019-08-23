@@ -39,7 +39,8 @@ const GettingStartedGoogleMap = withScriptjs(
             desLocation.lat,
             desLocation.lng
           ),
-          travelMode: window.google.maps.TravelMode.DRIVING
+          travelMode: window.google.maps.TravelMode.WALKING,
+          optimizeWaypoints: true
         },
         (result, status) => {
           if (status === window.google.maps.DirectionsStatus.OK) {

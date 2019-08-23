@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Input,
   Divider,
@@ -7,13 +7,14 @@ import {
   Button,
   Alert,
   Icon,
-  Statistic,
-  Switch
+  Statistic
 } from "antd";
 import { PriceListCarousel } from "../atoms";
 import DynamicImport from "../../utils/lazyImport";
 import { useGlobalState, dispatch } from "../../Store";
-import { SET_ORDER_INFO } from "../../utils/actions";
+import { SET_ORDER_INFO, SET_SOURCE_LOCATION } from "../../utils/actions";
+import Geocode from "react-geocode";
+Geocode.setApiKey("AIzaSyCKOI-xG8LmUxZVZEAIO-n42_qCQ312cyQ");
 
 const LocationInput = DynamicImport(() => import("../organisms/locationInput"));
 
@@ -38,7 +39,6 @@ const formatMoney = money => {
 const BookingForm = props => {
   const [state, setState] = useState({
     address: "",
-    isDocument: false,
     sourceInvalid: false,
     desInvalid: false,
     sizeInvalid: false,
@@ -48,12 +48,34 @@ const BookingForm = props => {
   const [orderInfo] = useGlobalState("orderInfo");
   const [sourceLocation] = useGlobalState("sourceLocation");
   const [desLocation] = useGlobalState("desLocation");
+  useEffect(() => {
+    showCurrentLocation();
+  }, []);
 
-  const changeOrderType = () => {
-    setState({
-      ...state,
-      isDocument: !state.isDocument
-    });
+  const showCurrentLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(position => {
+        Geocode.fromLatLng(
+          position.coords.latitude,
+          position.coords.longitude
+        ).then(
+          response => {
+            const address = response.results[0].formatted_address;
+            dispatch({
+              type: SET_SOURCE_LOCATION,
+              location: {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+                place: address
+              }
+            });
+          },
+          error => {
+            console.error(error);
+          }
+        );
+      });
+    }
   };
 
   const isValid = () => {
@@ -74,7 +96,7 @@ const BookingForm = props => {
       isValid = false;
     }
 
-    if (!state.isDocument) {
+    if (!orderInfo.isDocument) {
       if (!orderInfo.weight) {
         validate.weightInvalid = true;
         isValid = false;
@@ -101,7 +123,7 @@ const BookingForm = props => {
     if (isValid()) {
       let price = 0;
       let weight = 0;
-      if (state.isDocument) {
+      if (orderInfo.isDocument) {
         const sPlace = sourceLocation.place.toLowerCase();
         const dPlace = desLocation.place.toLowerCase();
         if (
@@ -162,7 +184,7 @@ const BookingForm = props => {
       if (orderInfo.isSpeed) price *= 2;
       if (orderInfo.isHandOn) price += _10K;
       if (parseInt(orderInfo.cod) > 1000) price += _10K;
-      if (!state.isDocument) {
+      if (!orderInfo.isDocument) {
         if (orderInfo.isDischarge) {
           if (weight > 50 && weight < 151) price += _50K;
           else if (weight > 150 && weight < 301) price += _100K;
@@ -225,7 +247,7 @@ const BookingForm = props => {
             banner
           />
         )}
-        <LocationInput calc={priceCalc} />
+        <LocationInput />
         <Icon
           type="arrow-down"
           style={{
@@ -243,15 +265,15 @@ const BookingForm = props => {
             banner
           />
         )}
-        <LocationInput destination calc={priceCalc} />
+        <LocationInput destination />
         <Divider orientation="left">Thông số đơn hàng</Divider>
-        <Switch
-          checkedChildren="Giao chứng từ"
-          unCheckedChildren="Giao hàng hóa"
-          checked={state.isDocument}
-          onClick={changeOrderType}
-        />
-        {!state.isDocument && (
+        <Checkbox
+          checked={orderInfo.isDocument}
+          onChange={e => setOrder({ isDocument: e.target.checked })}
+        >
+          Giao chứng từ
+        </Checkbox>
+        {!orderInfo.isDocument && (
           <Input
             addonBefore="Quãng đường"
             style={{ width: "100%", marginBottom: 10, marginTop: 10 }}
@@ -261,7 +283,7 @@ const BookingForm = props => {
           />
         )}
 
-        {!state.isDocument && (
+        {!orderInfo.isDocument && (
           <>
             {state.sizeInvalid && (
               <Alert
@@ -298,7 +320,7 @@ const BookingForm = props => {
           </>
         )}
 
-        {!state.isDocument && (
+        {!orderInfo.isDocument && (
           <>
             {state.weightInvalid && (
               <Alert
@@ -333,7 +355,7 @@ const BookingForm = props => {
             >
               Giao hỏa tốc
             </Checkbox>
-            {!state.isDocument && (
+            {!orderInfo.isDocument && (
               <Checkbox
                 checked={orderInfo.isDischarge ? true : false}
                 onChange={e => setOrder({ isDischarge: e.target.checked })}
@@ -344,7 +366,7 @@ const BookingForm = props => {
           </Row>
         )}
         <Row style={{ marginTop: 10 }}>
-          {!state.isDocument && (
+          {!orderInfo.isDocument && (
             <Checkbox
               checked={orderInfo.isInventory ? true : false}
               onChange={e => setOrder({ isInventory: e.target.checked })}
@@ -365,9 +387,6 @@ const BookingForm = props => {
           />
         )}
         <Statistic
-          suffix={
-            <div style={{ color: "red", fontSize: 12 }}>(đã cộng 10% VAT)</div>
-          }
           title={
             <Row>
               Cước phí tạm tính (VNĐ)
@@ -377,9 +396,7 @@ const BookingForm = props => {
               </Button>
             </Row>
           }
-          value={formatMoney(
-            orderInfo.totalPrice + orderInfo.totalPrice / 10.0
-          )}
+          value={formatMoney(orderInfo.totalPrice)}
           style={{ marginTop: 10 }}
           valueStyle={{ color: "#68bd45" }}
         />

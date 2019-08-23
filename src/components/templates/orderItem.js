@@ -142,11 +142,6 @@ const OrderItem = props => {
           </Row>
           <Divider orientation="left">Thanh toán</Divider>
           <Statistic
-            suffix={
-              <div style={{ color: "red", fontSize: 12 }}>
-                (đã cộng 10% VAT)
-              </div>
-            }
             title={"Cước phí tạm tính (VNĐ)"}
             value={formatMoney(100000)}
             style={{ marginTop: 10 }}
