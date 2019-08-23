@@ -5,40 +5,45 @@ import useReactRouter from "use-react-router";
 
 const SignIn = props => {
   const [state, setState] = useState({
-    loading: false,
-    visible: true
+    loading: false
   });
+
+  const [visible, setVisible] = useState(true);
 
   const { history } = useReactRouter();
 
   useEffect(() => {
-    if (localStorage.getItem("@token")) window.location.href = "/";
+    if (localStorage.getItem("@token")) history.push("/");
   }, []);
 
   const showModal = () => {
-    setState({
-      ...state,
-      visible: true,
-      phone: null,
-      password: null
-    });
+    setVisible(true);
   };
 
   const handleOk = () => {
     setState({ ...state, loading: true });
-    localStorage.setItem("@token", 123456);
-    history.push("/");
-    // axios
-    //   .post("customer-login", {
-    //     phone: state.phone,
-    //     password: state.password
-    //   })
-    //   .then(res => {
-    //     localStorage.setItem("@token", res.data.token);
-    //     props.history.push("");
-    //   })
-    //   .catch(err => {})
-    //   .finally(setState({ ...state, loading: false }));
+    axios
+      .post("customer-login", {
+        phone: state.phone,
+        password: state.password
+      })
+      .then(res => {
+        console.log(res);
+        localStorage.setItem("@token", res.data.token);
+        history.push("/");
+      })
+      .catch(err => {
+        console.log(err);
+      })
+      .finally(() => setState({ ...state, loading: false }));
+  };
+
+  const onChangePhone = e => {
+    const value = e.target.value;
+    setState({
+      ...state,
+      phone: value
+    });
   };
 
   const onChange = data => {
@@ -49,7 +54,7 @@ const SignIn = props => {
   };
 
   const handleCancel = () => {
-    setState({ ...state, visible: false });
+    setVisible(false);
   };
 
   return (
@@ -64,7 +69,7 @@ const SignIn = props => {
         style={{ backgroundColor: "white" }}
       />
       <Modal
-        visible={state.visible}
+        visible={visible}
         title="Đăng nhập tại đây"
         onOk={handleOk}
         onCancel={handleCancel}
@@ -75,32 +80,29 @@ const SignIn = props => {
           <Button
             key="submit"
             type="primary"
-            loading={state.loading}
             onClick={handleOk}
+            disabled={state.loading}
           >
             Đăng nhập
           </Button>
         ]}
       >
-        <Form>
-          <Form.Item>
-            <Input
-              prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
-              placeholder="Username"
-              value={state.phone}
-              onChange={e => onChange({ phone: e.target.value })}
-            />
-          </Form.Item>
-          <Form.Item>
-            <Input.Password
-              prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
-              type="password"
-              placeholder="Password"
-              value={state.password}
-              onChange={e => onChange({ password: e.target.value })}
-            />
-          </Form.Item>
-        </Form>
+        <Input
+          allowClear
+          prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
+          placeholder="Username"
+          value={state.phone}
+          onChange={onChangePhone}
+          style={{ marginBottom: 20 }}
+        />
+        <Input.Password
+          allowClear
+          prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
+          type="password"
+          placeholder="Password"
+          value={state.password}
+          onChange={e => onChange({ password: e.target.value })}
+        />
       </Modal>
     </>
   );

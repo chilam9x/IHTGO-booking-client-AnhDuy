@@ -18,7 +18,8 @@ axios.interceptors.response.use(
   error => {
     console.log("err", error);
     if (error.response && error.response.status === 401) {
-      window.location.href = "/signin";
+      if (window.location.pathname !== "/signin")
+        window.location.href = "/signin";
     }
     return error;
   }
