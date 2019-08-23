@@ -25,15 +25,14 @@ class Map extends Component {
   }
 
   fetchMarker = () => {
-    axios
-      .get("driver/find")
-      .then(response => response.json())
-      .then(data => {
-        data.data.map(result => {
-          result.show = true;
-        });
-        this.setState({ places: data.data });
+    axios.get("driver/find").then(data => {
+      console.log(data);
+
+      data.data.data.map(result => {
+        result.show = true;
       });
+      this.setState({ places: data.data.data });
+    });
   };
 
   render() {

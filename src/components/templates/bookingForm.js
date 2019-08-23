@@ -14,6 +14,7 @@ import DynamicImport from "../../utils/lazyImport";
 import { useGlobalState, dispatch } from "../../Store";
 import { SET_ORDER_INFO, SET_SOURCE_LOCATION } from "../../utils/actions";
 import Geocode from "react-geocode";
+
 Geocode.setApiKey("AIzaSyCKOI-xG8LmUxZVZEAIO-n42_qCQ312cyQ");
 
 const LocationInput = DynamicImport(() => import("../organisms/locationInput"));
@@ -48,6 +49,7 @@ const BookingForm = props => {
   const [orderInfo] = useGlobalState("orderInfo");
   const [sourceLocation] = useGlobalState("sourceLocation");
   const [desLocation] = useGlobalState("desLocation");
+
   useEffect(() => {
     showCurrentLocation();
   }, []);
@@ -267,12 +269,14 @@ const BookingForm = props => {
         )}
         <LocationInput destination />
         <Divider orientation="left">Thông số đơn hàng</Divider>
-        <Checkbox
-          checked={orderInfo.isDocument}
-          onChange={e => setOrder({ isDocument: e.target.checked })}
-        >
-          Giao chứng từ
-        </Checkbox>
+        {!orderInfo.isInventory && (
+          <Checkbox
+            checked={orderInfo.isDocument}
+            onChange={e => setOrder({ isDocument: e.target.checked })}
+          >
+            Giao chứng từ
+          </Checkbox>
+        )}
         {!orderInfo.isDocument && (
           <Input
             addonBefore="Quãng đường"
@@ -411,6 +415,8 @@ const BookingForm = props => {
             Tiếp tục đơn hàng <Icon type="right" />
           </b>
         </Button>
+        <br />
+        <br />
       </div>
     </div>
   );
