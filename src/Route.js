@@ -8,7 +8,7 @@ const RouteMap = () => {
       <Route
         exact
         path="/"
-        component={DynamicImport(() => import("./components/pages/main"))}
+        component={DynamicImport(() => import("./components/pages/orders"))}
       />
       <Route
         path="/signin"

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Menu, Input, Table, Tag, Button } from "antd";
+import { Menu, Input, Table, Tag, Button, Icon } from "antd";
 import PulseLoader from "react-spinners/PulseLoader";
 import DynamicImport from "../../utils/lazyImport";
 import axios from "../../utils/axios";
@@ -24,12 +24,8 @@ const getColorCode = status => {
     return "blue";
   } else if (status == 4) {
     return "green";
-  } else if (status == 5) {
-    return "gray";
-  } else if (status == 6) {
+  } else if (status == 5 || status == 6 || status == 7) {
     return "red";
-  } else if (status == 7) {
-    return "black";
   }
 };
 
@@ -52,7 +48,11 @@ const columns = [
     title: "Tên đơn hàng",
     dataIndex: "name",
     key: "name",
-    render: text => text
+    render: (text, record, index) => (
+      <Tag color={getColorCode(record.status)} style={{ padding: "0px 20px" }}>
+        {text}
+      </Tag>
+    )
   },
   {
     title: "Tổng tiền",
@@ -83,32 +83,35 @@ const columns = [
 const OrderList = props => {
   const [state, setState] = useState({
     loading: true,
-    visible: false,
     selectedOrder: null
   });
 
+  const [visible, setVisible] = useState(false);
+  const [loading, setLoading] = useState(true);
+
   const [orders] = useGlobalState("orderList");
   const onClose = () => {
-    setState({ ...state, visible: false });
+    setVisible(false);
   };
 
-  useEffect(() => {
+  useEffect(async () => {
     const query = new URLSearchParams(props.location.search);
     const id = query.get("id");
     if (id && id !== "") {
       setState({
         ...state,
-        selectedOrder: id,
-        visible: true
+        selectedOrder: id
       });
+      setVisible(true);
     }
-    getAll();
-    getWaiting();
-    getFinished();
-    getCancelled();
+
+    await getAll();
+    await getWaiting();
+    await getFinished();
+    await getCancelled();
   }, []);
 
-  const getAll = () => {
+  const getAll = async () => {
     axios
       .post("customer/order-all", {
         skip: orders.all ? orders.all.length : 0
@@ -119,10 +122,10 @@ const OrderList = props => {
           orders: res.data.data
         });
       })
-      .finally(() => setState({ ...state, loading: false }));
+      .finally(() => setLoading(false));
   };
 
-  const getWaiting = () => {
+  const getWaiting = async () => {
     axios
       .post("customer/order-waiting", {
         skip: orders.waiting ? orders.waiting.length : 0
@@ -133,10 +136,10 @@ const OrderList = props => {
           orders: res.data.data
         });
       })
-      .finally(() => setState({ ...state, loading: false }));
+      .finally(() => setLoading(false));
   };
 
-  const getFinished = () => {
+  const getFinished = async () => {
     axios
       .post("customer/order-finish", {
         skip: orders.finished ? orders.finished.length : 0
@@ -147,10 +150,10 @@ const OrderList = props => {
           orders: res.data.data
         });
       })
-      .finally(() => setState({ ...state, loading: false }));
+      .finally(() => setLoading(false));
   };
 
-  const getCancelled = () => {
+  const getCancelled = async () => {
     axios
       .post("customer/order-cancel", {
         skip: orders.cancelled ? orders.cancelled.length : 0
@@ -161,11 +164,11 @@ const OrderList = props => {
           orders: res.data.data
         });
       })
-      .finally(() => setState({ ...state, loading: false }));
+      .finally(() => setLoading(false));
   };
 
   const loadMore = () => {
-    setState({ ...state, loading: true });
+    setLoading(true);
     orders.current_option === ALL
       ? getAll()
       : orders.current_option === WAITING
@@ -204,7 +207,8 @@ const OrderList = props => {
             })
           }
         >
-          Đơn chưa giao
+          <Icon type="tag" theme="filled" style={{ color: "blue" }} /> Đơn chưa
+          giao
         </Menu.Item>
         <Menu.Item
           key={FINISHED}
@@ -217,7 +221,8 @@ const OrderList = props => {
             })
           }
         >
-          Đơn đã giao
+          <Icon type="tag" theme="filled" style={{ color: "green" }} /> Đơn đã
+          giao
         </Menu.Item>
         <Menu.Item
           key={CANCELLED}
@@ -230,6 +235,7 @@ const OrderList = props => {
             })
           }
         >
+          <Icon type="tag" theme="filled" style={{ color: "red" }} />
           Đơn đã hủy
         </Menu.Item>
         <Search
@@ -240,7 +246,7 @@ const OrderList = props => {
       </Menu>
       <br />
       <Table
-        loading={state.loading}
+        loading={loading}
         columns={columns}
         dataSource={
           orders.current_option === ALL
@@ -257,11 +263,12 @@ const OrderList = props => {
         onRow={record => {
           return {
             onClick: event => {
+              props.history.replace("orders?id=" + record.id);
               setState({
                 ...state,
-                selectedOrder: record.id,
-                visible: true
+                selectedOrder: record.id
               });
+              setVisible(true);
             }
           };
         }}
@@ -271,15 +278,11 @@ const OrderList = props => {
         style={{ margin: "20px auto", display: "flex", padding: " 0 50px" }}
         type="danger"
         onClick={loadMore}
-        disabled={state.loading}
+        disabled={loading}
       >
         Xem thêm <PulseLoader size={5} color={"#fff"} />
       </Button>
-      <OrderItem
-        close={onClose}
-        visible={state.visible}
-        id={state.selectedOrder}
-      />
+      <OrderItem close={onClose} visible={visible} id={state.selectedOrder} />
     </div>
   );
 };

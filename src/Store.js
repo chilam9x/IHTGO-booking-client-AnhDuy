@@ -7,7 +7,8 @@ const initialState = {
   sourceLocation: {},
   desLocation: {},
   orderInfo: {},
-  orderList: { current_option: ALL }
+  orderList: { current_option: ALL },
+  sideBar: { key: "1" }
 };
 
 var logger = function(_a) {

@@ -34,7 +34,7 @@ const _10K = 10000;
 const _250K = 250000;
 
 const formatMoney = money => {
-  return parseInt(money / 1000) * 1000;
+  return money ? parseInt(money / 1000) * 1000 : 0;
 };
 
 const BookingForm = props => {

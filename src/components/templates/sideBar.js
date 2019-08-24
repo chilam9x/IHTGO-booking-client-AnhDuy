@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { Layout, Menu, Icon } from "antd";
-import { withRouter } from "react-router-dom";
 import styled from "styled-components";
+import useReactRouter from "use-react-router";
+import { dispatch, useGlobalState } from "../../Store";
+import { SET_MENU } from "../../utils/actions";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 const CustomIcon = styled(Icon)`
   color: #3fa0e4;
@@ -12,13 +15,17 @@ const SideBar = props => {
   const [state, setState] = useState({
     collapsed: true
   });
-
+  const { history, location, match } = useReactRouter();
+  const [key] = useGlobalState("sideBar");
   const onCollapse = () => {
     setState({ ...state, collapsed: !state.collapsed });
   };
 
   const redirectTo = path => {
-    props.history.push(path);
+    console.log("history", history);
+    console.log("location", location);
+    console.log("match", match);
+    history.push(path);
   };
 
   return (
@@ -37,18 +44,36 @@ const SideBar = props => {
       theme="light"
     >
       <Menu
-        defaultSelectedKeys={["1"]}
+        defaultSelectedKeys={[key.key]}
         theme="light"
         mode="inline"
         style={{ height: "100%" }}
       >
-        <Menu.Item key="1" onClick={() => redirectTo("/")}>
+        <Menu.Item
+          key="1"
+          // onClick={() => {
+          //   dispatch({
+          //     type: SET_MENU,
+          //     key: "1"
+          //   });
+          //   redirectTo("/");
+          // }}
+        >
           <CustomIcon type="form" style={{ fontSize: 22 }} />
-          <span className="nav-text">Đặt hàng</span>
+          <Link to="/">Home</Link>
         </Menu.Item>
-        <Menu.Item key="2" onClick={() => redirectTo("/orders")}>
+        <Menu.Item
+          key="2"
+          // onClick={() => {
+          //   dispatch({
+          //     type: SET_MENU,
+          //     key: "2"
+          //   });
+          //   redirectTo("/orders");
+          // }}
+        >
           <CustomIcon type="profile" style={{ fontSize: 22 }} />
-          <span className="nav-text">Danh sách đơn</span>
+          <Link to="orders">Home</Link>
         </Menu.Item>
         <Menu.Item
           key="3"
@@ -65,4 +90,4 @@ const SideBar = props => {
   );
 };
 
-export default withRouter(SideBar);
+export default SideBar;

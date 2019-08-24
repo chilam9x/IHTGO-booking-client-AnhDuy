@@ -3,6 +3,7 @@ import DescriptionItem from "../atoms/descriptionItem";
 import { Drawer, Row, Col, Divider, Steps, Statistic } from "antd";
 import QRCode from "qrcode.react";
 import DynamicImport from "../../utils/lazyImport";
+import axios from "../../utils/axios";
 
 const OrderError = DynamicImport(() => import("../organisms/orderError"));
 const OrderItemLoading = DynamicImport(() =>
@@ -25,13 +26,28 @@ const formatMoney = money => {
 
 const OrderItem = props => {
   const [state, setState] = useState({
-    error: false,
-    loading: false
+    order: null
   });
 
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
   useEffect(() => {
+    setLoading(true);
+    setError(false);
     if (props.id) {
-      console.log("call api");
+      axios
+        .post("customer/order-detail/" + props.id)
+        .then(res => {
+          if (res.data.data)
+            setState({
+              ...state,
+              order: res.data.data
+            });
+          else setError(true);
+        })
+        .catch(err => setError(true))
+        .finally(() => setLoading(false));
     }
   }, [props.id]);
 
@@ -39,13 +55,13 @@ const OrderItem = props => {
     <Drawer
       width={window.innerWidth / 2}
       placement="right"
-      closable={false}
+      closable={true}
       onClose={props.close}
       visible={props.visible}
     >
-      {state.loading ? (
+      {loading ? (
         <OrderItemLoading />
-      ) : state.error ? (
+      ) : error ? (
         <OrderError />
       ) : (
         <>
@@ -58,92 +74,137 @@ const OrderItem = props => {
               padding: "3px 20px"
             }}
           >
-            Mã vận đơn {props.id}
+            Mã vận đơn {state.order.coupon_code}
           </p>
           <p style={{ ...pStyle, marginBottom: 10 }}>
-            Tên đơn hàng: đơn hàng 1
+            Tên đơn hàng: {state.order.name}
           </p>
           <Divider orientation="left">Thông tin nơi gửi</Divider>
           <Row>
             <Col span={12}>
-              <DescriptionItem title="Họ tên" content="Lily" />
+              <DescriptionItem
+                title="Họ tên"
+                content={state.order.sender_name}
+              />
             </Col>
             <Col span={12}>
-              <DescriptionItem title="Số điện thoại" content="000000000" />
+              <DescriptionItem
+                title="Số điện thoại"
+                content={state.order.sender_phone}
+              />
             </Col>
           </Row>
           <Row>
             <Col span={24}>
               <DescriptionItem
                 title="Địa chỉ"
-                content="Make things as simple as possible but no simpler."
+                content={state.order.sender_address}
               />
             </Col>
           </Row>
           <Row>
             <Col span={24}>
-              <DescriptionItem
-                title="Ghi chú"
-                content="Make things as simple as possible but no simpler."
-              />
+              <DescriptionItem title="Ghi chú" content={state.order.note} />
             </Col>
           </Row>
           <Divider orientation="left">Thông tin nơi nhận</Divider>
           <Row>
             <Col span={12}>
-              <DescriptionItem title="Họ tên" content="Lily" />
+              <DescriptionItem
+                title="Họ tên"
+                content={state.order.receive_name}
+              />
             </Col>
             <Col span={12}>
-              <DescriptionItem title="Số điện thoại" content="000000000" />
+              <DescriptionItem
+                title="Số điện thoại"
+                content={state.order.receive_phone}
+              />
             </Col>
           </Row>
           <Row>
             <Col span={24}>
               <DescriptionItem
                 title="Địa chỉ"
-                content="Make things as simple as possible but no simpler."
+                content={state.order.receive_address}
               />
             </Col>
           </Row>
           <Divider orientation="left">Thông số đơn hàng</Divider>
           <Row>
             <Col span={8}>
-              <DescriptionItem title="Lộ trình" content="5 km" />
+              <DescriptionItem
+                title="Lộ trình"
+                content={state.order.distance && state.order.distance + " km"}
+              />
             </Col>
             <Col span={8}>
-              <DescriptionItem title="Kích thước" content="20x20x20 (cm)" />
+              <DescriptionItem
+                title="Kích thước"
+                content={
+                  state.order.length &&
+                  state.order.length + " x " + state.order.width &&
+                  state.order.width + " x " + state.order.height &&
+                  state.order.height + " cm"
+                }
+              />
             </Col>
             <Col span={8}>
-              <DescriptionItem title="Cân nặng" content="10 (kg)" />
+              <DescriptionItem
+                title="Cân nặng"
+                content={state.order.weight && state.order.weight + " kg"}
+              />
             </Col>
           </Row>
           <Divider orientation="left">Tùy chọn đơn hàng</Divider>
           <Row>
             <Col span={8}>
-              <DescriptionItem title="Giao tận tay" content="Có" />
+              <DescriptionItem
+                title="Giao tận tay"
+                content={state.order.hand_on ? "Có" : "Không"}
+              />
             </Col>
             <Col span={8}>
-              <DescriptionItem title="Giao hỏa tốc" content="Có" />
+              <DescriptionItem
+                title="Giao hỏa tốc"
+                content={state.order.is_speed ? "Có" : "Không"}
+              />
             </Col>
             <Col span={8}>
-              <DescriptionItem title="Bốc xếp hộ" content="Có" />
+              <DescriptionItem
+                title="Bốc xếp hộ"
+                content={state.order.discharge ? "Có" : "Không"}
+              />
             </Col>
           </Row>
           <Row>
             <Col span={8}>
-              <DescriptionItem title="Làm hàng siêu thị" content="Có" />
+              <DescriptionItem
+                title="Làm hàng siêu thị"
+                content={state.order.car_option === 4 ? "Có" : "Không"}
+              />
             </Col>
             <Col span={8}>
-              <DescriptionItem title="Thu hộ" content="100,000 vnđ" />
+              <DescriptionItem
+                title="Thu hộ"
+                content={
+                  state.order.take_money
+                    ? state.order.take_money + " vnđ"
+                    : "0 vnđ"
+                }
+              />
             </Col>
             <Col span={8}>
-              <DescriptionItem title="Người thanh toán" content="người gửi" />
+              <DescriptionItem
+                title="Người thanh toán"
+                content={state.order.payer === 1 ? "Người nhận" : "Người gửi"}
+              />
             </Col>
           </Row>
           <Divider orientation="left">Thanh toán</Divider>
           <Statistic
             title={"Cước phí tạm tính (VNĐ)"}
-            value={formatMoney(100000)}
+            value={formatMoney(parseInt(state.order.total_price))}
             style={{ marginTop: 10 }}
             valueStyle={{ color: "#68bd45" }}
           />
@@ -151,9 +212,12 @@ const OrderItem = props => {
           <Row>
             <Col span={16}>
               <Steps direction="vertical" size="small" current={3}>
-                <Step title="Ngày tạo" description="1/2/21111" />
-                <Step title="Ngày giao" description="1/2/21111" />
-                <Step title="Ngày nhận hàng" description="1/2/21111" />
+                <Step title="Ngày tạo" description={state.order.created_at} />
+                <Step title="Ngày giao" description={state.order.created_at} />
+                <Step
+                  title="Ngày nhận hàng"
+                  description={state.order.created_at}
+                />
               </Steps>
             </Col>
             <Col span={8}>

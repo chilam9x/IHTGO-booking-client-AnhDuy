@@ -6,3 +6,4 @@ export const SET_ORDER_LIST_ALL = "set_order_list_all";
 export const SET_ORDER_LIST_WAITING = "set_order_list_waiting";
 export const SET_ORDER_LIST_FINISHED = "set_order_list_finished";
 export const SET_ORDER_LIST_CANCELLED = "set_order_list_cancelled";
+export const SET_MENU = "set_menu";

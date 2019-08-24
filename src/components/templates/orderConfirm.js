@@ -15,7 +15,7 @@ import { SET_ORDER_INFO } from "../../utils/actions";
 import useReactRouter from "use-react-router";
 
 const formatMoney = money => {
-  return parseInt(money / 1000) * 1000;
+  return money ? parseInt(money / 1000) * 1000 : 0;
 };
 
 const OrderConfirm = props => {
