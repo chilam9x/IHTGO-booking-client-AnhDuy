@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Layout, Menu, Icon } from "antd";
 import styled from "styled-components";
 import { withRouter } from "react-router";
+import { dispatch, useGlobalState } from "../../Store";
+import { SET_MENU } from "../../utils/actions";
 
 const CustomIcon = styled(Icon)`
   color: #3fa0e4;
@@ -12,7 +14,7 @@ const SideBar = props => {
   const [state, setState] = useState({
     collapsed: true
   });
-
+  const [key] = useGlobalState("sideBar");
   const onCollapse = () => {
     setState({ ...state, collapsed: !state.collapsed });
   };
@@ -33,7 +35,7 @@ const SideBar = props => {
       theme="light"
     >
       <Menu
-        defaultSelectedKeys={[localStorage.getItem("key")]}
+        defaultSelectedKeys={[key.key]}
         theme="light"
         mode="inline"
         style={{ height: "100%" }}
@@ -41,7 +43,10 @@ const SideBar = props => {
         <Menu.Item
           key="1"
           onClick={() => {
-            localStorage.setItem("key", "1");
+            dispatch({
+              type: SET_MENU,
+              key: "1"
+            });
             props.history.push("/");
           }}
         >
@@ -51,7 +56,10 @@ const SideBar = props => {
         <Menu.Item
           key="2"
           onClick={() => {
-            localStorage.setItem("key", "2");
+            dispatch({
+              type: SET_MENU,
+              key: "2"
+            });
             props.history.push("orders");
           }}
         >
@@ -62,7 +70,7 @@ const SideBar = props => {
           key="3"
           onClick={() => {
             localStorage.removeItem("@token");
-            props.history.push("/signin");
+            window.location.replace("/signin");
           }}
         >
           <CustomIcon type="logout" style={{ fontSize: 22 }} />

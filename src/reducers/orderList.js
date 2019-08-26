@@ -47,6 +47,26 @@ export default function companyReducer(state = initState, action) {
           ? [...state.cancelled, ...action.orders]
           : action.orders
       };
+    case RESET_ORDER_LIST_ALL:
+      return {
+        ...state,
+        all: []
+      };
+    case RESET_ORDER_LIST_WAITING:
+      return {
+        ...state,
+        waiting: []
+      };
+    case RESET_ORDER_LIST_FINISHED:
+      return {
+        ...state,
+        finished: []
+      };
+    case RESET_ORDER_LIST_CANCELLED:
+      return {
+        ...state,
+        cancelled: []
+      };
     default:
       return state;
   }

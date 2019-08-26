@@ -9,7 +9,11 @@ import {
   SET_ORDER_LIST_ALL,
   SET_ORDER_LIST_WAITING,
   SET_ORDER_LIST_FINISHED,
-  SET_ORDER_LIST_CANCELLED
+  SET_ORDER_LIST_CANCELLED,
+  RESET_ORDER_LIST_ALL,
+  RESET_ORDER_LIST_WAITING,
+  RESET_ORDER_LIST_FINISHED,
+  RESET_ORDER_LIST_CANCELLED
 } from "../../utils/actions";
 import { ALL, WAITING, FINISHED, CANCELLED } from "../../utils/constants";
 import moment from "moment";
@@ -208,28 +212,29 @@ const OrderList = props => {
   };
 
   const searchAll = value => {
+    setLoading(true);
     dispatch({
-      type: SET_ORDER_LIST_ALL,
+      type: RESET_ORDER_LIST_ALL,
       orders: []
     });
-    setLoading(false);
-    // axios
-    //   .post("customer/search-all", {
-    //     search: value,
-    //     page: orders.all ? orders.all.length : 0
-    //   })
-    //   .then(res => {
-    //     dispatch({
-    //       type: SET_ORDER_LIST_ALL,
-    //       orders: res.data.data
-    //     });
-    //   })
-    //   .finally(() => setLoading(false));
+
+    axios
+      .post("customer/search-all", {
+        search: value,
+        page: orders.all ? orders.all.length : 0
+      })
+      .then(res => {
+        dispatch({
+          type: SET_ORDER_LIST_ALL,
+          orders: res.data
+        });
+      })
+      .finally(() => setLoading(false));
   };
 
   const searchWaiting = value => {
     dispatch({
-      type: SET_ORDER_LIST_WAITING,
+      type: RESET_ORDER_LIST_WAITING,
       orders: []
     });
     axios
@@ -240,7 +245,7 @@ const OrderList = props => {
       .then(res => {
         dispatch({
           type: SET_ORDER_LIST_WAITING,
-          orders: res.data.data
+          orders: res.data
         });
       })
       .finally(() => setLoading(false));
@@ -248,7 +253,7 @@ const OrderList = props => {
 
   const searchFinished = value => {
     dispatch({
-      type: SET_ORDER_LIST_FINISHED,
+      type: RESET_ORDER_LIST_FINISHED,
       orders: []
     });
     axios
@@ -259,7 +264,7 @@ const OrderList = props => {
       .then(res => {
         dispatch({
           type: SET_ORDER_LIST_FINISHED,
-          orders: res.data.data
+          orders: res.data
         });
       })
       .finally(() => setLoading(false));
@@ -267,7 +272,7 @@ const OrderList = props => {
 
   const searchCancelled = value => {
     dispatch({
-      type: SET_ORDER_LIST_CANCELLED,
+      type: RESET_ORDER_LIST_CANCELLED,
       orders: []
     });
     axios
@@ -278,7 +283,7 @@ const OrderList = props => {
       .then(res => {
         dispatch({
           type: SET_ORDER_LIST_CANCELLED,
-          orders: res.data.data
+          orders: res.data
         });
       })
       .finally(() => setLoading(false));
