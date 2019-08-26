@@ -26,9 +26,7 @@ class Map extends Component {
 
   fetchMarker = () => {
     axios.get("driver/find").then(data => {
-      console.log(data);
-
-      data.data.data.map(result => {
+      data.data.data.forEach(result => {
         result.show = true;
       });
       this.setState({ places: data.data.data });

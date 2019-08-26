@@ -66,7 +66,8 @@ const LocationInput = props => {
           location.place
       )
         .then(res => {
-          const places = res.data.predictions.map(i => i.description);
+          const places =
+            res.data && res.data.predictions.map(i => i.description);
           setState({
             ...state,
             places: places

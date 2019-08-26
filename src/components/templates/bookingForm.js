@@ -154,9 +154,9 @@ const BookingForm = props => {
         //BIKE
         if (
           weight < 21 &&
-          orderInfo.len < 41 &&
-          orderInfo.width < 31 &&
-          orderInfo.height < 41
+          (!orderInfo.len || orderInfo.len < 41) &&
+          (!orderInfo.width || orderInfo.width < 31) &&
+          (!orderInfo.height || orderInfo.height < 41)
         ) {
           if (orderInfo.distance < 26) price = _70K;
           else {
@@ -222,7 +222,10 @@ const BookingForm = props => {
   };
 
   const toNextPage = () => {
-    if (isValid()) props.next();
+    if (isValid()) {
+      priceCalc();
+      props.next();
+    }
   };
 
   return (
@@ -283,7 +286,7 @@ const BookingForm = props => {
             style={{ width: "100%", marginBottom: 10, marginTop: 10 }}
             value={orderInfo.distance}
             addonAfter="km"
-            disabled
+            readOnly
           />
         )}
 

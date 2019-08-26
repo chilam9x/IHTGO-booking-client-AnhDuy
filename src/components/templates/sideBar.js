@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import { Layout, Menu, Icon } from "antd";
 import styled from "styled-components";
-import useReactRouter from "use-react-router";
-import { dispatch, useGlobalState } from "../../Store";
-import { SET_MENU } from "../../utils/actions";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { withRouter } from "react-router";
 
 const CustomIcon = styled(Icon)`
   color: #3fa0e4;
@@ -15,17 +12,9 @@ const SideBar = props => {
   const [state, setState] = useState({
     collapsed: true
   });
-  const { history, location, match } = useReactRouter();
-  const [key] = useGlobalState("sideBar");
+
   const onCollapse = () => {
     setState({ ...state, collapsed: !state.collapsed });
-  };
-
-  const redirectTo = path => {
-    console.log("history", history);
-    console.log("location", location);
-    console.log("match", match);
-    history.push(path);
   };
 
   return (
@@ -44,42 +33,36 @@ const SideBar = props => {
       theme="light"
     >
       <Menu
-        defaultSelectedKeys={[key.key]}
+        defaultSelectedKeys={[localStorage.getItem("key")]}
         theme="light"
         mode="inline"
         style={{ height: "100%" }}
       >
         <Menu.Item
           key="1"
-          // onClick={() => {
-          //   dispatch({
-          //     type: SET_MENU,
-          //     key: "1"
-          //   });
-          //   redirectTo("/");
-          // }}
+          onClick={() => {
+            localStorage.setItem("key", "1");
+            props.history.push("/");
+          }}
         >
           <CustomIcon type="form" style={{ fontSize: 22 }} />
-          <Link to="/">Home</Link>
+          <span className="nav-text">Tạo đơn hàng</span>
         </Menu.Item>
         <Menu.Item
           key="2"
-          // onClick={() => {
-          //   dispatch({
-          //     type: SET_MENU,
-          //     key: "2"
-          //   });
-          //   redirectTo("/orders");
-          // }}
+          onClick={() => {
+            localStorage.setItem("key", "2");
+            props.history.push("orders");
+          }}
         >
           <CustomIcon type="profile" style={{ fontSize: 22 }} />
-          <Link to="orders">Home</Link>
+          <span className="nav-text">Danh sách đơn</span>
         </Menu.Item>
         <Menu.Item
           key="3"
           onClick={() => {
             localStorage.removeItem("@token");
-            redirectTo("/signin");
+            props.history.push("/signin");
           }}
         >
           <CustomIcon type="logout" style={{ fontSize: 22 }} />
@@ -90,4 +73,4 @@ const SideBar = props => {
   );
 };
 
-export default SideBar;
+export default withRouter(SideBar);

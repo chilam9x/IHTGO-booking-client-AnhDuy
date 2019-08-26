@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Result, Modal, Button, Form, Icon, Input } from "antd";
+import { Result, Modal, Button, Icon, Input } from "antd";
 import axios from "../../utils/axios";
-import useReactRouter from "use-react-router";
 
 const SignIn = props => {
   const [state, setState] = useState({
@@ -10,10 +9,8 @@ const SignIn = props => {
 
   const [visible, setVisible] = useState(true);
 
-  const { history } = useReactRouter();
-
   useEffect(() => {
-    if (localStorage.getItem("@token")) history.push("/");
+    if (localStorage.getItem("@token")) window.location.replace("/");
   }, []);
 
   const showModal = () => {
@@ -28,9 +25,9 @@ const SignIn = props => {
         password: state.password
       })
       .then(res => {
-        console.log(res);
         localStorage.setItem("@token", res.data.token);
-        history.push("/");
+        localStorage.setItem("key", "1");
+        window.location.replace("/");
       })
       .catch(err => {
         console.log(err);

@@ -16,10 +16,11 @@ axios.interceptors.response.use(
     return response;
   },
   error => {
-    console.log("err", error);
     if (error.response && error.response.status === 401) {
-      if (window.location.pathname !== "/signin")
+      if (window.location.pathname !== "/signin") {
         window.location.href = "/signin";
+        localStorage.removeItem("@token");
+      }
     }
     return error;
   }

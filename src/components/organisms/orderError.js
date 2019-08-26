@@ -1,5 +1,5 @@
 import React from "react";
-import { Result, Button, Icon, Typography } from "antd";
+import { Result, Icon, Typography } from "antd";
 
 const { Paragraph, Text } = Typography;
 

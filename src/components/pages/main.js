@@ -65,7 +65,6 @@ const Main = () => {
         collapsed={state.collapsed}
         onCollapse={onCollapse}
         width={window.innerWidth / 4}
-        theme="light"
       >
         {!state.collapsed && (
           <>

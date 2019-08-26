@@ -3,7 +3,11 @@ import {
   SET_ORDER_LIST_ALL,
   SET_ORDER_LIST_WAITING,
   SET_ORDER_LIST_FINISHED,
-  SET_ORDER_LIST_CANCELLED
+  SET_ORDER_LIST_CANCELLED,
+  RESET_ORDER_LIST_ALL,
+  RESET_ORDER_LIST_WAITING,
+  RESET_ORDER_LIST_FINISHED,
+  RESET_ORDER_LIST_CANCELLED
 } from "../utils/actions";
 import { ALL } from "../utils/constants";
 const initState = {
@@ -14,7 +18,6 @@ const initState = {
   finished: []
 };
 export default function companyReducer(state = initState, action) {
-  console.log("state: ", state);
   switch (action.type) {
     case SET_ORDER_LIST:
       return { ...state, ...action.orders };

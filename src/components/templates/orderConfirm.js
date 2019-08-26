@@ -12,7 +12,6 @@ import {
 } from "antd";
 import { dispatch, useGlobalState } from "../../Store";
 import { SET_ORDER_INFO } from "../../utils/actions";
-import useReactRouter from "use-react-router";
 
 const formatMoney = money => {
   return money ? parseInt(money / 1000) * 1000 : 0;
@@ -20,14 +19,13 @@ const formatMoney = money => {
 
 const OrderConfirm = props => {
   const [state, setState] = useState({
+    codeInvalid: false,
     senderInvalid: false,
     receiverInvalid: false,
     senderPhone: false,
     receiverPhone: false,
     value: 1
   });
-
-  const { history } = useReactRouter();
 
   const [orderInfo] = useGlobalState("orderInfo");
 
@@ -71,6 +69,7 @@ const OrderConfirm = props => {
       validate.receiverPhone = true;
       isValid = false;
     }
+    if (state.codeInvalid) isValid = false;
 
     setState({
       ...state,
@@ -81,6 +80,13 @@ const OrderConfirm = props => {
 
   const confirm = () => {
     if (isValid()) props.next();
+  };
+
+  const checkCode = () => {
+    setState({
+      ...state,
+      codeInvalid: false
+    });
   };
 
   return props.finish ? (
@@ -97,7 +103,7 @@ const OrderConfirm = props => {
         <Button
           type="primary"
           key="console"
-          onClick={() => history.push("/orders")}
+          onClick={() => window.location.replace("/orders")}
         >
           Danh sách đơn hàng
         </Button>,
@@ -119,11 +125,21 @@ const OrderConfirm = props => {
         value={orderInfo.name}
         onChange={e => setOrder({ name: e.target.value })}
       />
-      <Input
-        placeholder="Mã đơn hàng (được in sẵn trên hóa đơn)"
-        style={{ width: "100%" }}
+      {state.codeInvalid && (
+        <Alert
+          message="Mã đơn hàng đã được sử dụng"
+          type="error"
+          showIcon
+          banner
+        />
+      )}
+      <Input.Search
+        allowClear
+        placeholder="Mã đơn hàng"
         value={orderInfo.coupon_code}
         onChange={e => setOrder({ name: e.target.value })}
+        onSearch={checkCode}
+        enterButton="Kiểm tra code"
       />
       <Divider orientation="left">Người thanh toán cước</Divider>
       <Radio.Group onChange={onChange} value={state.value}>
@@ -204,7 +220,6 @@ const OrderConfirm = props => {
       />
       <Divider orientation="left">Ghi chú</Divider>
       <Input.TextArea
-        allowClear
         placeholder="Ghi chú của khách hàng"
         autosize={{ minRows: 2, maxRows: 6 }}
         value={orderInfo.note}
@@ -212,9 +227,6 @@ const OrderConfirm = props => {
       />
       <br />
       <Statistic
-        suffix={
-          <div style={{ color: "red", fontSize: 12 }}>(đã cộng 10% VAT)</div>
-        }
         title={<Row>Cước phí tạm tính (VNĐ)</Row>}
         value={formatMoney(orderInfo.totalPrice)}
         style={{ marginTop: 10 }}

@@ -39,12 +39,13 @@ const OrderItem = props => {
       axios
         .post("customer/order-detail/" + props.id)
         .then(res => {
-          if (res.data.data)
+          if (res.data.data) {
             setState({
               ...state,
               order: res.data.data
             });
-          else setError(true);
+            console.log(res.data);
+          } else setError(true);
         })
         .catch(err => setError(true))
         .finally(() => setLoading(false));

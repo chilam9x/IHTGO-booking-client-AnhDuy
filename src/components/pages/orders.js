@@ -17,14 +17,12 @@ import "moment/locale/vi";
 
 const OrderItem = DynamicImport(() => import("../templates/orderItem"));
 
-const { Search } = Input;
-
 const getColorCode = status => {
-  if (status == 1 || status == 2 || status == 3) {
+  if (status === 1 || status === 2 || status === 3) {
     return "blue";
-  } else if (status == 4) {
+  } else if (status === 4) {
     return "green";
-  } else if (status == 5 || status == 6 || status == 7) {
+  } else if (status === 5 || status === 6 || status === 7) {
     return "red";
   }
 };
@@ -94,7 +92,7 @@ const OrderList = props => {
     setVisible(false);
   };
 
-  useEffect(async () => {
+  useEffect(() => {
     const query = new URLSearchParams(props.location.search);
     const id = query.get("id");
     if (id && id !== "") {
@@ -104,14 +102,30 @@ const OrderList = props => {
       });
       setVisible(true);
     }
+    if (!orders.all || orders.all.length === 0) {
+      getAll();
+    } else {
+      setLoading(false);
+    }
+    if (!orders.waiting || orders.waiting.length === 0) {
+      getWaiting();
+    } else {
+      setLoading(false);
+    }
+    if (!orders.finished || orders.finished.length === 0) {
+      getFinished();
+    } else {
+      setLoading(false);
+    }
 
-    await getAll();
-    await getWaiting();
-    await getFinished();
-    await getCancelled();
+    if (!orders.cancelled || orders.cancelled.length === 0) {
+      getCancelled();
+    } else {
+      setLoading(false);
+    }
   }, []);
 
-  const getAll = async () => {
+  const getAll = () => {
     axios
       .post("customer/order-all", {
         skip: orders.all ? orders.all.length : 0
@@ -125,7 +139,7 @@ const OrderList = props => {
       .finally(() => setLoading(false));
   };
 
-  const getWaiting = async () => {
+  const getWaiting = () => {
     axios
       .post("customer/order-waiting", {
         skip: orders.waiting ? orders.waiting.length : 0
@@ -139,7 +153,7 @@ const OrderList = props => {
       .finally(() => setLoading(false));
   };
 
-  const getFinished = async () => {
+  const getFinished = () => {
     axios
       .post("customer/order-finish", {
         skip: orders.finished ? orders.finished.length : 0
@@ -153,7 +167,7 @@ const OrderList = props => {
       .finally(() => setLoading(false));
   };
 
-  const getCancelled = async () => {
+  const getCancelled = () => {
     axios
       .post("customer/order-cancel", {
         skip: orders.cancelled ? orders.cancelled.length : 0
@@ -180,8 +194,98 @@ const OrderList = props => {
       : getAll();
   };
 
+  const search = value => {
+    setLoading(true);
+    orders.current_option === ALL
+      ? searchAll(value)
+      : orders.current_option === WAITING
+      ? searchWaiting(value)
+      : orders.current_option === FINISHED
+      ? searchFinished(value)
+      : orders.current_option === CANCELLED
+      ? searchCancelled(value)
+      : searchAll(value);
+  };
+
+  const searchAll = value => {
+    dispatch({
+      type: SET_ORDER_LIST_ALL,
+      orders: []
+    });
+    setLoading(false);
+    // axios
+    //   .post("customer/search-all", {
+    //     search: value,
+    //     page: orders.all ? orders.all.length : 0
+    //   })
+    //   .then(res => {
+    //     dispatch({
+    //       type: SET_ORDER_LIST_ALL,
+    //       orders: res.data.data
+    //     });
+    //   })
+    //   .finally(() => setLoading(false));
+  };
+
+  const searchWaiting = value => {
+    dispatch({
+      type: SET_ORDER_LIST_WAITING,
+      orders: []
+    });
+    axios
+      .post("customer/search-waiting", {
+        search: value,
+        page: orders.waiting ? orders.waiting.length : 0
+      })
+      .then(res => {
+        dispatch({
+          type: SET_ORDER_LIST_WAITING,
+          orders: res.data.data
+        });
+      })
+      .finally(() => setLoading(false));
+  };
+
+  const searchFinished = value => {
+    dispatch({
+      type: SET_ORDER_LIST_FINISHED,
+      orders: []
+    });
+    axios
+      .post("customer/search-finished", {
+        search: value,
+        page: orders.finished ? orders.finished.length : 0
+      })
+      .then(res => {
+        dispatch({
+          type: SET_ORDER_LIST_FINISHED,
+          orders: res.data.data
+        });
+      })
+      .finally(() => setLoading(false));
+  };
+
+  const searchCancelled = value => {
+    dispatch({
+      type: SET_ORDER_LIST_CANCELLED,
+      orders: []
+    });
+    axios
+      .post("customer/search-cancelled", {
+        search: value,
+        page: orders.cancelled ? orders.cancelled.length : 0
+      })
+      .then(res => {
+        dispatch({
+          type: SET_ORDER_LIST_CANCELLED,
+          orders: res.data.data
+        });
+      })
+      .finally(() => setLoading(false));
+  };
+
   return (
-    <div style={{ height: window.innerHeight, padding: 30 }}>
+    <div style={{ height: "100%", padding: 30 }}>
       <Menu selectedKeys={[orders.current_option]} mode="horizontal">
         <Menu.Item
           key={ALL}
@@ -238,14 +342,18 @@ const OrderList = props => {
           <Icon type="tag" theme="filled" style={{ color: "red" }} />
           Đơn đã hủy
         </Menu.Item>
-        <Search
-          placeholder="Tìm đơn hàng theo mã vận đơn"
-          onSearch={value => console.log(value)}
-          style={{ width: 400, marginLeft: 20 }}
-        />
+        <Menu.Item>
+          <Input.Search
+            allowClear
+            placeholder="Tìm đơn hàng theo mã vận đơn"
+            onSearch={search}
+            style={{ width: 400, marginLeft: 20 }}
+          />
+        </Menu.Item>
       </Menu>
       <br />
       <Table
+        rowKey="id"
         loading={loading}
         columns={columns}
         dataSource={

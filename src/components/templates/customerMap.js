@@ -22,8 +22,8 @@ const GettingStartedGoogleMap = withScriptjs(
 
     const [state, setState] = useState({
       directions: {
-        origin: [10.7575142, 106.6602461],
-        destination: [10.7439256, 106.6312543]
+        origin: [],
+        destination: []
       }
     });
 
@@ -115,9 +115,9 @@ const CustomerMap = () => {
   return (
     <GettingStartedGoogleMap
       googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyCKOI-xG8LmUxZVZEAIO-n42_qCQ312cyQ&v=3.exp&libraries=geometry,drawing,places"
-      loadingElement={<div style={{ height: window.innerHeight }} />}
-      containerElement={<div style={{ height: window.innerHeight }} />}
-      mapElement={<div style={{ height: window.innerHeight }} />}
+      loadingElement={<div style={{ height: "100%" }} />}
+      containerElement={<div style={{ height: "100%" }} />}
+      mapElement={<div style={{ height: "100%" }} />}
     />
   );
 };
