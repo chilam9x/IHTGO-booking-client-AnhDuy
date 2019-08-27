@@ -21,6 +21,8 @@ import "moment/locale/vi";
 
 const OrderItem = DynamicImport(() => import("../templates/orderItem"));
 
+var nf = Intl.NumberFormat();
+
 const getColorCode = status => {
   if (status === 1 || status === 2 || status === 3) {
     return "blue";
@@ -60,7 +62,7 @@ const columns = [
     title: "Tổng tiền",
     dataIndex: "total_price",
     key: "price",
-    render: text => text
+    render: text => nf.format(text)
   },
   {
     title: "Nơi gửi",
@@ -173,7 +175,7 @@ const OrderList = props => {
 
   const getCancelled = () => {
     axios
-      .post("customer/order-cancel", {
+      .post("customer/order-cancelled", {
         skip: orders.cancelled ? orders.cancelled.length : 0
       })
       .then(res => {
@@ -347,14 +349,14 @@ const OrderList = props => {
           <Icon type="tag" theme="filled" style={{ color: "red" }} />
           Đơn đã hủy
         </Menu.Item>
-        <Menu.Item>
+        {/* <Menu.Item>
           <Input.Search
             allowClear
             placeholder="Tìm đơn hàng theo mã vận đơn"
             onSearch={search}
             style={{ width: 400, marginLeft: 20 }}
           />
-        </Menu.Item>
+        </Menu.Item> */}
       </Menu>
       <br />
       <Table

@@ -44,7 +44,6 @@ const OrderItem = props => {
               ...state,
               order: res.data.data
             });
-            console.log(res.data);
           } else setError(true);
         })
         .catch(err => setError(true))
@@ -52,11 +51,18 @@ const OrderItem = props => {
     }
   }, [props.id]);
 
+  const getSize = () => {
+    const l = state.order.len ? state.order.len : 0;
+    const w = state.order.width ? state.order.width : 0;
+    const h = state.order.height ? state.order.height : 0;
+    return l + "x" + w + "x" + h + "cm";
+  };
+
   return (
     <Drawer
       width={window.innerWidth / 2}
       placement="right"
-      closable={true}
+      closable={false}
       onClose={props.close}
       visible={props.visible}
     >
@@ -140,15 +146,7 @@ const OrderItem = props => {
               />
             </Col>
             <Col span={8}>
-              <DescriptionItem
-                title="Kích thước"
-                content={
-                  state.order.length &&
-                  state.order.length + " x " + state.order.width &&
-                  state.order.width + " x " + state.order.height &&
-                  state.order.height + " cm"
-                }
-              />
+              <DescriptionItem title="Kích thước" content={getSize()} />
             </Col>
             <Col span={8}>
               <DescriptionItem
@@ -212,14 +210,14 @@ const OrderItem = props => {
           <Divider orientation="left">Lịch sử giao hàng</Divider>
           <Row>
             <Col span={16}>
-              <Steps direction="vertical" size="small" current={3}>
+              {/* <Steps direction="vertical" size="small" current={3}>
                 <Step title="Ngày tạo" description={state.order.created_at} />
                 <Step title="Ngày giao" description={state.order.created_at} />
                 <Step
                   title="Ngày nhận hàng"
                   description={state.order.created_at}
                 />
-              </Steps>
+              </Steps> */}
             </Col>
             <Col span={8}>
               <QRCode value={props.id} />

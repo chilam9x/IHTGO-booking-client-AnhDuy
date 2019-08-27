@@ -29,7 +29,7 @@ if (firebase.messaging.isSupported()) {
       return messaging.getToken();
     })
     .then(token => {
-      console.log("token", token);
+      // console.log("token", token);
       messaging.onMessage(payload => {
         openNotification(payload.notification);
       });

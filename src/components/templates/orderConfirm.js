@@ -12,6 +12,7 @@ import {
 } from "antd";
 import { dispatch, useGlobalState } from "../../Store";
 import { SET_ORDER_INFO } from "../../utils/actions";
+import axios from "../../utils/axios";
 
 const formatMoney = money => {
   return money ? parseInt(money / 1000) * 1000 : 0;
@@ -28,6 +29,8 @@ const OrderConfirm = props => {
   });
 
   const [orderInfo] = useGlobalState("orderInfo");
+  const [sourceLocation] = useGlobalState("sourceLocation");
+  const [desLocation] = useGlobalState("desLocation");
 
   const onChange = e => {
     setState({
@@ -69,8 +72,6 @@ const OrderConfirm = props => {
       validate.receiverPhone = true;
       isValid = false;
     }
-    if (state.codeInvalid) isValid = false;
-
     setState({
       ...state,
       ...validate
@@ -79,7 +80,47 @@ const OrderConfirm = props => {
   };
 
   const confirm = () => {
-    if (isValid()) props.next();
+    if (isValid()) {
+      //check coupon code
+      //end check
+      //create order
+      axios
+        .post("customer/create-order", {
+          distance: orderInfo.distance,
+          length: orderInfo.len,
+          width: orderInfo.width,
+          height: orderInfo.height,
+          weight: orderInfo.weight,
+          car_option: orderInfo.isDocument ? 2 : orderInfo.isInventory ? 4 : 1,
+          is_speed: orderInfo.isSpeed ? 1 : 0,
+          hand_on: orderInfo.isHandOn ? 1 : 0,
+          discharge: orderInfo.isDischarge ? 1 : 0,
+          payer: state.value,
+          sender_name: orderInfo.sender_name,
+          sender_phone: orderInfo.sender_phone,
+          sender_address: sourceLocation.place,
+          receive_name: orderInfo.receiver_name,
+          receive_phone: orderInfo.receiver_phone,
+          receive_address: desLocation.place,
+          note: orderInfo.note,
+          take_money: orderInfo.cod,
+          coupon_code: orderInfo.coupon_code,
+          image_order: null,
+          name: orderInfo.name
+        })
+        .then(res => {
+          //add more
+          dispatch({
+            type: SET_ORDER_INFO,
+            order: {
+              created_id: res.data.data.id,
+              created_price: res.data.data.total_price
+            }
+          });
+          props.next();
+        })
+        .catch(err => console.log(err));
+    }
   };
 
   const checkCode = () => {
@@ -95,8 +136,8 @@ const OrderConfirm = props => {
       title="Bạn đã đặt hàng thành công!"
       subTitle={
         <>
-          Mã vận đơn: 123456 <br />
-          Tổng số tiền cước: 10đ
+          Mã vận đơn: {orderInfo.created_id} <br />
+          Tổng số tiền cước: {orderInfo.created_price} vnđ
         </>
       }
       extra={[
@@ -133,13 +174,13 @@ const OrderConfirm = props => {
           banner
         />
       )}
-      <Input.Search
+      <Input
         allowClear
         placeholder="Mã đơn hàng"
         value={orderInfo.coupon_code}
-        onChange={e => setOrder({ name: e.target.value })}
-        onSearch={checkCode}
-        enterButton="Kiểm tra code"
+        onChange={e => setOrder({ coupon_code: e.target.value })}
+        // onSearch={checkCode}
+        // enterButton="Kiểm tra code"
       />
       <Divider orientation="left">Người thanh toán cước</Divider>
       <Radio.Group onChange={onChange} value={state.value}>

@@ -21,8 +21,13 @@ const LocationInput = DynamicImport(() => import("../organisms/locationInput"));
 
 const BD = "bình dương";
 const _BD = "binh duong";
+const DN = "đồng nai";
+const _DN = "dong nai";
+const DH = "đức hòa";
+const _DH = "duc hoa";
 const HCM = "hồ chí minh";
 const _HCM = "ho chi minh";
+
 const _50K = 50000;
 const _100K = 100000;
 const _7K = 7000;
@@ -129,14 +134,31 @@ const BookingForm = props => {
         const sPlace = sourceLocation.place.toLowerCase();
         const dPlace = desLocation.place.toLowerCase();
         if (
-          (sPlace.includes(BD) ||
+          ((sPlace.includes(BD) ||
             sPlace.includes(_BD) ||
             sPlace.includes(HCM) ||
             sPlace.includes(_HCM)) &&
-          (dPlace.includes(BD) ||
-            dPlace.includes(_BD) ||
-            dPlace.includes(HCM) ||
-            dPlace.includes(_HCM))
+            (dPlace.includes(BD) ||
+              dPlace.includes(_BD) ||
+              dPlace.includes(HCM) ||
+              dPlace.includes(_HCM))) ||
+          ((sPlace.includes(DH) ||
+            sPlace.includes(_DH) ||
+            sPlace.includes(HCM) ||
+            sPlace.includes(_HCM)) &&
+            (dPlace.includes(DH) ||
+              dPlace.includes(_DH) ||
+              dPlace.includes(HCM) ||
+              dPlace.includes(_HCM))) ||
+          ((sPlace.includes(DN) ||
+            sPlace.includes(_DN) ||
+            sPlace.includes(HCM) ||
+            sPlace.includes(_HCM)) &&
+            (dPlace.includes(DN) ||
+              dPlace.includes(_DN) ||
+              dPlace.includes(HCM) ||
+              dPlace.includes(_HCM)) &&
+            orderInfo.distance < 21)
         ) {
           price = _70K;
         } else {

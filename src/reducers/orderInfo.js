@@ -18,7 +18,9 @@ const initState = {
   receiver_phone: null,
   note: null,
   coupon_code: null,
-  cod: null
+  cod: null,
+  created_id: null,
+  created_price: null
 };
 export default function companyReducer(state = initState, action) {
   switch (action.type) {
