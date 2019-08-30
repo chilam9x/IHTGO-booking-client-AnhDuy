@@ -39,7 +39,7 @@ const GettingStartedGoogleMap = withScriptjs(
             desLocation.lat,
             desLocation.lng
           ),
-          travelMode: window.google.maps.TravelMode.WALKING,
+          travelMode: window.google.maps.TravelMode.DRIVING,
           optimizeWaypoints: true
         },
         (result, status) => {
@@ -50,7 +50,9 @@ const GettingStartedGoogleMap = withScriptjs(
             dispatch({
               type: SET_ORDER_INFO,
               order: {
-                distance: result.routes[0].legs[0].distance.value / 1000.0
+                distance: Math.ceil(
+                  result.routes[0].legs[0].distance.value / 1000
+                )
               }
             });
           } else {
@@ -62,7 +64,12 @@ const GettingStartedGoogleMap = withScriptjs(
 
     useEffect(() => {
       initRoute();
-    }, [sourceLocation.lat, desLocation.lat]);
+    }, [
+      sourceLocation.lat,
+      sourceLocation.lng,
+      desLocation.lat,
+      desLocation.lng
+    ]);
 
     return (
       <GoogleMap
@@ -79,8 +86,9 @@ const GettingStartedGoogleMap = withScriptjs(
                 directionsRef.current.state
                   .__SECRET_DIRECTIONS_RENDERER_DO_NOT_USE_OR_YOU_WILL_BE_FIRED
                   .directions;
-              const distance =
-                currentDirections.routes[0].legs[0].distance.value / 1000.0;
+              const distance = Math.ceil(
+                currentDirections.routes[0].legs[0].distance.value / 1000.0
+              );
               dispatch({
                 type: SET_SOURCE_LOCATION,
                 location: {

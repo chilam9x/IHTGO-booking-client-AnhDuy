@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Menu, Input, Table, Tag, Button, Icon } from "antd";
+import { Menu, Table, Tag, Button, Icon } from "antd";
 import PulseLoader from "react-spinners/PulseLoader";
 import DynamicImport from "../../utils/lazyImport";
 import axios from "../../utils/axios";
@@ -9,11 +9,7 @@ import {
   SET_ORDER_LIST_ALL,
   SET_ORDER_LIST_WAITING,
   SET_ORDER_LIST_FINISHED,
-  SET_ORDER_LIST_CANCELLED,
-  RESET_ORDER_LIST_ALL,
-  RESET_ORDER_LIST_WAITING,
-  RESET_ORDER_LIST_FINISHED,
-  RESET_ORDER_LIST_CANCELLED
+  SET_ORDER_LIST_CANCELLED
 } from "../../utils/actions";
 import { ALL, WAITING, FINISHED, CANCELLED } from "../../utils/constants";
 import moment from "moment";
@@ -86,7 +82,6 @@ const columns = [
 
 const OrderList = props => {
   const [state, setState] = useState({
-    loading: true,
     selectedOrder: null
   });
 
@@ -94,6 +89,7 @@ const OrderList = props => {
   const [loading, setLoading] = useState(true);
 
   const [orders] = useGlobalState("orderList");
+
   const onClose = () => {
     setVisible(false);
   };
@@ -103,7 +99,6 @@ const OrderList = props => {
     const id = query.get("id");
     if (id && id !== "") {
       setState({
-        ...state,
         selectedOrder: id
       });
       setVisible(true);
@@ -198,97 +193,6 @@ const OrderList = props => {
       : orders.current_option === CANCELLED
       ? getCancelled()
       : getAll();
-  };
-
-  const search = value => {
-    setLoading(true);
-    orders.current_option === ALL
-      ? searchAll(value)
-      : orders.current_option === WAITING
-      ? searchWaiting(value)
-      : orders.current_option === FINISHED
-      ? searchFinished(value)
-      : orders.current_option === CANCELLED
-      ? searchCancelled(value)
-      : searchAll(value);
-  };
-
-  const searchAll = value => {
-    setLoading(true);
-    dispatch({
-      type: RESET_ORDER_LIST_ALL,
-      orders: []
-    });
-
-    axios
-      .post("customer/search-all", {
-        search: value,
-        page: orders.all ? orders.all.length : 0
-      })
-      .then(res => {
-        dispatch({
-          type: SET_ORDER_LIST_ALL,
-          orders: res.data
-        });
-      })
-      .finally(() => setLoading(false));
-  };
-
-  const searchWaiting = value => {
-    dispatch({
-      type: RESET_ORDER_LIST_WAITING,
-      orders: []
-    });
-    axios
-      .post("customer/search-waiting", {
-        search: value,
-        page: orders.waiting ? orders.waiting.length : 0
-      })
-      .then(res => {
-        dispatch({
-          type: SET_ORDER_LIST_WAITING,
-          orders: res.data
-        });
-      })
-      .finally(() => setLoading(false));
-  };
-
-  const searchFinished = value => {
-    dispatch({
-      type: RESET_ORDER_LIST_FINISHED,
-      orders: []
-    });
-    axios
-      .post("customer/search-finished", {
-        search: value,
-        page: orders.finished ? orders.finished.length : 0
-      })
-      .then(res => {
-        dispatch({
-          type: SET_ORDER_LIST_FINISHED,
-          orders: res.data
-        });
-      })
-      .finally(() => setLoading(false));
-  };
-
-  const searchCancelled = value => {
-    dispatch({
-      type: RESET_ORDER_LIST_CANCELLED,
-      orders: []
-    });
-    axios
-      .post("customer/search-cancelled", {
-        search: value,
-        page: orders.cancelled ? orders.cancelled.length : 0
-      })
-      .then(res => {
-        dispatch({
-          type: SET_ORDER_LIST_CANCELLED,
-          orders: res.data
-        });
-      })
-      .finally(() => setLoading(false));
   };
 
   return (

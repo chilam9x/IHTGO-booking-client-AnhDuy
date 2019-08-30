@@ -17,12 +17,11 @@ const InfoWindow = props => {
     borderRadius: 5
   };
 
-  const info = name => {
-    message.info(name);
-  };
-
   return (
-    <div style={infoWindowStyle} onClick={() => info(place.name)}>
+    <div
+      style={infoWindowStyle}
+      onClick={() => message.info(place.name + " - " + place.updated_at)}
+    >
       <div style={{ fontSize: 12 }}>{place.id}</div>
     </div>
   );

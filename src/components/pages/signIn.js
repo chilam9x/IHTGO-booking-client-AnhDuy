@@ -1,107 +1,69 @@
 import React, { useState, useEffect } from "react";
-import { Result, Modal, Button, Icon, Input } from "antd";
-import axios from "../../utils/axios";
+import { Tabs, Affix } from "antd";
+import DynamicImport from "../../utils/lazyImport";
+
+const SignInForm = DynamicImport(() => import("../templates/signInForm"));
+const SignUp = DynamicImport(() => import("../templates/signUpForm"));
+const { TabPane } = Tabs;
 
 const SignIn = props => {
   const [state, setState] = useState({
-    loading: false
+    loading: false,
+    signin: true
   });
-
-  const [visible, setVisible] = useState(true);
 
   useEffect(() => {
     if (localStorage.getItem("@token")) window.location.replace("/");
   }, []);
 
-  const showModal = () => {
-    setVisible(true);
-  };
-
-  const handleOk = () => {
-    setState({ ...state, loading: true });
-    axios
-      .post("customer-login", {
-        phone: state.phone,
-        password: state.password
-      })
-      .then(res => {
-        localStorage.setItem("@token", res.data.token);
-        localStorage.setItem("key", "1");
-        window.location.replace("/");
-      })
-      .catch(err => {
-        console.log(err);
-      })
-      .finally(() => setState({ ...state, loading: false }));
-  };
-
-  const onChangePhone = e => {
-    const value = e.target.value;
+  const backToLogin = () => {
     setState({
       ...state,
-      phone: value
+      signin: true
     });
-  };
-
-  const onChange = data => {
-    setState({
-      ...state,
-      ...data
-    });
-  };
-
-  const handleCancel = () => {
-    setVisible(false);
   };
 
   return (
-    <>
-      <Result
-        title="Bạn cần đăng nhập để vào trang quản trị"
-        extra={
-          <Button type="primary" onClick={showModal}>
-            Đăng nhập tại đây
-          </Button>
-        }
-        style={{ backgroundColor: "white" }}
-      />
-      <Modal
-        visible={visible}
-        title="Đăng nhập tại đây"
-        onOk={handleOk}
-        onCancel={handleCancel}
-        footer={[
-          <Button key="back" onClick={handleCancel}>
-            Đóng
-          </Button>,
-          <Button
-            key="submit"
-            type="primary"
-            onClick={handleOk}
-            disabled={state.loading}
-          >
-            Đăng nhập
-          </Button>
-        ]}
+    <div
+      style={{
+        height: window.innerHeight,
+        backgroundImage: `url("https://ihtgo.com.vn/public/Images/FileUpload/images/TrangChu/index_banner.jpg")`
+      }}
+    >
+      <Affix
+        style={{
+          position: "absolute",
+          top: 50,
+          left: "20%",
+          height: state.signin ? "35%" : "60%",
+          background: "white",
+          padding: 20,
+          borderRadius: 5,
+          boxShadow: "0 10px 50px 0 rgba(0, 0, 0, 0.5)"
+        }}
       >
-        <Input
-          allowClear
-          prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
-          placeholder="Username"
-          value={state.phone}
-          onChange={onChangePhone}
-          style={{ marginBottom: 20 }}
-        />
-        <Input.Password
-          allowClear
-          prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
-          type="password"
-          placeholder="Password"
-          value={state.password}
-          onChange={e => onChange({ password: e.target.value })}
-        />
-      </Modal>
-    </>
+        <Tabs
+          style={{
+            width: 400,
+            background: "white"
+          }}
+          onChange={() => {
+            setState({
+              ...state,
+              signin: !state.signin
+            });
+          }}
+          activeKey={state.signin ? "1" : "2"}
+        >
+          <TabPane tab="Đăng nhập" key="1">
+            <SignInForm />
+          </TabPane>
+          <TabPane tab="Đăng ký" key="2">
+            <SignUp back={backToLogin} />
+          </TabPane>
+        </Tabs>
+      </Affix>
+    </div>
   );
 };
 

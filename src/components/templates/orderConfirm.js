@@ -8,7 +8,9 @@ import {
   Result,
   Statistic,
   Alert,
-  Radio
+  Radio,
+  Spin,
+  Tooltip
 } from "antd";
 import { dispatch, useGlobalState } from "../../Store";
 import { SET_ORDER_INFO } from "../../utils/actions";
@@ -28,6 +30,7 @@ const OrderConfirm = props => {
     value: 1
   });
 
+  const [loading, setLoading] = useState(false);
   const [orderInfo] = useGlobalState("orderInfo");
   const [sourceLocation] = useGlobalState("sourceLocation");
   const [desLocation] = useGlobalState("desLocation");
@@ -81,6 +84,7 @@ const OrderConfirm = props => {
 
   const confirm = () => {
     if (isValid()) {
+      setLoading(true);
       //check coupon code
       //end check
       //create order
@@ -119,15 +123,9 @@ const OrderConfirm = props => {
           });
           props.next();
         })
-        .catch(err => console.log(err));
+        .catch(err => console.log(err))
+        .finally(res => setLoading(false));
     }
-  };
-
-  const checkCode = () => {
-    setState({
-      ...state,
-      codeInvalid: false
-    });
   };
 
   return props.finish ? (
@@ -174,14 +172,16 @@ const OrderConfirm = props => {
           banner
         />
       )}
-      <Input
-        allowClear
-        placeholder="Mã đơn hàng"
-        value={orderInfo.coupon_code}
-        onChange={e => setOrder({ coupon_code: e.target.value })}
-        // onSearch={checkCode}
-        // enterButton="Kiểm tra code"
-      />
+      <Tooltip title="Nhập mã vận đơn được in sẵn trên tờ bill">
+        <Input
+          allowClear
+          placeholder="Mã đơn hàng"
+          value={orderInfo.coupon_code}
+          onChange={e => setOrder({ coupon_code: e.target.value })}
+          // onSearch={checkCode}
+          // enterButton="Kiểm tra code"
+        />
+      </Tooltip>
       <Divider orientation="left">Người thanh toán cước</Divider>
       <Radio.Group onChange={onChange} value={state.value}>
         <Radio value={1}>Người gửi trả</Radio>
@@ -198,7 +198,6 @@ const OrderConfirm = props => {
       )}
       <Input
         allowClear
-        addonBefore="Họ tên"
         placeholder="Họ tên"
         style={{ width: "100%", marginBottom: 10 }}
         value={orderInfo.sender_name}
@@ -214,7 +213,6 @@ const OrderConfirm = props => {
       )}
       <Input
         allowClear
-        addonBefore="Số điện thoại"
         placeholder="Số điện thoại"
         style={{ width: "100%" }}
         value={orderInfo.sender_phone}
@@ -234,7 +232,6 @@ const OrderConfirm = props => {
       )}
       <Input
         allowClear
-        addonBefore="Họ tên"
         placeholder="Họ tên"
         style={{ width: "100%", marginBottom: 10 }}
         value={orderInfo.receiver_name}
@@ -250,7 +247,6 @@ const OrderConfirm = props => {
       )}
       <Input
         allowClear
-        addonBefore="Số điện thoại"
         placeholder="Số điện thoại"
         style={{ width: "100%" }}
         value={orderInfo.receiver_phone}
@@ -274,24 +270,30 @@ const OrderConfirm = props => {
         valueStyle={{ color: "#68bd45" }}
       />
       <Row>
-        <Button
-          style={{ marginTop: 20, marginRight: 5 }}
-          size="large"
-          onClick={props.prev}
-        >
-          <Icon type="left" />
-          Quay lại
-        </Button>
-        <Button
-          style={{ marginTop: 10 }}
-          size="large"
-          type="danger"
-          onClick={confirm}
-        >
-          <b>
-            Xác nhận đơn hàng <Icon type="right" />
-          </b>
-        </Button>
+        {loading ? (
+          <Spin tip="Đang xác nhận đơn..." />
+        ) : (
+          <>
+            <Button
+              style={{ marginTop: 20, marginRight: 5 }}
+              size="large"
+              onClick={props.prev}
+            >
+              <Icon type="left" />
+              Quay lại
+            </Button>
+            <Button
+              style={{ marginTop: 10 }}
+              size="large"
+              type="danger"
+              onClick={confirm}
+            >
+              <b>
+                Xác nhận đơn hàng <Icon type="right" />
+              </b>
+            </Button>
+          </>
+        )}
       </Row>
     </div>
   );

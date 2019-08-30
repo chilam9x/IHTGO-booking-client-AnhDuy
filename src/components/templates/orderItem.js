@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import DescriptionItem from "../atoms/descriptionItem";
-import { Drawer, Row, Col, Divider, Steps, Statistic } from "antd";
+import { Drawer, Row, Col, Divider, Statistic } from "antd";
 import QRCode from "qrcode.react";
 import DynamicImport from "../../utils/lazyImport";
 import axios from "../../utils/axios";
@@ -9,8 +9,6 @@ const OrderError = DynamicImport(() => import("../organisms/orderError"));
 const OrderItemLoading = DynamicImport(() =>
   import("../organisms/orderItemLoading")
 );
-
-const { Step } = Steps;
 
 const pStyle = {
   fontSize: 16,
@@ -41,7 +39,6 @@ const OrderItem = props => {
         .then(res => {
           if (res.data.data) {
             setState({
-              ...state,
               order: res.data.data
             });
           } else setError(true);
@@ -169,12 +166,12 @@ const OrderItem = props => {
                 content={state.order.is_speed ? "Có" : "Không"}
               />
             </Col>
-            <Col span={8}>
+            {/* <Col span={8}>
               <DescriptionItem
                 title="Bốc xếp hộ"
                 content={state.order.discharge ? "Có" : "Không"}
               />
-            </Col>
+            </Col> */}
           </Row>
           <Row>
             <Col span={8}>
@@ -220,7 +217,7 @@ const OrderItem = props => {
               </Steps> */}
             </Col>
             <Col span={8}>
-              <QRCode value={props.id} />
+              <QRCode value={String(props.id)} />
             </Col>
           </Row>
         </>

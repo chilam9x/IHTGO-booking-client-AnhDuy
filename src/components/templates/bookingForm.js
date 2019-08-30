@@ -7,7 +7,8 @@ import {
   Button,
   Alert,
   Icon,
-  Statistic
+  Statistic,
+  Tooltip
 } from "antd";
 import { PriceListCarousel } from "../atoms";
 import DynamicImport from "../../utils/lazyImport";
@@ -295,21 +296,25 @@ const BookingForm = props => {
         <LocationInput destination />
         <Divider orientation="left">Thông số đơn hàng</Divider>
         {!orderInfo.isInventory && (
-          <Checkbox
-            checked={orderInfo.isDocument}
-            onChange={e => setOrder({ isDocument: e.target.checked })}
-          >
-            Giao chứng từ
-          </Checkbox>
+          <Tooltip title="Áp dụng bảng giá cố định cho từng khu vực">
+            <Checkbox
+              checked={orderInfo.isDocument}
+              onChange={e => setOrder({ isDocument: e.target.checked })}
+            >
+              Giao chứng từ
+            </Checkbox>
+          </Tooltip>
         )}
         {!orderInfo.isDocument && (
-          <Input
-            addonBefore="Quãng đường"
-            style={{ width: "100%", marginBottom: 10, marginTop: 10 }}
-            value={orderInfo.distance}
-            addonAfter="km"
-            readOnly
-          />
+          <Tooltip title="Khoảng cách ngắn nhất dựa theo Google Map">
+            <Input
+              addonBefore="Quãng đường"
+              style={{ width: "100%", marginBottom: 10, marginTop: 10 }}
+              value={orderInfo.distance}
+              addonAfter="km"
+              readOnly
+            />
+          </Tooltip>
         )}
 
         {!orderInfo.isDocument && (
@@ -337,6 +342,7 @@ const BookingForm = props => {
                 value={orderInfo.width}
                 onChange={e => inputChange("width", e.target.value)}
               />
+
               <Input
                 allowClear
                 style={{ width: "40%" }}
@@ -359,61 +365,82 @@ const BookingForm = props => {
                 banner
               />
             )}
-            <Input
-              allowClear
-              style={{ width: "100%" }}
-              placeholder="Cân nặng"
-              addonAfter="kg"
-              value={orderInfo.weight}
-              onChange={e => inputChange("weight", e.target.value)}
-            />
+            <Tooltip
+              title={
+                <>
+                  Cân nặng vượt quá 50kg sẽ phụ thu phí bốc xếp
+                  <br />
+                  0 - 50kg: miễn phí
+                  <br />
+                  51kg - 150kg: +50,000
+                  <br />
+                  151kg - 300kg: +100,000
+                  <br />
+                  >300kg: 100,000 + (1,000 nhân số kg)
+                </>
+              }
+            >
+              <Input
+                allowClear
+                style={{ width: "100%" }}
+                placeholder="Cân nặng"
+                addonAfter="kg"
+                value={orderInfo.weight}
+                onChange={e => inputChange("weight", e.target.value)}
+              />
+            </Tooltip>
           </>
         )}
         <Divider orientation="left">Tùy chọn thêm</Divider>
         {!orderInfo.isInventory && (
           <Row>
-            <Checkbox
-              checked={orderInfo.isHandOn ? true : false}
-              onChange={e => setOrder({ isHandOn: e.target.checked })}
-            >
-              Giao tận tay
-            </Checkbox>
-            <Checkbox
-              checked={orderInfo.isSpeed ? true : false}
-              onChange={e => setOrder({ isSpeed: e.target.checked })}
-            >
-              Giao hỏa tốc
-            </Checkbox>
-            {!orderInfo.isDocument && (
+            <Tooltip title="Cước phí tiêu chuẩn +10,000 vnđ">
+              <Checkbox
+                checked={orderInfo.isHandOn ? true : false}
+                onChange={e => setOrder({ isHandOn: e.target.checked })}
+              >
+                Giao tận tay
+              </Checkbox>
+            </Tooltip>
+            <Tooltip title="Nhân đôi cước phí tiêu chuẩn">
+              <Checkbox
+                checked={orderInfo.isSpeed ? true : false}
+                onChange={e => setOrder({ isSpeed: e.target.checked })}
+              >
+                Giao hỏa tốc
+              </Checkbox>
+            </Tooltip>
+            {/* {!orderInfo.isDocument && (
               <Checkbox
                 checked={orderInfo.isDischarge ? true : false}
                 onChange={e => setOrder({ isDischarge: e.target.checked })}
               >
                 Bốc xếp hộ
               </Checkbox>
+            )} */}
+            {!orderInfo.isDocument && (
+              <Tooltip title="Tiền phí làm hàng siêu thị sẽ được cộng thêm sau khi hoàn tất">
+                <Checkbox
+                  checked={orderInfo.isInventory ? true : false}
+                  onChange={e => setOrder({ isInventory: e.target.checked })}
+                >
+                  Làm hàng siêu thị
+                </Checkbox>
+              </Tooltip>
             )}
           </Row>
         )}
-        <Row style={{ marginTop: 10 }}>
-          {!orderInfo.isDocument && (
-            <Checkbox
-              checked={orderInfo.isInventory ? true : false}
-              onChange={e => setOrder({ isInventory: e.target.checked })}
-            >
-              Giao hàng vào kho
-            </Checkbox>
-          )}
-        </Row>
         {!orderInfo.isInventory && (
-          <Input
-            allowClear
-            style={{ marginTop: 10 }}
-            placeholder="Thu hộ"
-            addonBefore="Thu hộ"
-            addonAfter="VNĐ"
-            value={orderInfo.cod}
-            onChange={e => inputChange("cod", e.target.value)}
-          />
+          <Tooltip title="Cước phí tiêu chuẩn +10,000 vnđ">
+            <Input
+              allowClear
+              style={{ marginTop: 10 }}
+              placeholder="Thu hộ"
+              addonAfter="VNĐ"
+              value={orderInfo.cod}
+              onChange={e => inputChange("cod", e.target.value)}
+            />
+          </Tooltip>
         )}
         <Statistic
           title={

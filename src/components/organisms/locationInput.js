@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { Input, AutoComplete } from "antd";
+import { Input, AutoComplete, Tooltip } from "antd";
 import Geocode from "react-geocode";
 import { SET_SOURCE_LOCATION, SET_DES_LOCATION } from "../../utils/actions";
 import { dispatch, useGlobalState } from "../../Store";
 import { css } from "@emotion/core";
 import ClipLoader from "react-spinners/BarLoader";
-import Axios from "axios";
+import axios from "../../utils/axios";
 
 Geocode.setApiKey("AIzaSyCKOI-xG8LmUxZVZEAIO-n42_qCQ312cyQ");
 
@@ -61,10 +61,11 @@ const LocationInput = props => {
   const getSuggestions = () => {
     if (location.place) {
       getLocationFromAddress(location.place);
-      Axios.get(
-        "https://maps.googleapis.com/maps/api/place/autocomplete/json?key=AIzaSyCKOI-xG8LmUxZVZEAIO-n42_qCQ312cyQ&input=" +
-          location.place
-      )
+      axios
+        .get(
+          "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/autocomplete/json?key=AIzaSyCKOI-xG8LmUxZVZEAIO-n42_qCQ312cyQ&types=geocode&language=vi&input=" +
+            location.place
+        )
         .then(res => {
           const places =
             res.data && res.data.predictions.map(i => i.description);
@@ -88,7 +89,7 @@ const LocationInput = props => {
         loading={loading}
       />
       {!loading && (
-        <>
+        <Tooltip title="Nhập địa điểm rồi ấn ENTER. Có thể chọn theo gợi ý để tăng độ chính xác">
           <AutoComplete
             allowClear
             open={open}
@@ -97,15 +98,18 @@ const LocationInput = props => {
             onSelect={getLocationFromAddress}
             onChange={changeInput}
             value={location.place}
-            placeholder={
-              props.destination ? "nhập điểm trả hàng" : "nhập điểm nhận hàng"
-            }
             onBlur={() => setOpen(false)}
             onFocus={() => setOpen(true)}
           >
-            <Input onPressEnter={getSuggestions} />
+            <Input
+              addonBefore={props.destination ? "B" : "A"}
+              onPressEnter={getSuggestions}
+              placeholder={
+                props.destination ? "nhập điểm trả hàng" : "nhập điểm nhận hàng"
+              }
+            />
           </AutoComplete>
-        </>
+        </Tooltip>
       )}
     </>
   );

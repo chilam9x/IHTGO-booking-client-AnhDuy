@@ -8,7 +8,7 @@ const initState = {
   len: null,
   isSpeed: false,
   isHandOn: false,
-  isDischarge: false,
+  isDischarge: true,
   isInventory: false,
   isDocument: false,
   totalPrice: null,
