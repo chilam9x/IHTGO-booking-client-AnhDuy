@@ -7,7 +7,7 @@ import useFormNumber from "../../utils/useFormNumber";
 const SignUpForm = props => {
   const [state, setState] = useState({
     loading: false,
-    isSuccess: true
+    isSuccess: false
   });
 
   const [error, setError] = useState({
