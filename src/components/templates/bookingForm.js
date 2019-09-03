@@ -16,7 +16,7 @@ import { useGlobalState, dispatch } from "../../Store";
 import { SET_ORDER_INFO, SET_SOURCE_LOCATION } from "../../utils/actions";
 import Geocode from "react-geocode";
 
-Geocode.setApiKey("AIzaSyCKOI-xG8LmUxZVZEAIO-n42_qCQ312cyQ");
+Geocode.setApiKey("AIzaSyBaumnHkYRqgqAIx3u1KFFu7N7LjdjJjAI");
 
 const LocationInput = DynamicImport(() => import("../organisms/locationInput"));
 

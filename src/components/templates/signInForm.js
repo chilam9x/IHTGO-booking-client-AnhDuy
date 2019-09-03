@@ -50,6 +50,7 @@ const SignInForm = props => {
         prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
         placeholder="Mật khẩu"
         style={{ marginBottom: 20 }}
+        onPressEnter={handleSignIn}
       />
       {state.loading ? (
         <Spin tip="Đang tiến hành đăng nhập..." />

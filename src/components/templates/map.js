@@ -42,7 +42,7 @@ class Map extends Component {
           defaultZoom={10}
           defaultCenter={IHTGO_CENTER}
           bootstrapURLKeys={{
-            key: "AIzaSyCKOI-xG8LmUxZVZEAIO-n42_qCQ312cyQ"
+            key: "AIzaSyBaumnHkYRqgqAIx3u1KFFu7N7LjdjJjAI"
           }}
         >
           {places.map(place => (

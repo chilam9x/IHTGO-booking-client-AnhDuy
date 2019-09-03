@@ -7,7 +7,7 @@ import { css } from "@emotion/core";
 import ClipLoader from "react-spinners/BarLoader";
 import axios from "../../utils/axios";
 
-Geocode.setApiKey("AIzaSyCKOI-xG8LmUxZVZEAIO-n42_qCQ312cyQ");
+Geocode.setApiKey("AIzaSyBaumnHkYRqgqAIx3u1KFFu7N7LjdjJjAI");
 
 const override = css`
   display: block;
@@ -39,7 +39,7 @@ const LocationInput = props => {
           location: {
             lat,
             lng,
-            place: response.results[0].formatted_address
+            place: address
           }
         });
       })
@@ -63,7 +63,7 @@ const LocationInput = props => {
       getLocationFromAddress(location.place);
       axios
         .get(
-          "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/autocomplete/json?key=AIzaSyCKOI-xG8LmUxZVZEAIO-n42_qCQ312cyQ&types=geocode&language=vi&input=" +
+          "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/autocomplete/json?key=AIzaSyBaumnHkYRqgqAIx3u1KFFu7N7LjdjJjAI&language=vi&input=" +
             location.place
         )
         .then(res => {
