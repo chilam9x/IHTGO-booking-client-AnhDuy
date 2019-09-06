@@ -26,8 +26,15 @@ const LocationInput = props => {
     query: null
   });
 
+  const [flag, setFlag] = useState(false);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+
+  const getProvinceName = arr => {
+    return arr.filter(i => {
+      if (i.types[0] === "administrative_area_level_1") return i;
+    })[0].long_name;
+  };
 
   const getLocationFromAddress = address => {
     setLoading(true);
@@ -39,7 +46,10 @@ const LocationInput = props => {
           location: {
             lat,
             lng,
-            place: address
+            place:
+              address +
+              " " +
+              getProvinceName(response.results[0].address_components)
           }
         });
       })
@@ -50,6 +60,7 @@ const LocationInput = props => {
 
   const changeInput = e => {
     setOpen(false);
+    setFlag(true);
     dispatch({
       type: props.destination ? SET_DES_LOCATION : SET_SOURCE_LOCATION,
       location: {
@@ -75,7 +86,10 @@ const LocationInput = props => {
           });
           setOpen(true);
         })
-        .finally(() => setLoading(false));
+        .finally(() => {
+          setLoading(false);
+          setFlag(false);
+        });
     }
   };
 
@@ -98,7 +112,9 @@ const LocationInput = props => {
             onSelect={getLocationFromAddress}
             onChange={changeInput}
             value={location.place}
-            onBlur={() => setOpen(false)}
+            onBlur={() => {
+              flag ? getSuggestions() : setOpen(false);
+            }}
             onFocus={() => setOpen(true)}
           >
             <Input

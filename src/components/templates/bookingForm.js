@@ -127,44 +127,48 @@ const BookingForm = props => {
     });
   };
 
+  const documentCalc = () => {
+    const sPlace = sourceLocation.place.toLowerCase();
+    const dPlace = desLocation.place.toLowerCase();
+    if (
+      ((sPlace.includes(BD) ||
+        sPlace.includes(_BD) ||
+        sPlace.includes(HCM) ||
+        sPlace.includes(_HCM)) &&
+        (dPlace.includes(BD) ||
+          dPlace.includes(_BD) ||
+          dPlace.includes(HCM) ||
+          dPlace.includes(_HCM))) ||
+      ((sPlace.includes(DH) ||
+        sPlace.includes(_DH) ||
+        sPlace.includes(HCM) ||
+        sPlace.includes(_HCM)) &&
+        (dPlace.includes(DH) ||
+          dPlace.includes(_DH) ||
+          dPlace.includes(HCM) ||
+          dPlace.includes(_HCM))) ||
+      ((sPlace.includes(DN) ||
+        sPlace.includes(_DN) ||
+        sPlace.includes(HCM) ||
+        sPlace.includes(_HCM)) &&
+        (dPlace.includes(DN) ||
+          dPlace.includes(_DN) ||
+          dPlace.includes(HCM) ||
+          dPlace.includes(_HCM)) &&
+        orderInfo.distance < 21)
+    ) {
+      return _70K;
+    } else {
+      return _140K;
+    }
+  };
+
   const priceCalc = () => {
     if (isValid()) {
       let price = 0;
       let weight = 0;
       if (orderInfo.isDocument) {
-        const sPlace = sourceLocation.place.toLowerCase();
-        const dPlace = desLocation.place.toLowerCase();
-        if (
-          ((sPlace.includes(BD) ||
-            sPlace.includes(_BD) ||
-            sPlace.includes(HCM) ||
-            sPlace.includes(_HCM)) &&
-            (dPlace.includes(BD) ||
-              dPlace.includes(_BD) ||
-              dPlace.includes(HCM) ||
-              dPlace.includes(_HCM))) ||
-          ((sPlace.includes(DH) ||
-            sPlace.includes(_DH) ||
-            sPlace.includes(HCM) ||
-            sPlace.includes(_HCM)) &&
-            (dPlace.includes(DH) ||
-              dPlace.includes(_DH) ||
-              dPlace.includes(HCM) ||
-              dPlace.includes(_HCM))) ||
-          ((sPlace.includes(DN) ||
-            sPlace.includes(_DN) ||
-            sPlace.includes(HCM) ||
-            sPlace.includes(_HCM)) &&
-            (dPlace.includes(DN) ||
-              dPlace.includes(_DN) ||
-              dPlace.includes(HCM) ||
-              dPlace.includes(_HCM)) &&
-            orderInfo.distance < 21)
-        ) {
-          price = _70K;
-        } else {
-          price = _140K;
-        }
+        price = documentCalc();
       } else {
         if (!orderInfo.height || !orderInfo.len || !orderInfo.width) {
           weight = orderInfo.weight;
@@ -299,7 +303,15 @@ const BookingForm = props => {
           <Tooltip title="Áp dụng bảng giá cố định cho từng khu vực">
             <Checkbox
               checked={orderInfo.isDocument}
-              onChange={e => setOrder({ isDocument: e.target.checked })}
+              onChange={e => {
+                if (e.target.checked) {
+                  priceCalc();
+                  setOrder({
+                    isDocument: e.target.checked,
+                    totalPrice: documentCalc()
+                  });
+                } else setOrder({ isDocument: e.target.checked });
+              }}
             >
               Giao chứng từ
             </Checkbox>
