@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Button, Icon, Input, Alert, Spin } from "antd";
 import axios from "../../utils/axios";
 import useFormInput from "../../utils/useFormInput";
-import useFormNumber from "../../utils/useFormNumber";
 
 const SignInForm = props => {
   const [state, setState] = useState({
@@ -13,7 +12,7 @@ const SignInForm = props => {
     alert: false
   });
 
-  const phone = useFormNumber();
+  const phone = useFormInput();
   const password = useFormInput();
 
   const handleSignIn = () => {
@@ -40,8 +39,8 @@ const SignInForm = props => {
       <Input
         {...phone}
         allowClear
-        prefix={<Icon type="phone" style={{ color: "rgba(0,0,0,.25)" }} />}
-        placeholder="Số điện thoại"
+        prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
+        placeholder="Số điện thoại/ email"
         style={{ marginBottom: 20 }}
       />
       <Input.Password

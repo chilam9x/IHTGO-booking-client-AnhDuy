@@ -76,7 +76,7 @@ const columns = [
     title: "Ngày tạo",
     dataIndex: "created_at",
     key: "created_at",
-    render: text => moment(text, "YYYYMMDD hh:mm:ss").fromNow()
+    render: text => text //moment(text, "YYYYMMDD hh:mm:ss").fromNow()
   }
 ];
 

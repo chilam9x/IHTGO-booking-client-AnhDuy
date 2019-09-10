@@ -187,7 +187,7 @@ const BookingForm = props => {
         ) {
           if (orderInfo.distance < 26) price = _70K;
           else {
-            price = _3K5 * orderInfo.distance;
+            price = Math.ceil(_3K5 * orderInfo.distance);
           }
           console.log("xe may");
         }
@@ -204,7 +204,7 @@ const BookingForm = props => {
             extWeights = extWeights * 2000;
           else if (extWeights) extWeights = extWeights * _1K;
 
-          price = _250K + extDistances + extWeights;
+          price = Math.ceil(_250K + extDistances + extWeights);
           console.log("xe tai");
         }
       }

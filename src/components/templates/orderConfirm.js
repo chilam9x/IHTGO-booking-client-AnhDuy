@@ -27,7 +27,7 @@ const OrderConfirm = props => {
     receiverInvalid: false,
     senderPhone: false,
     receiverPhone: false,
-    value: 1
+    value: 2
   });
 
   const [loading, setLoading] = useState(false);
@@ -184,8 +184,8 @@ const OrderConfirm = props => {
       </Tooltip>
       <Divider orientation="left">Người thanh toán cước</Divider>
       <Radio.Group onChange={onChange} value={state.value}>
-        <Radio value={1}>Người gửi trả</Radio>
-        <Radio value={2}>Người nhận trả</Radio>
+        <Radio value={1}>Người nhận trả</Radio>
+        <Radio value={2}>Người gửi trả</Radio>
       </Radio.Group>
       <Divider orientation="left">Thông tin người gửi</Divider>
       {state.senderInvalid && (
