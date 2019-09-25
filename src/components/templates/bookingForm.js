@@ -187,7 +187,7 @@ const BookingForm = props => {
         ) {
           if (orderInfo.distance < 26) price = _70K;
           else {
-            price = Math.ceil(_3K5 * orderInfo.distance);
+            price = _3K5 * orderInfo.distance;
           }
           console.log("xe may");
         }
@@ -204,27 +204,24 @@ const BookingForm = props => {
             extWeights = extWeights * 2000;
           else if (extWeights) extWeights = extWeights * _1K;
 
-          price = Math.ceil(_250K + extDistances + extWeights);
+          price = _250K + extDistances + extWeights;
           console.log("xe tai");
         }
       }
-
       //check options
       if (orderInfo.isSpeed) price *= 2;
       if (orderInfo.isHandOn) price += _10K;
       if (parseInt(orderInfo.cod) > 1000) price += _10K;
       if (!orderInfo.isDocument) {
-        if (orderInfo.isDischarge) {
-          if (weight > 50 && weight < 151) price += _50K;
-          else if (weight > 150 && weight < 301) price += _100K;
-          else if (weight > 300) price = price + _100K + weight * _1K;
-        }
+        if (weight > 50 && weight < 151) price += _50K;
+        else if (weight > 150 && weight < 301) price += _100K;
+        else if (weight > 300) price = price + _100K + (weight - 50) * _1K;
       }
 
       dispatch({
         type: SET_ORDER_INFO,
         order: {
-          totalPrice: price
+          totalPrice: Math.ceil(price)
         }
       });
     } else {
@@ -447,7 +444,8 @@ const BookingForm = props => {
             <Input
               allowClear
               style={{ marginTop: 10 }}
-              placeholder="Thu hộ"
+              addonBefore="Thu hộ"
+              placeholder="Nhập số tiền thu hộ"
               addonAfter="VNĐ"
               value={orderInfo.cod}
               onChange={e => inputChange("cod", e.target.value)}
