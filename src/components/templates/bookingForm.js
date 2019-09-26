@@ -211,7 +211,7 @@ const BookingForm = props => {
       //check options
       if (orderInfo.isSpeed) price *= 2;
       if (orderInfo.isHandOn) price += _10K;
-      if (parseInt(orderInfo.cod) > 1000) price += _10K;
+      // if (parseInt(orderInfo.cod) > 1000) price += _10K;
       if (!orderInfo.isDocument) {
         if (weight > 50 && weight < 151) price += _50K;
         else if (weight > 150 && weight < 301) price += _100K;
