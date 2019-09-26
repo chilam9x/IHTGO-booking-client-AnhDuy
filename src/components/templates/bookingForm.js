@@ -217,7 +217,7 @@ const BookingForm = props => {
         else if (weight > 150 && weight < 301) price += _100K;
         else if (weight > 300) price = price + _100K + (weight - 50) * _1K;
       }
-
+      console.log("price = " + price);
       dispatch({
         type: SET_ORDER_INFO,
         order: {

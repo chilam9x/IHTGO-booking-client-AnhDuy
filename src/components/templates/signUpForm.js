@@ -173,12 +173,7 @@ const SignUpForm = props => {
         </Button>
       )}
       {error.alert && (
-        <Alert
-          message="Error"
-          description={error.message}
-          type="error"
-          showIcon
-        />
+        <Alert description={error.message} type="error" showIcon />
       )}
     </div>
   );

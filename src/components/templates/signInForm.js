@@ -40,7 +40,7 @@ const SignInForm = props => {
         {...phone}
         allowClear
         prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
-        placeholder="Số điện thoại/ email"
+        placeholder="Số điện thoại hoặc email"
         style={{ marginBottom: 20 }}
       />
       <Input.Password
@@ -65,7 +65,6 @@ const SignInForm = props => {
       )}
       {error.alert && (
         <Alert
-          message="Error"
           description="Sai tài khoản hoặc mật khẩu"
           type="error"
           showIcon
