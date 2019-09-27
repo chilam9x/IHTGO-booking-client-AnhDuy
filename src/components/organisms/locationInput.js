@@ -118,10 +118,12 @@ const LocationInput = props => {
             onFocus={() => setOpen(true)}
           >
             <Input
-              addonBefore={props.destination ? "B" : "A"}
+              // addonBefore={props.destination ? "B" : "A"}
               onPressEnter={getSuggestions}
               placeholder={
-                props.destination ? "nhập điểm trả hàng" : "nhập điểm nhận hàng"
+                props.destination
+                  ? "nhập địa chỉ gửi hàng"
+                  : "nhập địa chỉ nhận hàng"
               }
             />
           </AutoComplete>

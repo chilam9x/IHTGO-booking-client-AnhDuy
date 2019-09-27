@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Menu, Table, Tag, Button, Icon } from "antd";
 import PulseLoader from "react-spinners/PulseLoader";
 import DynamicImport from "../../utils/lazyImport";
@@ -12,8 +12,7 @@ import {
   SET_ORDER_LIST_CANCELLED
 } from "../../utils/actions";
 import { ALL, WAITING, FINISHED, CANCELLED } from "../../utils/constants";
-import moment from "moment";
-import "moment/locale/vi";
+import ReactToPrint from "react-to-print";
 
 const OrderItem = DynamicImport(() => import("../templates/orderItem"));
 
@@ -301,6 +300,7 @@ const OrderList = props => {
       >
         Xem thêm <PulseLoader size={5} color={"#fff"} />
       </Button>
+
       <OrderItem close={onClose} visible={visible} id={state.selectedOrder} />
     </div>
   );

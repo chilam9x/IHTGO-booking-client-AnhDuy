@@ -267,8 +267,18 @@ const BookingForm = props => {
           marginRight: "auto"
         }}
       >
-        <Divider orientation="left">Chọn lộ trình</Divider>
+        <Divider orientation="left">Nhập địa chỉ gửi hàng</Divider>
         {state.sourceInvalid && (
+          <Alert
+            message="Vui lòng nhập điểm gửi hàng"
+            type="error"
+            showIcon
+            banner
+          />
+        )}
+        <LocationInput />
+        <Divider orientation="left">Nhập địa chỉ nhận hàng</Divider>
+        {state.desInvalid && (
           <Alert
             message="Vui lòng nhập điểm nhận hàng"
             type="error"
@@ -276,25 +286,8 @@ const BookingForm = props => {
             banner
           />
         )}
-        <LocationInput />
-        <Icon
-          type="arrow-down"
-          style={{
-            color: "red",
-            fontSize: 32,
-            margin: "5px auto",
-            width: "100%"
-          }}
-        />
-        {state.desInvalid && (
-          <Alert
-            message="Vui lòng nhập điểm giao hàng"
-            type="error"
-            showIcon
-            banner
-          />
-        )}
         <LocationInput destination />
+
         <Divider orientation="left">Thông số đơn hàng</Divider>
         {!orderInfo.isInventory && (
           <Tooltip title="Áp dụng bảng giá cố định cho từng khu vực">
@@ -440,17 +433,15 @@ const BookingForm = props => {
           </Row>
         )}
         {!orderInfo.isInventory && (
-          <Tooltip title="Cước phí tiêu chuẩn +10,000 vnđ">
-            <Input
-              allowClear
-              style={{ marginTop: 10 }}
-              addonBefore="Thu hộ"
-              placeholder="Nhập số tiền thu hộ"
-              addonAfter="VNĐ"
-              value={orderInfo.cod}
-              onChange={e => inputChange("cod", e.target.value)}
-            />
-          </Tooltip>
+          <Input
+            allowClear
+            style={{ marginTop: 10 }}
+            addonBefore="Thu hộ"
+            placeholder="Nhập số tiền thu hộ"
+            addonAfter="VNĐ"
+            value={orderInfo.cod}
+            onChange={e => inputChange("cod", e.target.value)}
+          />
         )}
         <Statistic
           title={

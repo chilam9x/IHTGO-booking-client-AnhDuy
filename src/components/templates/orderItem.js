@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import DescriptionItem from "../atoms/descriptionItem";
-import { Drawer, Row, Col, Divider, Statistic } from "antd";
+import { Drawer, Row, Col, Divider, Statistic, Button, Modal } from "antd";
 import QRCode from "qrcode.react";
 import DynamicImport from "../../utils/lazyImport";
 import axios from "../../utils/axios";
@@ -9,6 +9,8 @@ const OrderError = DynamicImport(() => import("../organisms/orderError"));
 const OrderItemLoading = DynamicImport(() =>
   import("../organisms/orderItemLoading")
 );
+
+const BillForm = DynamicImport(() => import("./billForm"));
 
 const pStyle = {
   fontSize: 16,
@@ -26,6 +28,7 @@ const OrderItem = props => {
   const [state, setState] = useState({
     order: null
   });
+  const componentRef = useRef();
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -69,145 +72,148 @@ const OrderItem = props => {
         <OrderError />
       ) : (
         <>
-          <p
-            style={{
-              ...pStyle,
-              marginBottom: 10,
-              backgroundColor: "#ff4d4f",
-              color: "#fff",
-              padding: "3px 20px"
-            }}
-          >
-            Mã vận đơn {state.order.coupon_code}
-          </p>
-          <p style={{ ...pStyle, marginBottom: 10 }}>
-            Tên đơn hàng: {state.order.name}
-          </p>
-          <Divider orientation="left">Thông tin nơi gửi</Divider>
-          <Row>
-            <Col span={12}>
-              <DescriptionItem
-                title="Họ tên"
-                content={state.order.sender_name}
-              />
-            </Col>
-            <Col span={12}>
-              <DescriptionItem
-                title="Số điện thoại"
-                content={state.order.sender_phone}
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col span={24}>
-              <DescriptionItem
-                title="Địa chỉ"
-                content={state.order.sender_address}
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col span={24}>
-              <DescriptionItem title="Ghi chú" content={state.order.note} />
-            </Col>
-          </Row>
-          <Divider orientation="left">Thông tin nơi nhận</Divider>
-          <Row>
-            <Col span={12}>
-              <DescriptionItem
-                title="Họ tên"
-                content={state.order.receive_name}
-              />
-            </Col>
-            <Col span={12}>
-              <DescriptionItem
-                title="Số điện thoại"
-                content={state.order.receive_phone}
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col span={24}>
-              <DescriptionItem
-                title="Địa chỉ"
-                content={state.order.receive_address}
-              />
-            </Col>
-          </Row>
-          <Divider orientation="left">Thông số đơn hàng</Divider>
-          <Row>
-            <Col span={8}>
-              <DescriptionItem
-                title="Lộ trình"
-                content={state.order.distance && state.order.distance + " km"}
-              />
-            </Col>
-            <Col span={8}>
-              <DescriptionItem title="Kích thước" content={getSize()} />
-            </Col>
-            <Col span={8}>
-              <DescriptionItem
-                title="Cân nặng"
-                content={state.order.weight && state.order.weight + " kg"}
-              />
-            </Col>
-          </Row>
-          <Divider orientation="left">Tùy chọn đơn hàng</Divider>
-          <Row>
-            <Col span={8}>
-              <DescriptionItem
-                title="Giao tận tay"
-                content={state.order.hand_on ? "Có" : "Không"}
-              />
-            </Col>
-            <Col span={8}>
-              <DescriptionItem
-                title="Giao hỏa tốc"
-                content={state.order.is_speed ? "Có" : "Không"}
-              />
-            </Col>
-            {/* <Col span={8}>
+          <BillForm visible={true} />
+          <Button onClick={() => console.log()}>In hóa đơn</Button>
+          <div>
+            <p
+              style={{
+                ...pStyle,
+                marginBottom: 10,
+                backgroundColor: "#ff4d4f",
+                color: "#fff",
+                padding: "3px 20px"
+              }}
+            >
+              Mã vận đơn {state.order.coupon_code}
+            </p>
+            <p style={{ ...pStyle, marginBottom: 10 }}>
+              Tên đơn hàng: {state.order.name} ({state.order.code})
+            </p>
+            <Divider orientation="left">Thông tin nơi gửi</Divider>
+            <Row>
+              <Col span={12}>
+                <DescriptionItem
+                  title="Họ tên"
+                  content={state.order.sender_name}
+                />
+              </Col>
+              <Col span={12}>
+                <DescriptionItem
+                  title="Số điện thoại"
+                  content={state.order.sender_phone}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col span={24}>
+                <DescriptionItem
+                  title="Địa chỉ"
+                  content={state.order.sender_address}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col span={24}>
+                <DescriptionItem title="Ghi chú" content={state.order.note} />
+              </Col>
+            </Row>
+            <Divider orientation="left">Thông tin nơi nhận</Divider>
+            <Row>
+              <Col span={12}>
+                <DescriptionItem
+                  title="Họ tên"
+                  content={state.order.receive_name}
+                />
+              </Col>
+              <Col span={12}>
+                <DescriptionItem
+                  title="Số điện thoại"
+                  content={state.order.receive_phone}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col span={24}>
+                <DescriptionItem
+                  title="Địa chỉ"
+                  content={state.order.receive_address}
+                />
+              </Col>
+            </Row>
+            <Divider orientation="left">Thông số đơn hàng</Divider>
+            <Row>
+              <Col span={8}>
+                <DescriptionItem
+                  title="Lộ trình"
+                  content={state.order.distance && state.order.distance + " km"}
+                />
+              </Col>
+              <Col span={8}>
+                <DescriptionItem title="Kích thước" content={getSize()} />
+              </Col>
+              <Col span={8}>
+                <DescriptionItem
+                  title="Cân nặng"
+                  content={state.order.weight && state.order.weight + " kg"}
+                />
+              </Col>
+            </Row>
+            <Divider orientation="left">Tùy chọn đơn hàng</Divider>
+            <Row>
+              <Col span={8}>
+                <DescriptionItem
+                  title="Giao tận tay"
+                  content={state.order.hand_on ? "Có" : "Không"}
+                />
+              </Col>
+              <Col span={8}>
+                <DescriptionItem
+                  title="Giao hỏa tốc"
+                  content={state.order.is_speed ? "Có" : "Không"}
+                />
+              </Col>
+              {/* <Col span={8}>
               <DescriptionItem
                 title="Bốc xếp hộ"
                 content={state.order.discharge ? "Có" : "Không"}
               />
             </Col> */}
-          </Row>
-          <Row>
-            <Col span={8}>
-              <DescriptionItem
-                title="Làm hàng siêu thị"
-                content={state.order.car_option === 4 ? "Có" : "Không"}
-              />
-            </Col>
-            <Col span={8}>
-              <DescriptionItem
-                title="Thu hộ"
-                content={
-                  state.order.take_money
-                    ? state.order.take_money + " vnđ"
-                    : "0 vnđ"
-                }
-              />
-            </Col>
-            <Col span={8}>
-              <DescriptionItem
-                title="Người thanh toán"
-                content={state.order.payer === 1 ? "Người nhận" : "Người gửi"}
-              />
-            </Col>
-          </Row>
-          <Divider orientation="left">Thanh toán</Divider>
-          <Statistic
-            title={"Cước phí tạm tính (VNĐ)"}
-            value={formatMoney(parseInt(state.order.total_price))}
-            style={{ marginTop: 10 }}
-            valueStyle={{ color: "#68bd45" }}
-          />
-          <Divider orientation="left">Lịch sử giao hàng</Divider>
-          <Row>
-            <Col span={16}>
-              {/* <Steps direction="vertical" size="small" current={3}>
+            </Row>
+            <Row>
+              <Col span={8}>
+                <DescriptionItem
+                  title="Làm hàng siêu thị"
+                  content={state.order.car_option === 4 ? "Có" : "Không"}
+                />
+              </Col>
+              <Col span={8}>
+                <DescriptionItem
+                  title="Thu hộ"
+                  content={
+                    state.order.take_money
+                      ? state.order.take_money + " vnđ"
+                      : "0 vnđ"
+                  }
+                />
+              </Col>
+              <Col span={8}>
+                <DescriptionItem
+                  title="Người thanh toán"
+                  content={state.order.payer === 1 ? "Người nhận" : "Người gửi"}
+                />
+              </Col>
+            </Row>
+            <Divider orientation="left">Thanh toán</Divider>
+            <Statistic
+              title={"Cước phí tạm tính (VNĐ)"}
+              value={formatMoney(parseInt(state.order.total_price))}
+              style={{ marginTop: 10 }}
+              valueStyle={{ color: "#68bd45" }}
+            />
+            <Divider orientation="left">Lịch sử giao hàng</Divider>
+            <Row>
+              <Col span={16}>
+                {/* <Steps direction="vertical" size="small" current={3}>
                 <Step title="Ngày tạo" description={state.order.created_at} />
                 <Step title="Ngày giao" description={state.order.created_at} />
                 <Step
@@ -215,11 +221,12 @@ const OrderItem = props => {
                   description={state.order.created_at}
                 />
               </Steps> */}
-            </Col>
-            <Col span={8}>
-              <QRCode value={String(props.id)} />
-            </Col>
-          </Row>
+              </Col>
+              <Col span={8}>
+                <QRCode value={String(state.order.code)} />
+              </Col>
+            </Row>
+          </div>
         </>
       )}
     </Drawer>

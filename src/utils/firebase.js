@@ -12,7 +12,7 @@ const openNotification = data => {
 };
 
 var firebaseConfig = {
-  messagingSenderId: "163319977066"
+  messagingSenderId: "612108007368"
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
@@ -21,7 +21,7 @@ firebase.initializeApp(firebaseConfig);
 if (firebase.messaging.isSupported()) {
   let messaging = firebase.messaging();
   messaging.usePublicVapidKey(
-    "BIgV_9ZldN8HXfdPbJT5QN65ZacjYmBarXqktQh0JBBM6gVJHita3lJW5yxG9b5PFvV-uOHKP-zIYOVX8_oRXzU"
+    "BNqu2qn7K5GPP11q0qxdgS9ug06NAuxJk-tTDhd8UXAinZ47HSDECn5CQk8rA-Y47Jfn3QXhgOI8ryA7J1YZL1Y"
   );
   messaging
     .requestPermission()
@@ -29,7 +29,8 @@ if (firebase.messaging.isSupported()) {
       return messaging.getToken();
     })
     .then(token => {
-      console.log("token", token);
+      console.log(token);
+      localStorage.setItem("@fcm", token);
       messaging.onMessage(payload => {
         openNotification(payload.notification);
       });

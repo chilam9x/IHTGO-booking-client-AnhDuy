@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DynamicImport from "../../utils/lazyImport";
 import { Layout, Steps, Result, Icon } from "antd";
 import { useGlobalState } from "../../Store";
 import ClipLoader from "react-spinners/ScaleLoader";
+import axios from "../../utils/axios";
 
 const { Content, Sider } = Layout;
 const { Step } = Steps;
@@ -31,6 +32,19 @@ const Main = () => {
 
   const [sourceLocation] = useGlobalState("sourceLocation");
   const [desLocation] = useGlobalState("desLocation");
+
+  useEffect(() => {
+    axios
+      .post("customer/update-webfcm", {
+        fcm: localStorage.getItem("@fcm")
+      })
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }, []);
 
   const next = () => {
     const current = state.current + 1;

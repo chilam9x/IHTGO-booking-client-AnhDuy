@@ -20,7 +20,7 @@ const ForgotPasswordForm = props => {
     setState({ ...state, loading: true });
     axios
       .post(
-        "https://ratingjob-server.herokuapp.com/https://admin.ihtgo.com.vn/api/v1/customer/password/reset",
+        "https://iht-cors-server.herokuapp.com/https://admin.ihtgo.com.vn/api/v1/customer/password/reset",
         {
           phone: phone.value
         }
