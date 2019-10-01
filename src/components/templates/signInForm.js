@@ -9,7 +9,8 @@ const SignInForm = props => {
   });
 
   const [error, setError] = useState({
-    alert: false
+    alert: false,
+    msg: ""
   });
 
   const phone = useFormInput();
@@ -23,12 +24,20 @@ const SignInForm = props => {
         password: password.value
       })
       .then(res => {
-        localStorage.setItem("@token", res.data.token);
-        window.location.replace("/");
+        if (res.data.token) {
+          localStorage.setItem("@token", res.data.token);
+          window.location.replace("/");
+        } else if (!res.data.success) {
+          setError({
+            alert: true,
+            msg: res.data.message
+          });
+        }
       })
       .catch(err => {
         setError({
-          alert: true
+          alert: true,
+          msg: "Sai tài khoản hoặc mật khẩu"
         });
       })
       .finally(() => setState({ ...state, loading: false }));
@@ -63,13 +72,7 @@ const SignInForm = props => {
           Đăng nhập
         </Button>
       )}
-      {error.alert && (
-        <Alert
-          description="Sai tài khoản hoặc mật khẩu"
-          type="error"
-          showIcon
-        />
-      )}
+      {error.alert && <Alert description={error.msg} type="error" showIcon />}
     </div>
   );
 };

@@ -118,6 +118,31 @@ const BookingForm = props => {
     return isValid;
   };
 
+  const isDocumentValid = () => {
+    let isValid = true;
+    let validate = {
+      sourceInvalid: false,
+      desInvalid: false,
+      sizeInvalid: false,
+      weightInvalid: false
+    };
+
+    if (!sourceLocation.lat || !sourceLocation.lng || !sourceLocation.place) {
+      validate.sourceInvalid = true;
+      isValid = false;
+    }
+    if (!desLocation.lat || !desLocation.lng || !desLocation.place) {
+      validate.desInvalid = true;
+      isValid = false;
+    }
+
+    setState({
+      ...state,
+      ...validate
+    });
+    return isValid;
+  };
+
   const setOrder = data => {
     dispatch({
       type: SET_ORDER_INFO,
@@ -128,38 +153,40 @@ const BookingForm = props => {
   };
 
   const documentCalc = () => {
-    const sPlace = sourceLocation.place.toLowerCase();
-    const dPlace = desLocation.place.toLowerCase();
-    if (
-      ((sPlace.includes(BD) ||
-        sPlace.includes(_BD) ||
-        sPlace.includes(HCM) ||
-        sPlace.includes(_HCM)) &&
-        (dPlace.includes(BD) ||
-          dPlace.includes(_BD) ||
-          dPlace.includes(HCM) ||
-          dPlace.includes(_HCM))) ||
-      ((sPlace.includes(DH) ||
-        sPlace.includes(_DH) ||
-        sPlace.includes(HCM) ||
-        sPlace.includes(_HCM)) &&
-        (dPlace.includes(DH) ||
-          dPlace.includes(_DH) ||
-          dPlace.includes(HCM) ||
-          dPlace.includes(_HCM))) ||
-      ((sPlace.includes(DN) ||
-        sPlace.includes(_DN) ||
-        sPlace.includes(HCM) ||
-        sPlace.includes(_HCM)) &&
-        (dPlace.includes(DN) ||
-          dPlace.includes(_DN) ||
-          dPlace.includes(HCM) ||
-          dPlace.includes(_HCM)) &&
-        orderInfo.distance < 21)
-    ) {
-      return _70K;
-    } else {
-      return _140K;
+    if (isDocumentValid()) {
+      const sPlace = sourceLocation.place.toLowerCase();
+      const dPlace = desLocation.place.toLowerCase();
+      if (
+        ((sPlace.includes(BD) ||
+          sPlace.includes(_BD) ||
+          sPlace.includes(HCM) ||
+          sPlace.includes(_HCM)) &&
+          (dPlace.includes(BD) ||
+            dPlace.includes(_BD) ||
+            dPlace.includes(HCM) ||
+            dPlace.includes(_HCM))) ||
+        ((sPlace.includes(DH) ||
+          sPlace.includes(_DH) ||
+          sPlace.includes(HCM) ||
+          sPlace.includes(_HCM)) &&
+          (dPlace.includes(DH) ||
+            dPlace.includes(_DH) ||
+            dPlace.includes(HCM) ||
+            dPlace.includes(_HCM))) ||
+        ((sPlace.includes(DN) ||
+          sPlace.includes(_DN) ||
+          sPlace.includes(HCM) ||
+          sPlace.includes(_HCM)) &&
+          (dPlace.includes(DN) ||
+            dPlace.includes(_DN) ||
+            dPlace.includes(HCM) ||
+            dPlace.includes(_HCM)) &&
+          orderInfo.distance < 21)
+      ) {
+        return _70K;
+      } else {
+        return _140K;
+      }
     }
   };
 

@@ -78,7 +78,7 @@ const Main = () => {
         collapsible
         collapsed={state.collapsed}
         onCollapse={onCollapse}
-        width={window.innerWidth / 4}
+        width={window.innerWidth / 3}
       >
         {!state.collapsed && (
           <>
