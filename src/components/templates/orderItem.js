@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import DescriptionItem from "../atoms/descriptionItem";
-import { Drawer, Row, Col, Divider, Statistic, Button, Modal } from "antd";
+import { Drawer, Row, Col, Divider, Statistic, Button } from "antd";
 import QRCode from "qrcode.react";
 import DynamicImport from "../../utils/lazyImport";
 import axios from "../../utils/axios";
@@ -28,10 +28,9 @@ const OrderItem = props => {
   const [state, setState] = useState({
     order: null
   });
-  const componentRef = useRef();
-
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [print, setPrint] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -72,8 +71,11 @@ const OrderItem = props => {
         <OrderError />
       ) : (
         <>
-          <BillForm visible={true} />
-          <Button onClick={() => console.log()}>In hóa đơn</Button>
+          <BillForm
+            visible={print}
+            close={() => setPrint(false)}
+            data={state.order}
+          />
           <div>
             <p
               style={{
@@ -87,7 +89,14 @@ const OrderItem = props => {
               Mã vận đơn {state.order.coupon_code}
             </p>
             <p style={{ ...pStyle, marginBottom: 10 }}>
-              Tên đơn hàng: {state.order.name} ({state.order.code})
+              Tên đơn hàng: {state.order.name} ({state.order.code}){" "}
+              <Button
+                type="danger"
+                icon="printer"
+                onClick={() => setPrint(true)}
+              >
+                In hóa đơn
+              </Button>
             </p>
             <Divider orientation="left">Thông tin nơi gửi</Divider>
             <Row>
@@ -172,12 +181,6 @@ const OrderItem = props => {
                   content={state.order.is_speed ? "Có" : "Không"}
                 />
               </Col>
-              {/* <Col span={8}>
-              <DescriptionItem
-                title="Bốc xếp hộ"
-                content={state.order.discharge ? "Có" : "Không"}
-              />
-            </Col> */}
             </Row>
             <Row>
               <Col span={8}>

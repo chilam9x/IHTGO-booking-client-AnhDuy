@@ -13,10 +13,18 @@ import QRCode from "qrcode.react";
 
 const BillForm = props => {
   const componentRef = useRef();
+  const getSize = () => {
+    const l = props.data.len ? props.data.len : 0;
+    const w = props.data.width ? props.data.width : 0;
+    const h = props.data.height ? props.data.height : 0;
+    return l + "x" + w + "x" + h + "cm";
+  };
+
   return (
     <Modal
       style={{ top: 10 }}
       visible={props.visible}
+      onCancel={props.close}
       footer={[
         <ReactToPrint
           trigger={() => (
@@ -43,97 +51,85 @@ const BillForm = props => {
         </Typography.Title>
         <Divider orientation="left">Thông tin người gửi</Divider>
         <Descriptions
-          //bordered
           size="small"
           column={{ xxl: 3, xl: 2, lg: 2, md: 2, sm: 2, xs: 1 }}
         >
           <Descriptions.Item label={<Icon type="user" />} span={2}>
-            thằng lãm
+            {props.data.sender_name}
           </Descriptions.Item>
           <Descriptions.Item label={<Icon type="phone" />} span={1}>
-            11111111111111
+            {props.data.sender_phone}
           </Descriptions.Item>
           <Descriptions.Item label={<Icon type="home" />} span={3}>
-            113/23 Ngô Quyền, Phường 12, Quận 5, Hồ Chí Minh, Vietnam
+            {props.data.sender_address}
           </Descriptions.Item>
         </Descriptions>
         <Divider orientation="left">Thông tin người nhận</Divider>
         <Descriptions
-          //bordered
           size="small"
           column={{ xxl: 3, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
         >
           <Descriptions.Item label={<Icon type="user" />} span={2}>
-            thằng lãm
+            {props.data.receive_name}
           </Descriptions.Item>
           <Descriptions.Item label={<Icon type="phone" />} span={1}>
-            11111111111111
+            {props.data.receive_phone}
           </Descriptions.Item>
           <Descriptions.Item label={<Icon type="home" />} span={3}>
-            113/23 Ngô Quyền, Phường 12, Quận 5, Hồ Chí Minh, Vietnam
+            {props.data.receive_address}
           </Descriptions.Item>
         </Descriptions>
         <hr />
         <Descriptions
-          //bordered
           size="small"
           column={{ xxl: 3, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
         >
           <Descriptions.Item label="Quãng đường" span={1}>
-            500km
+            {props.data.distance && props.data.distance + " km"}
           </Descriptions.Item>
           <Descriptions.Item label="Kích thước" span={1}>
-            100x100x100
+            {getSize()}
           </Descriptions.Item>
           <Descriptions.Item label="Cân nặng" span={1}>
-            1000
+            {props.data.weight && props.data.weight + " kg"}
           </Descriptions.Item>
         </Descriptions>
         <Descriptions
-          // //bordered
           size="small"
           column={{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
         >
           <Descriptions.Item label="Tận tay" span={1}>
-            Không
+            {props.data.hand_on ? "Có" : "Không"}
           </Descriptions.Item>
           <Descriptions.Item label="Hỏa tốc" span={1}>
-            Không
+            {props.data.is_speed ? "Có" : "Không"}
           </Descriptions.Item>
           <Descriptions.Item label="Hàng siêu thị" span={2}>
-            Không
+            {props.data.car_option === 4 ? "Có" : "Không"}
           </Descriptions.Item>
           <Descriptions.Item label="Thu hộ" span={1}>
-            10,000,000đ
+            {props.data.take_money ? props.data.take_money + " vnđ" : "0 vnđ"}
           </Descriptions.Item>
           <Descriptions.Item label="Người trả phí" span={1}>
-            người nhận
+            {props.data.payer === 1 ? "Người nhận" : "Người gửi"}
           </Descriptions.Item>
           <Descriptions.Item label="Tiền cước" span={2}>
-            10,000,000đ
+            {props.data.total_price} vnđ
           </Descriptions.Item>
         </Descriptions>
-        <hr />
         <Descriptions
           layout="vertical"
-          // //bordered
           size="small"
           column={{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
         >
           <Descriptions.Item label="Quét mã" span={1}>
-            <QRCode value={"Quét thử bằng barcode"} size={100} />
+            <QRCode value={String(props.data.code)} size={100} />
           </Descriptions.Item>
           <Descriptions.Item label="Chữ ký 2" span={1}></Descriptions.Item>
           <Descriptions.Item label="Chữ ký 3" span={1}></Descriptions.Item>
           <Descriptions.Item label="Chữ ký 3" span={1}></Descriptions.Item>
         </Descriptions>
-        <Typography.Paragraph>
-          Ghi chú ở đây nè Ghi chú ở đây nè Ghi chú ở đây nè Ghi chú ở đây nè
-          Ghi chú ở đây nè Ghi chú ở đây nè Ghi chú ở đây nè Ghi chú ở đây nèGhi
-          chú ở đây nè Ghi chú ở đây nè Ghi chú ở đây nè Ghi chú ở đây nèGhi chú
-          ở đây nè Ghi chú ở đây nè Ghi chú ở đây nè Ghi chú ở đây nèGhi chú ở
-          đây nè
-        </Typography.Paragraph>
+        <Typography.Paragraph>{props.data.note}</Typography.Paragraph>
       </div>
     </Modal>
   );
