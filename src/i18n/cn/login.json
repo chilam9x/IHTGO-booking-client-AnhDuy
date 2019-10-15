@@ -1,0 +1,12 @@
+{
+    "signin" : "登入",
+    "signup":"登記",
+    "forgot":"忘記密碼",
+    "username":"姓名",
+    "email":"Email",
+    "phone":"電話號碼",
+    "add":"Địa chỉ",
+    "pwd":"密碼",
+    "confirm_pwd":"Xác nhận mật khẩu",
+    "reset_pwd":"Đặt lại mật khẩu"
+}

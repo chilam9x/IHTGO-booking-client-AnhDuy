@@ -4,7 +4,8 @@ import { Layout, Steps, Result, Icon } from "antd";
 import { useGlobalState } from "../../Store";
 import ClipLoader from "react-spinners/ScaleLoader";
 import axios from "../../utils/axios";
-
+import languages from "../../utils/languages";
+const lang = languages("booking");
 const { Content, Sider } = Layout;
 const { Step } = Steps;
 
@@ -14,13 +15,13 @@ const OrderConfirm = DynamicImport(() => import("../templates/orderConfirm"));
 
 const steps = [
   {
-    title: "Tạm tính"
+    title: lang.temp
   },
   {
-    title: "Thêm thông tin"
+    title: lang.more_info
   },
   {
-    title: "Hoàn thành"
+    title: lang.finish
   }
 ];
 

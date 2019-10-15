@@ -10,12 +10,14 @@ import {
   Alert,
   Radio,
   Spin,
-  Tooltip
+  Tooltip,
+  AutoComplete
 } from "antd";
 import { dispatch, useGlobalState } from "../../Store";
 import { SET_ORDER_INFO } from "../../utils/actions";
 import axios from "../../utils/axios";
-
+import languages from "../../utils/languages";
+const lang = languages("confirm");
 const formatMoney = money => {
   return money ? parseInt(money / 1000) * 1000 : 0;
 };
@@ -157,9 +159,9 @@ const OrderConfirm = props => {
         marginRight: "auto"
       }}
     >
-      <Divider orientation="left">Tên đơn hàng (nếu có)</Divider>
+      <Divider orientation="left">{lang.or_name}</Divider>
       <Input
-        placeholder="Tên đơn hàng"
+        placeholder={lang.or_name}
         style={{ width: "100%", marginBottom: 10 }}
         value={orderInfo.name}
         onChange={e => setOrder({ name: e.target.value })}
@@ -175,19 +177,19 @@ const OrderConfirm = props => {
       <Tooltip title="Nhập mã vận đơn được in sẵn trên tờ bill">
         <Input
           allowClear
-          placeholder="Mã đơn hàng"
+          placeholder={lang.code}
           value={orderInfo.coupon_code}
           onChange={e => setOrder({ coupon_code: e.target.value })}
           // onSearch={checkCode}
           // enterButton="Kiểm tra code"
         />
       </Tooltip>
-      <Divider orientation="left">Người thanh toán cước</Divider>
+      <Divider orientation="left">{lang.payment}</Divider>
       <Radio.Group onChange={onChange} value={state.value}>
-        <Radio value={1}>Người nhận trả</Radio>
-        <Radio value={2}>Người gửi trả</Radio>
+        <Radio value={1}>{lang.sender}</Radio>
+        <Radio value={2}>{lang.receiver}</Radio>
       </Radio.Group>
-      <Divider orientation="left">Thông tin người gửi</Divider>
+      <Divider orientation="left">{lang.send_info}</Divider>
       {state.senderInvalid && (
         <Alert
           message="Vui lòng nhập tên người gửi"
@@ -196,12 +198,18 @@ const OrderConfirm = props => {
           banner
         />
       )}
-      <Input
+      <AutoComplete
+        dataSource={JSON.parse(localStorage.getItem("@sender_names"))}
         allowClear
-        placeholder="Họ tên"
+        placeholder={lang.name}
         style={{ width: "100%", marginBottom: 10 }}
         value={orderInfo.sender_name}
-        onChange={e => setOrder({ sender_name: e.target.value })}
+        onChange={value => setOrder({ sender_name: value })}
+        filterOption={(inputValue, option) =>
+          option.props.children
+            .toUpperCase()
+            .indexOf(inputValue.toUpperCase()) !== -1
+        }
       />
       {state.senderPhone && (
         <Alert
@@ -211,17 +219,18 @@ const OrderConfirm = props => {
           banner
         />
       )}
-      <Input
+      <AutoComplete
         allowClear
-        placeholder="Số điện thoại"
+        dataSource={JSON.parse(localStorage.getItem("@sender_phones"))}
+        placeholder={lang.phone}
         style={{ width: "100%" }}
         value={orderInfo.sender_phone}
-        onChange={e => {
-          if (!/[a-z]/.test(e.target.value.toLowerCase()))
-            setOrder({ sender_phone: e.target.value });
+        onChange={value => {
+          if (!/[a-z]/.test(value.toLowerCase()))
+            setOrder({ sender_phone: value });
         }}
       />
-      <Divider orientation="left">Thông tin người nhận</Divider>
+      <Divider orientation="left">{lang.rec_info}</Divider>
       {state.receiverInvalid && (
         <Alert
           message="Vui lòng nhập tên người nhận"
@@ -230,12 +239,18 @@ const OrderConfirm = props => {
           banner
         />
       )}
-      <Input
+      <AutoComplete
         allowClear
-        placeholder="Họ tên"
+        placeholder={lang.name}
+        dataSource={JSON.parse(localStorage.getItem("@receive_names"))}
         style={{ width: "100%", marginBottom: 10 }}
         value={orderInfo.receiver_name}
-        onChange={e => setOrder({ receiver_name: e.target.value })}
+        onChange={value => setOrder({ receiver_name: value })}
+        filterOption={(inputValue, option) =>
+          option.props.children
+            .toUpperCase()
+            .indexOf(inputValue.toUpperCase()) !== -1
+        }
       />
       {state.receiverPhone && (
         <Alert
@@ -245,26 +260,27 @@ const OrderConfirm = props => {
           banner
         />
       )}
-      <Input
+      <AutoComplete
         allowClear
-        placeholder="Số điện thoại"
+        dataSource={JSON.parse(localStorage.getItem("@receive_phones"))}
+        placeholder={lang.phone}
         style={{ width: "100%" }}
         value={orderInfo.receiver_phone}
-        onChange={e => {
-          if (!/[a-z]/.test(e.target.value.toLowerCase()))
-            setOrder({ receiver_phone: e.target.value });
+        onChange={value => {
+          if (!/[a-z]/.test(value.toLowerCase()))
+            setOrder({ receiver_phone: value });
         }}
       />
-      <Divider orientation="left">Ghi chú</Divider>
+      <Divider orientation="left">{lang.note}</Divider>
       <Input.TextArea
-        placeholder="Ghi chú của khách hàng"
+        placeholder={lang.note_body}
         autosize={{ minRows: 2, maxRows: 6 }}
         value={orderInfo.note}
         onChange={e => setOrder({ note: e.target.value })}
       />
       <br />
       <Statistic
-        title={<Row>Cước phí tạm tính (VNĐ)</Row>}
+        title={<Row>{lang.price} (VNĐ)</Row>}
         value={formatMoney(orderInfo.totalPrice)}
         style={{ marginTop: 10 }}
         valueStyle={{ color: "#68bd45" }}
@@ -280,7 +296,7 @@ const OrderConfirm = props => {
               onClick={props.prev}
             >
               <Icon type="left" />
-              Quay lại
+              {lang.back}
             </Button>
             <Button
               style={{ marginTop: 10 }}
@@ -289,7 +305,7 @@ const OrderConfirm = props => {
               onClick={confirm}
             >
               <b>
-                Xác nhận đơn hàng <Icon type="right" />
+                {lang.confirm} <Icon type="right" />
               </b>
             </Button>
           </>

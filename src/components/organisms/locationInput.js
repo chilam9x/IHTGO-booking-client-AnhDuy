@@ -6,7 +6,8 @@ import { dispatch, useGlobalState } from "../../Store";
 import { css } from "@emotion/core";
 import ClipLoader from "react-spinners/BarLoader";
 import axios from "../../utils/axios";
-
+import languages from "../../utils/languages";
+const lang = languages("booking");
 Geocode.setApiKey("AIzaSyBaumnHkYRqgqAIx3u1KFFu7N7LjdjJjAI");
 
 const override = css`
@@ -22,7 +23,9 @@ const LocationInput = props => {
     props.destination ? "desLocation" : "sourceLocation"
   );
   const [state, setState] = useState({
-    places: [],
+    places: props.destination
+      ? JSON.parse(localStorage.getItem("@receive_add"))
+      : JSON.parse(localStorage.getItem("@sender_add")),
     query: null
   });
 
@@ -80,6 +83,11 @@ const LocationInput = props => {
         .then(res => {
           const places =
             res.data && res.data.predictions.map(i => i.description);
+          if (
+            location.place.toLowerCase().includes("ba trieu") ||
+            location.place.toLowerCase().includes("bà triệu")
+          )
+            places.unshift("8 Bà Triệu Phường 12 Quận 5 Hồ Chí Minh");
           setState({
             ...state,
             places: places
@@ -116,14 +124,17 @@ const LocationInput = props => {
               flag ? getSuggestions() : setOpen(false);
             }}
             onFocus={() => setOpen(true)}
+            filterOption={(inputValue, option) =>
+              option.props.children
+                .toUpperCase()
+                .indexOf(inputValue.toUpperCase()) !== -1
+            }
           >
             <Input
               // addonBefore={props.destination ? "B" : "A"}
               onPressEnter={getSuggestions}
               placeholder={
-                props.destination
-                  ? "nhập địa chỉ gửi hàng"
-                  : "nhập địa chỉ nhận hàng"
+                props.destination ? lang.sender_add : lang.receive_add
               }
             />
           </AutoComplete>

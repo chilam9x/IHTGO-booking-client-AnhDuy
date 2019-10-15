@@ -3,7 +3,8 @@ import { Button, Icon, Input, Alert, Spin, Result } from "antd";
 import axios from "../../utils/axios";
 import useFormInput from "../../utils/useFormInput";
 import useFormNumber from "../../utils/useFormNumber";
-
+import languages from "../../utils/languages";
+const Lang = languages("login");
 const SignUpForm = props => {
   const [state, setState] = useState({
     loading: false,
@@ -120,21 +121,21 @@ const SignUpForm = props => {
         {...name}
         allowClear
         prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
-        placeholder="Tên đăng nhập"
+        placeholder={Lang.username}
         style={{ marginBottom: 20 }}
       />
       <Input
         {...email}
         allowClear
         prefix={<Icon type="mail" style={{ color: "rgba(0,0,0,.25)" }} />}
-        placeholder="Email"
+        placeholder={Lang.email}
         style={{ marginBottom: 20 }}
       />
       <Input
         {...phone}
         allowClear
         prefix={<Icon type="phone" style={{ color: "rgba(0,0,0,.25)" }} />}
-        placeholder="Số điện thoại"
+        placeholder={Lang.phone}
         style={{ marginBottom: 20 }}
       />
       <Input
@@ -143,21 +144,21 @@ const SignUpForm = props => {
         prefix={
           <Icon type="environment" style={{ color: "rgba(0,0,0,.25)" }} />
         }
-        placeholder="Địa chỉ"
+        placeholder={Lang.add}
         style={{ marginBottom: 20 }}
       />
       <Input.Password
         {...password}
         allowClear
         prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
-        placeholder="Mật khẩu"
+        placeholder={Lang.pwd}
         style={{ marginBottom: 20 }}
       />
       <Input.Password
         {...confirm}
         allowClear
         prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
-        placeholder="Xác nhận mật khẩu"
+        placeholder={Lang.confirm_pwd}
         style={{ marginBottom: 20 }}
       />
       {state.loading ? (
@@ -169,7 +170,7 @@ const SignUpForm = props => {
           type="danger"
           onClick={handleRegister}
         >
-          Đăng ký
+          {Lang.signup}
         </Button>
       )}
       {error.alert && (

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Tabs, Affix } from "antd";
 import DynamicImport from "../../utils/lazyImport";
-
+import languages from "../../utils/languages";
+const Lang = languages("login");
 const SignInForm = DynamicImport(() => import("../templates/signInForm"));
 const SignUp = DynamicImport(() => import("../templates/signUpForm"));
 const ForgotPassword = DynamicImport(() =>
@@ -58,13 +59,13 @@ const SignIn = props => {
           }}
           activeKey={state.signin}
         >
-          <TabPane tab="Đăng nhập" key="1">
+          <TabPane tab={Lang.signin} key="1">
             <SignInForm />
           </TabPane>
-          <TabPane tab="Đăng ký" key="2">
+          <TabPane tab={Lang.signup} key="2">
             <SignUp back={backToLogin} />
           </TabPane>
-          <TabPane tab="Quên mật khẩu" key="3">
+          <TabPane tab={Lang.forgot} key="3">
             <ForgotPassword back={backToLogin} />
           </TabPane>
         </Tabs>

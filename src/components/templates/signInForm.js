@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Button, Icon, Input, Alert, Spin } from "antd";
 import axios from "../../utils/axios";
 import useFormInput from "../../utils/useFormInput";
+import languages from "../../utils/languages";
+const Lang = languages("login");
 
 const SignInForm = props => {
   const [state, setState] = useState({
@@ -16,6 +18,35 @@ const SignInForm = props => {
   const phone = useFormInput();
   const password = useFormInput();
 
+  const getHistories = token => {
+    axios
+      .post("customer/load-histories", { token })
+      .then(res => {
+        localStorage.setItem("@sender_add", JSON.stringify(res.data.send_add));
+        localStorage.setItem("@receive_add", JSON.stringify(res.data.rec_add));
+        localStorage.setItem(
+          "@sender_names",
+          JSON.stringify(res.data.send_names)
+        );
+        localStorage.setItem(
+          "@sender_phones",
+          JSON.stringify(res.data.send_phones)
+        );
+        localStorage.setItem(
+          "@receive_names",
+          JSON.stringify(res.data.rec_names)
+        );
+        localStorage.setItem(
+          "@receive_phones",
+          JSON.stringify(res.data.rec_phones)
+        );
+        window.location.replace("/");
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
   const handleSignIn = () => {
     setState({ ...state, loading: true });
     axios
@@ -26,7 +57,8 @@ const SignInForm = props => {
       .then(res => {
         if (res.data.token) {
           localStorage.setItem("@token", res.data.token);
-          window.location.replace("/");
+          //get histories
+          getHistories(res.data.token);
         } else if (!res.data.success) {
           setError({
             alert: true,
@@ -56,7 +88,7 @@ const SignInForm = props => {
         {...password}
         allowClear
         prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
-        placeholder="Mật khẩu"
+        placeholder={Lang.pwd}
         style={{ marginBottom: 20 }}
         onPressEnter={handleSignIn}
       />
@@ -69,7 +101,7 @@ const SignInForm = props => {
           type="danger"
           onClick={handleSignIn}
         >
-          Đăng nhập
+          {Lang.signin}
         </Button>
       )}
       {error.alert && <Alert description={error.msg} type="error" showIcon />}

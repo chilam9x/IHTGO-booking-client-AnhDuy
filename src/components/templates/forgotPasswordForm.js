@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Button, Icon, Input, Alert, Spin, Result } from "antd";
 import axios from "../../utils/axios";
 import useFormInput from "../../utils/useFormInput";
+import languages from "../../utils/languages";
+const Lang = languages("login");
 
 const ForgotPasswordForm = props => {
   const [state, setState] = useState({
@@ -63,7 +65,7 @@ const ForgotPasswordForm = props => {
             {...phone}
             allowClear
             prefix={<Icon type="phone" style={{ color: "rgba(0,0,0,.25)" }} />}
-            placeholder="Số điện thoại"
+            placeholder={Lang.phone}
             style={{ marginBottom: 20 }}
           />
           {state.loading ? (
@@ -75,7 +77,7 @@ const ForgotPasswordForm = props => {
               type="danger"
               onClick={handleSignIn}
             >
-              Đặt lại mật khẩu
+              {Lang.reset_pwd}
             </Button>
           )}
           {error.alert && (

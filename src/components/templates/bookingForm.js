@@ -15,7 +15,8 @@ import DynamicImport from "../../utils/lazyImport";
 import { useGlobalState, dispatch } from "../../Store";
 import { SET_ORDER_INFO, SET_SOURCE_LOCATION } from "../../utils/actions";
 import Geocode from "react-geocode";
-
+import languages from "../../utils/languages";
+const lang = languages("booking");
 Geocode.setApiKey("AIzaSyBaumnHkYRqgqAIx3u1KFFu7N7LjdjJjAI");
 
 const LocationInput = DynamicImport(() => import("../organisms/locationInput"));
@@ -294,28 +295,18 @@ const BookingForm = props => {
           marginRight: "auto"
         }}
       >
-        <Divider orientation="left">Nhập địa chỉ gửi hàng</Divider>
+        <Divider orientation="left">{lang.sender_add}</Divider>
         {state.sourceInvalid && (
-          <Alert
-            message="Vui lòng nhập điểm gửi hàng"
-            type="error"
-            showIcon
-            banner
-          />
+          <Alert message={lang.sender_add} type="error" showIcon banner />
         )}
         <LocationInput />
-        <Divider orientation="left">Nhập địa chỉ nhận hàng</Divider>
+        <Divider orientation="left">{lang.receive_add}</Divider>
         {state.desInvalid && (
-          <Alert
-            message="Vui lòng nhập điểm nhận hàng"
-            type="error"
-            showIcon
-            banner
-          />
+          <Alert message={lang.receive_add} type="error" showIcon banner />
         )}
         <LocationInput destination />
 
-        <Divider orientation="left">Thông số đơn hàng</Divider>
+        <Divider orientation="left">{lang.order_info}</Divider>
         {!orderInfo.isInventory && (
           <Tooltip title="Áp dụng bảng giá cố định cho từng khu vực">
             <Checkbox
@@ -330,14 +321,14 @@ const BookingForm = props => {
                 } else setOrder({ isDocument: e.target.checked });
               }}
             >
-              Giao chứng từ
+              {lang.document}
             </Checkbox>
           </Tooltip>
         )}
         {!orderInfo.isDocument && (
           <Tooltip title="Khoảng cách ngắn nhất dựa theo Google Map">
             <Input
-              addonBefore="Quãng đường"
+              addonBefore={lang.distance}
               style={{ width: "100%", marginBottom: 10, marginTop: 10 }}
               value={orderInfo.distance}
               addonAfter="km"
@@ -360,14 +351,14 @@ const BookingForm = props => {
               <Input
                 allowClear
                 style={{ width: "30%" }}
-                placeholder="Dài"
+                placeholder={lang.length}
                 value={orderInfo.len}
                 onChange={e => inputChange("len", e.target.value)}
               />
               <Input
                 allowClear
                 style={{ width: "30%" }}
-                placeholder="Rộng"
+                placeholder={lang.width}
                 value={orderInfo.width}
                 onChange={e => inputChange("width", e.target.value)}
               />
@@ -375,7 +366,7 @@ const BookingForm = props => {
               <Input
                 allowClear
                 style={{ width: "40%" }}
-                placeholder="Cao"
+                placeholder={lang.height}
                 addonAfter="cm"
                 value={orderInfo.height}
                 onChange={e => inputChange("height", e.target.value)}
@@ -412,7 +403,7 @@ const BookingForm = props => {
               <Input
                 allowClear
                 style={{ width: "100%" }}
-                placeholder="Cân nặng"
+                placeholder={lang.weight}
                 addonAfter="kg"
                 value={orderInfo.weight}
                 onChange={e => inputChange("weight", e.target.value)}
@@ -420,7 +411,7 @@ const BookingForm = props => {
             </Tooltip>
           </>
         )}
-        <Divider orientation="left">Tùy chọn thêm</Divider>
+        <Divider orientation="left">{lang.option}</Divider>
         {!orderInfo.isInventory && (
           <Row>
             <Tooltip title="Cước phí tiêu chuẩn +10,000 vnđ">
@@ -428,7 +419,7 @@ const BookingForm = props => {
                 checked={orderInfo.isHandOn ? true : false}
                 onChange={e => setOrder({ isHandOn: e.target.checked })}
               >
-                Giao tận tay
+                {lang.handon}
               </Checkbox>
             </Tooltip>
             <Tooltip title="Nhân đôi cước phí tiêu chuẩn">
@@ -436,7 +427,7 @@ const BookingForm = props => {
                 checked={orderInfo.isSpeed ? true : false}
                 onChange={e => setOrder({ isSpeed: e.target.checked })}
               >
-                Giao hỏa tốc
+                {lang.speed}
               </Checkbox>
             </Tooltip>
             {/* {!orderInfo.isDocument && (
@@ -453,7 +444,7 @@ const BookingForm = props => {
                   checked={orderInfo.isInventory ? true : false}
                   onChange={e => setOrder({ isInventory: e.target.checked })}
                 >
-                  Làm hàng siêu thị
+                  {lang.market}
                 </Checkbox>
               </Tooltip>
             )}
@@ -463,8 +454,8 @@ const BookingForm = props => {
           <Input
             allowClear
             style={{ marginTop: 10 }}
-            addonBefore="Thu hộ"
-            placeholder="Nhập số tiền thu hộ"
+            addonBefore={lang.cod}
+            placeholder={lang.cod_price}
             addonAfter="VNĐ"
             value={orderInfo.cod}
             onChange={e => inputChange("cod", e.target.value)}
@@ -473,10 +464,10 @@ const BookingForm = props => {
         <Statistic
           title={
             <Row>
-              Cước phí tạm tính (VNĐ)
+              {lang.price} (VNĐ)
               {"   "}
               <Button size="small" onClick={priceCalc} type="danger">
-                Tính tiền cước
+                {lang.calc}
               </Button>
             </Row>
           }
@@ -492,7 +483,7 @@ const BookingForm = props => {
           onClick={toNextPage}
         >
           <b>
-            Tiếp tục đơn hàng <Icon type="right" />
+            {lang.continue} <Icon type="right" />
           </b>
         </Button>
         <br />

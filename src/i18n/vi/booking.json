@@ -1,0 +1,23 @@
+{
+    "temp" :"Tạm tính",
+    "more_info":"Thêm thông tin",
+    "finish" :"Hoàn thành",
+    "sender_add" : "Nhập địa chỉ gửi hàng",
+    "receive_add" :"Nhập địa chỉ nhận hàng",
+    "order_info" : "Thông số đơn hàng",
+    "document" :"Giao chứng từ",
+    "distance" :"Quãng đường",
+    "length" : "Dài",
+    "width" : "Rộng",
+    "height" : "Cao",
+    "weight" : "Cân nặng",
+    "option" : "Tùy chọn thêm",
+    "handon" : "Giao tận tay",
+    "speed" : "Giao hỏa tốc",
+    "market" : "Làm hàng siêu thị",
+    "cod" : "Thu hộ",
+    "cod_price" : "Nhập số tiền thu hộ",
+    "price": "Cước phí tạm tính",
+    "calc" : "Tính tiền cước",
+    "continue" : "Tiếp tục đơn hàng"
+}

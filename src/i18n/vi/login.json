@@ -1,0 +1,12 @@
+{
+    "signin" : "Đăng nhập",
+    "signup":"Đăng ký",
+    "forgot":"Quên mật khẩu",
+    "username":"Tên người dùng",
+    "email":"Email",
+    "phone":"Số điện thoại",
+    "add":"Địa chỉ",
+    "pwd":"Mật khẩu",
+    "confirm_pwd":"Xác nhận mật khẩu",
+    "reset_pwd":"Đặt lại mật khẩu"
+}

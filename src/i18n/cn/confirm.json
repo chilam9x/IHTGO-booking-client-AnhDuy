@@ -1,0 +1,16 @@
+{
+    "or_name":"訂單名稱 (如有)",
+    "code" : "訂單編號",
+    "payment" : "付款方",
+    "sender": "寄件人",
+    "receiver" : "收件人",
+    "send_info" : "寄件人信息",
+    "rec_info" : "收件人信息",
+    "name":"姓名",
+    "phone": "電話號碼",
+    "note" : "記住",
+    "note_body" : "客戶記住",
+    "price" : "估計費用",
+    "back" : "返回",
+    "confirm" : "確認"
+}
