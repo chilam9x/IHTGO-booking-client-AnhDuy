@@ -69,7 +69,7 @@ const SignInForm = props => {
       .catch(err => {
         setError({
           alert: true,
-          msg: "Sai tài khoản hoặc mật khẩu"
+          msg: Lang.signin_fail
         });
       })
       .finally(() => setState({ ...state, loading: false }));
@@ -81,7 +81,7 @@ const SignInForm = props => {
         {...phone}
         allowClear
         prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
-        placeholder="Số điện thoại hoặc email"
+        placeholder={Lang.signinform}
         style={{ marginBottom: 20 }}
       />
       <Input.Password
@@ -93,7 +93,7 @@ const SignInForm = props => {
         onPressEnter={handleSignIn}
       />
       {state.loading ? (
-        <Spin tip="Đang tiến hành đăng nhập..." />
+        <Spin tip={Lang.signin_msg} />
       ) : (
         <Button
           style={{ width: "100%", marginBottom: 20 }}

@@ -1,0 +1,13 @@
+{
+    "code" :"Mã vận đơn",
+    "or_name" :"Tên đơn hàng",
+    "price" : "Tổng tiền",
+    "sendadd" : "Nơi gửi",
+    "recadd" : "Nơi nhận",
+    "credate" : "Ngày tạo",
+    "all" : "Tất cả",
+    "waiting" : "Đơn chưa giao",
+    "finish" : "Đơn đã giao",
+    "cancel" :"Đơn đã hủy",
+    "more" : "Xem thêm"
+}

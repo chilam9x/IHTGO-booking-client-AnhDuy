@@ -19,5 +19,9 @@
     "cod_price" : "Nhập số tiền thu hộ",
     "price": "Cước phí tạm tính",
     "calc" : "Tính tiền cước",
-    "continue" : "Tiếp tục đơn hàng"
+    "continue" : "Tiếp tục đơn hàng",
+    "add":"Địa chỉ",
+    "print" :"In hóa đơn",
+    "yes" :"Có",
+    "no" : "Không"
 }

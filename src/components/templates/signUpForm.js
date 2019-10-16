@@ -27,37 +27,37 @@ const SignUpForm = props => {
     if (name.value === "") {
       setError({
         alert: true,
-        message: "Họ tên không được bỏ trống"
+        message: Lang.msg_name
       });
       return false;
     } else if (email.value === "") {
       setError({
         alert: true,
-        message: "Email không được bỏ trống"
+        message: Lang.msg_email
       });
       return false;
     } else if (phone.value === "") {
       setError({
         alert: true,
-        message: "Số điện thoại không được bỏ trống"
+        message: Lang.msg_phone
       });
       return false;
     } else if (address.value === "") {
       setError({
         alert: true,
-        message: "Địa chỉ không được bỏ trống"
+        message: Lang.msg_addr
       });
       return false;
     } else if (password.value.length < 8) {
       setError({
         alert: true,
-        message: "Mật khẩu phải dài hơn 8 ký tự"
+        message: Lang.msg_8char
       });
       return false;
     } else if (password.value !== confirm.value) {
       setError({
         alert: true,
-        message: "Mật khẩu xác nhận không trùng khớp"
+        message: Lang.msg_notmatch
       });
       return false;
     }
@@ -99,7 +99,7 @@ const SignUpForm = props => {
   return state.isSuccess ? (
     <Result
       status="success"
-      title="Bạn đã đăng ký tài khoản thành công!"
+      title={Lang.signup_ok}
       extra={[
         <Button
           key="buy"
@@ -111,7 +111,7 @@ const SignUpForm = props => {
             });
           }}
         >
-          Quay lại trang đăng nhập
+          {Lang.signup_back}
         </Button>
       ]}
     />
@@ -162,7 +162,7 @@ const SignUpForm = props => {
         style={{ marginBottom: 20 }}
       />
       {state.loading ? (
-        <Spin tip="Đang tiến hành đăng ký..." />
+        <Spin tip={Lang.signup_msg} />
       ) : (
         <Button
           style={{ width: "100%", marginBottom: 20 }}

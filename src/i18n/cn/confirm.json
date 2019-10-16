@@ -12,5 +12,7 @@
     "note_body" : "客戶記住",
     "price" : "估計費用",
     "back" : "返回",
-    "confirm" : "確認"
+    "confirm" : "確認",
+    "scan" :"二維馬",
+    "sign" : "簽名"
 }

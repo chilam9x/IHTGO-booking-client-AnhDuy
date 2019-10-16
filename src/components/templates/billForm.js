@@ -10,6 +10,10 @@ import {
 } from "antd";
 import ReactToPrint from "react-to-print";
 import QRCode from "qrcode.react";
+import languages from "../../utils/languages";
+
+const lang = languages("confirm");
+const lang2 = languages("booking");
 
 const BillForm = props => {
   const componentRef = useRef();
@@ -30,7 +34,7 @@ const BillForm = props => {
           trigger={() => (
             <Button key="print" type="danger">
               <Icon type="printer" />
-              In hóa đơn
+              {lang2.print}
             </Button>
           )}
           content={() => componentRef.current}
@@ -47,9 +51,10 @@ const BillForm = props => {
             size={80}
             src="https://ihtgo.com.vn/public/Images/Index/logo.png"
           />{" "}
-          <b>IHTGO Express</b>
+          <b>IHTGO</b>
+          <QRCode value={String(props.data.code)} size={80} />
         </Typography.Title>
-        <Divider orientation="left">Thông tin người gửi</Divider>
+        <Divider orientation="left">{lang.send_info}</Divider>
         <Descriptions
           size="small"
           column={{ xxl: 3, xl: 2, lg: 2, md: 2, sm: 2, xs: 1 }}
@@ -64,7 +69,7 @@ const BillForm = props => {
             {props.data.sender_address}
           </Descriptions.Item>
         </Descriptions>
-        <Divider orientation="left">Thông tin người nhận</Divider>
+        <Divider orientation="left">{lang.rec_info}</Divider>
         <Descriptions
           size="small"
           column={{ xxl: 3, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
@@ -84,13 +89,16 @@ const BillForm = props => {
           size="small"
           column={{ xxl: 3, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
         >
-          <Descriptions.Item label="Quãng đường" span={1}>
+          <Descriptions.Item label={lang2.distance} span={1}>
             {props.data.distance && props.data.distance + " km"}
           </Descriptions.Item>
-          <Descriptions.Item label="Kích thước" span={1}>
+          <Descriptions.Item
+            label={lang2.length + lang2.width + lang2.height}
+            span={1}
+          >
             {getSize()}
           </Descriptions.Item>
-          <Descriptions.Item label="Cân nặng" span={1}>
+          <Descriptions.Item label={lang2.weight} span={1}>
             {props.data.weight && props.data.weight + " kg"}
           </Descriptions.Item>
         </Descriptions>
@@ -98,22 +106,22 @@ const BillForm = props => {
           size="small"
           column={{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
         >
-          <Descriptions.Item label="Tận tay" span={1}>
-            {props.data.hand_on ? "Có" : "Không"}
+          <Descriptions.Item label={lang2.handon} span={1}>
+            {props.data.hand_on ? lang2.yes : lang2.no}
           </Descriptions.Item>
-          <Descriptions.Item label="Hỏa tốc" span={1}>
-            {props.data.is_speed ? "Có" : "Không"}
+          <Descriptions.Item label={lang2.speed} span={1}>
+            {props.data.is_speed ? lang2.yes : lang2.no}
           </Descriptions.Item>
-          <Descriptions.Item label="Hàng siêu thị" span={2}>
-            {props.data.car_option === 4 ? "Có" : "Không"}
+          <Descriptions.Item label={lang2.market} span={2}>
+            {props.data.car_option === 4 ? lang2.yes : lang2.no}
           </Descriptions.Item>
-          <Descriptions.Item label="Thu hộ" span={1}>
+          <Descriptions.Item label={lang2.cod} span={1}>
             {props.data.take_money ? props.data.take_money + " vnđ" : "0 vnđ"}
           </Descriptions.Item>
-          <Descriptions.Item label="Người trả phí" span={1}>
-            {props.data.payer === 1 ? "Người nhận" : "Người gửi"}
+          <Descriptions.Item label={lang.payment} span={1}>
+            {props.data.payer === 1 ? lang.receiver : lang.sender}
           </Descriptions.Item>
-          <Descriptions.Item label="Tiền cước" span={2}>
+          <Descriptions.Item label={lang.price} span={2}>
             {props.data.total_price} vnđ
           </Descriptions.Item>
         </Descriptions>
@@ -122,12 +130,21 @@ const BillForm = props => {
           size="small"
           column={{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
         >
-          <Descriptions.Item label="Quét mã" span={1}>
+          <Descriptions.Item label={lang.scan} span={1}>
             <QRCode value={String(props.data.code)} size={100} />
           </Descriptions.Item>
-          <Descriptions.Item label="Chữ ký 2" span={1}></Descriptions.Item>
-          <Descriptions.Item label="Chữ ký 3" span={1}></Descriptions.Item>
-          <Descriptions.Item label="Chữ ký 3" span={1}></Descriptions.Item>
+          <Descriptions.Item
+            label={lang.sign + "1"}
+            span={1}
+          ></Descriptions.Item>
+          <Descriptions.Item
+            label={lang.sign + "2"}
+            span={1}
+          ></Descriptions.Item>
+          <Descriptions.Item
+            label={lang.sign + "3"}
+            span={1}
+          ></Descriptions.Item>
         </Descriptions>
         <Typography.Paragraph>{props.data.note}</Typography.Paragraph>
       </div>

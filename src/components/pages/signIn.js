@@ -9,7 +9,9 @@ const ForgotPassword = DynamicImport(() =>
   import("../templates/forgotPasswordForm")
 );
 const { TabPane } = Tabs;
-
+const lang = localStorage.getItem("@lang")
+  ? localStorage.getItem("@lang")
+  : "vi";
 const SignIn = props => {
   const [state, setState] = useState({
     loading: false,
@@ -31,7 +33,10 @@ const SignIn = props => {
     <div
       style={{
         height: window.innerHeight,
-        backgroundImage: `url("https://ihtgo.com.vn/public/Images/FileUpload/images/TrangChu/index_banner.jpg")`
+        backgroundImage:
+          lang == "vi"
+            ? `url("https://ihtgo.com.vn/public/Images/FileUpload/images/TrangChu/index_banner.jpg")`
+            : `url("../img/china_banner.jpg")`
       }}
     >
       <Affix

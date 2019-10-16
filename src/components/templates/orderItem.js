@@ -4,6 +4,10 @@ import { Drawer, Row, Col, Divider, Statistic, Button } from "antd";
 import QRCode from "qrcode.react";
 import DynamicImport from "../../utils/lazyImport";
 import axios from "../../utils/axios";
+import languages from "../../utils/languages";
+
+const lang = languages("confirm");
+const lang2 = languages("booking");
 
 const OrderError = DynamicImport(() => import("../organisms/orderError"));
 const OrderItemLoading = DynamicImport(() =>
@@ -86,29 +90,29 @@ const OrderItem = props => {
                 padding: "3px 20px"
               }}
             >
-              Mã vận đơn {state.order.coupon_code}
+              {lang.code} {state.order.coupon_code}
             </p>
             <p style={{ ...pStyle, marginBottom: 10 }}>
-              Tên đơn hàng: {state.order.name} ({state.order.code}){" "}
+              {lang.or_name}: {state.order.name} ({state.order.code}){" "}
               <Button
                 type="danger"
                 icon="printer"
                 onClick={() => setPrint(true)}
               >
-                In hóa đơn
+                {lang2.print}
               </Button>
             </p>
-            <Divider orientation="left">Thông tin nơi gửi</Divider>
+            <Divider orientation="left">{lang.send_info}</Divider>
             <Row>
               <Col span={12}>
                 <DescriptionItem
-                  title="Họ tên"
+                  title={lang.name}
                   content={state.order.sender_name}
                 />
               </Col>
               <Col span={12}>
                 <DescriptionItem
-                  title="Số điện thoại"
+                  title={lang.phone}
                   content={state.order.sender_phone}
                 />
               </Col>
@@ -123,20 +127,20 @@ const OrderItem = props => {
             </Row>
             <Row>
               <Col span={24}>
-                <DescriptionItem title="Ghi chú" content={state.order.note} />
+                <DescriptionItem title={lang.note} content={state.order.note} />
               </Col>
             </Row>
-            <Divider orientation="left">Thông tin nơi nhận</Divider>
+            <Divider orientation="left">{lang.rec_info}</Divider>
             <Row>
               <Col span={12}>
                 <DescriptionItem
-                  title="Họ tên"
+                  title={lang.name}
                   content={state.order.receive_name}
                 />
               </Col>
               <Col span={12}>
                 <DescriptionItem
-                  title="Số điện thoại"
+                  title={lang.phone}
                   content={state.order.receive_phone}
                 />
               </Col>
@@ -144,54 +148,57 @@ const OrderItem = props => {
             <Row>
               <Col span={24}>
                 <DescriptionItem
-                  title="Địa chỉ"
+                  title={lang2.add}
                   content={state.order.receive_address}
                 />
               </Col>
             </Row>
-            <Divider orientation="left">Thông số đơn hàng</Divider>
+            <Divider orientation="left">{lang2.order_info}</Divider>
             <Row>
               <Col span={8}>
                 <DescriptionItem
-                  title="Lộ trình"
+                  title={lang2.distance}
                   content={state.order.distance && state.order.distance + " km"}
                 />
               </Col>
               <Col span={8}>
-                <DescriptionItem title="Kích thước" content={getSize()} />
+                <DescriptionItem
+                  title={lang2.length + lang2.width + lang2.height}
+                  content={getSize()}
+                />
               </Col>
               <Col span={8}>
                 <DescriptionItem
-                  title="Cân nặng"
+                  title={lang2.weight}
                   content={state.order.weight && state.order.weight + " kg"}
                 />
               </Col>
             </Row>
-            <Divider orientation="left">Tùy chọn đơn hàng</Divider>
+            <Divider orientation="left">{lang2.option}</Divider>
             <Row>
               <Col span={8}>
                 <DescriptionItem
-                  title="Giao tận tay"
-                  content={state.order.hand_on ? "Có" : "Không"}
+                  title={lang2.handon}
+                  content={state.order.hand_on ? lang2.yes : lang2.no}
                 />
               </Col>
               <Col span={8}>
                 <DescriptionItem
-                  title="Giao hỏa tốc"
-                  content={state.order.is_speed ? "Có" : "Không"}
+                  title={lang2.speed}
+                  content={state.order.is_speed ? lang2.yes : lang2.no}
                 />
               </Col>
             </Row>
             <Row>
               <Col span={8}>
                 <DescriptionItem
-                  title="Làm hàng siêu thị"
-                  content={state.order.car_option === 4 ? "Có" : "Không"}
+                  title={lang2.market}
+                  content={state.order.car_option === 4 ? lang2.yes : lang2.no}
                 />
               </Col>
               <Col span={8}>
                 <DescriptionItem
-                  title="Thu hộ"
+                  title={lang2.cod}
                   content={
                     state.order.take_money
                       ? state.order.take_money + " vnđ"
@@ -201,19 +208,21 @@ const OrderItem = props => {
               </Col>
               <Col span={8}>
                 <DescriptionItem
-                  title="Người thanh toán"
-                  content={state.order.payer === 1 ? "Người nhận" : "Người gửi"}
+                  title={lang.payment}
+                  content={
+                    state.order.payer === 1 ? lang.receiver : lang.sender
+                  }
                 />
               </Col>
             </Row>
-            <Divider orientation="left">Thanh toán</Divider>
+            <Divider orientation="left">{lang2.price}</Divider>
             <Statistic
-              title={"Cước phí tạm tính (VNĐ)"}
+              title={lang2.price + " (VNĐ)"}
               value={formatMoney(parseInt(state.order.total_price))}
               style={{ marginTop: 10 }}
               valueStyle={{ color: "#68bd45" }}
             />
-            <Divider orientation="left">Lịch sử giao hàng</Divider>
+            <Divider orientation="left">---</Divider>
             <Row>
               <Col span={16}>
                 {/* <Steps direction="vertical" size="small" current={3}>

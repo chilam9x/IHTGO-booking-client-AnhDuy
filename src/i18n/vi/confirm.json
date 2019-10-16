@@ -12,5 +12,7 @@
     "note_body" : "Ghi chú của khách hàng",
     "price" : "Cước phí tạm tính",
     "back" : "Quay lại",
-    "confirm" : "Xác nhận đơn hàng"
+    "confirm" : "Xác nhận đơn hàng",
+    "scan" :"Quét mã",
+    "sign" : "Chữ ký"
 }

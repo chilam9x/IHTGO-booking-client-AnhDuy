@@ -49,7 +49,7 @@ const ForgotPasswordForm = props => {
       {success ? (
         <Result
           status="success"
-          subTitle="Đặt lại mật khẩu thành công, vui lòng kiểm tra tin nhắn SMS của bạn!"
+          subTitle={Lang.forgot_ok}
           extra={[
             <Button type="primary" key="console" onClick={props.back}>
               Đăng nhập lại
@@ -69,7 +69,7 @@ const ForgotPasswordForm = props => {
             style={{ marginBottom: 20 }}
           />
           {state.loading ? (
-            <Spin tip="Đang đặt lại mật khẩu..." />
+            <Spin tip={Lang.forgot_msg} />
           ) : (
             <Button
               style={{ width: "100%", marginBottom: 20 }}
@@ -81,11 +81,7 @@ const ForgotPasswordForm = props => {
             </Button>
           )}
           {error.alert && (
-            <Alert
-              description="Số điện thoại không tồn tại vui lòng kiểm tra lại"
-              type="error"
-              showIcon
-            />
+            <Alert description={Lang.forgot_1} type="error" showIcon />
           )}
         </>
       )}

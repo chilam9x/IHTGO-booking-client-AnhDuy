@@ -12,8 +12,8 @@ import {
   SET_ORDER_LIST_CANCELLED
 } from "../../utils/actions";
 import { ALL, WAITING, FINISHED, CANCELLED } from "../../utils/constants";
-import ReactToPrint from "react-to-print";
-
+import languages from "../../utils/languages";
+const lang = languages("list");
 const OrderItem = DynamicImport(() => import("../templates/orderItem"));
 
 var nf = Intl.NumberFormat();
@@ -30,7 +30,7 @@ const getColorCode = status => {
 
 const columns = [
   {
-    title: "Mã vận đơn",
+    title: lang.code,
     dataIndex: "coupon_code",
     key: "id",
     render: (text, record, index) =>
@@ -44,7 +44,7 @@ const columns = [
       )
   },
   {
-    title: "Tên đơn hàng",
+    title: lang.or_name,
     dataIndex: "name",
     key: "name",
     render: (text, record, index) => (
@@ -54,25 +54,25 @@ const columns = [
     )
   },
   {
-    title: "Tổng tiền",
+    title: lang.price,
     dataIndex: "total_price",
     key: "price",
     render: text => nf.format(text)
   },
   {
-    title: "Nơi gửi",
+    title: lang.sendadd,
     dataIndex: "sender_address",
     key: "sender",
     render: text => text
   },
   {
-    title: "Nơi nhận",
+    title: lang.recadd,
     dataIndex: "receive_address",
     key: "receiver",
     render: text => text
   },
   {
-    title: "Ngày tạo",
+    title: lang.credate,
     dataIndex: "created_at",
     key: "created_at",
     render: text => text //moment(text, "YYYYMMDD hh:mm:ss").fromNow()
@@ -208,7 +208,7 @@ const OrderList = props => {
             })
           }
         >
-          Tất cả
+          {lang.all}
         </Menu.Item>
         <Menu.Item
           key={WAITING}
@@ -221,8 +221,8 @@ const OrderList = props => {
             })
           }
         >
-          <Icon type="tag" theme="filled" style={{ color: "blue" }} /> Đơn chưa
-          giao
+          <Icon type="tag" theme="filled" style={{ color: "blue" }} />{" "}
+          {lang.waiting}
         </Menu.Item>
         <Menu.Item
           key={FINISHED}
@@ -235,8 +235,8 @@ const OrderList = props => {
             })
           }
         >
-          <Icon type="tag" theme="filled" style={{ color: "green" }} /> Đơn đã
-          giao
+          <Icon type="tag" theme="filled" style={{ color: "green" }} />{" "}
+          {lang.finish}
         </Menu.Item>
         <Menu.Item
           key={CANCELLED}
@@ -250,7 +250,7 @@ const OrderList = props => {
           }
         >
           <Icon type="tag" theme="filled" style={{ color: "red" }} />
-          Đơn đã hủy
+          {lang.cancel}
         </Menu.Item>
         {/* <Menu.Item>
           <Input.Search
@@ -298,7 +298,7 @@ const OrderList = props => {
         onClick={loadMore}
         disabled={loading}
       >
-        Xem thêm <PulseLoader size={5} color={"#fff"} />
+        {lang.more} <PulseLoader size={5} color={"#fff"} />
       </Button>
 
       <OrderItem close={onClose} visible={visible} id={state.selectedOrder} />
