@@ -308,7 +308,7 @@ const BookingForm = props => {
 
         <Divider orientation="left">{lang.order_info}</Divider>
         {!orderInfo.isInventory && (
-          <Tooltip title="Áp dụng bảng giá cố định cho từng khu vực">
+          <Tooltip title={lang.document_tt}>
             <Checkbox
               checked={orderInfo.isDocument}
               onChange={e => {
@@ -326,7 +326,7 @@ const BookingForm = props => {
           </Tooltip>
         )}
         {!orderInfo.isDocument && (
-          <Tooltip title="Khoảng cách ngắn nhất dựa theo Google Map">
+          <Tooltip title={lang.map_tt}>
             <Input
               addonBefore={lang.distance}
               style={{ width: "100%", marginBottom: 10, marginTop: 10 }}
@@ -340,12 +340,7 @@ const BookingForm = props => {
         {!orderInfo.isDocument && (
           <>
             {state.sizeInvalid && (
-              <Alert
-                message="vui lòng nhập kích thước hợp lệ"
-                type="error"
-                showIcon
-                banner
-              />
+              <Alert message={lang.size_err} type="error" showIcon banner />
             )}
             <Input.Group compact style={{ marginBottom: 10 }}>
               <Input
@@ -378,28 +373,9 @@ const BookingForm = props => {
         {!orderInfo.isDocument && (
           <>
             {state.weightInvalid && (
-              <Alert
-                message="Vui lòng nhập cân nặng hợp lệ"
-                type="error"
-                showIcon
-                banner
-              />
+              <Alert message={lang.wei_err} type="error" showIcon banner />
             )}
-            <Tooltip
-              title={
-                <>
-                  Cân nặng vượt quá 50kg sẽ phụ thu phí bốc xếp
-                  <br />
-                  0 - 50kg: miễn phí
-                  <br />
-                  51kg - 150kg: +50,000
-                  <br />
-                  151kg - 300kg: +100,000
-                  <br />
-                  >300kg: 100,000 + (1,000 nhân số kg)
-                </>
-              }
-            >
+            <Tooltip title={lang.wei_tt}>
               <Input
                 allowClear
                 style={{ width: "100%" }}
@@ -414,7 +390,7 @@ const BookingForm = props => {
         <Divider orientation="left">{lang.option}</Divider>
         {!orderInfo.isInventory && (
           <Row>
-            <Tooltip title="Cước phí tiêu chuẩn +10,000 vnđ">
+            <Tooltip title={lang.handon_tt}>
               <Checkbox
                 checked={orderInfo.isHandOn ? true : false}
                 onChange={e => setOrder({ isHandOn: e.target.checked })}
@@ -422,7 +398,7 @@ const BookingForm = props => {
                 {lang.handon}
               </Checkbox>
             </Tooltip>
-            <Tooltip title="Nhân đôi cước phí tiêu chuẩn">
+            <Tooltip title={lang.speed_tt}>
               <Checkbox
                 checked={orderInfo.isSpeed ? true : false}
                 onChange={e => setOrder({ isSpeed: e.target.checked })}
@@ -439,7 +415,7 @@ const BookingForm = props => {
               </Checkbox>
             )} */}
             {!orderInfo.isDocument && (
-              <Tooltip title="Tiền phí làm hàng siêu thị sẽ được cộng thêm sau khi hoàn tất">
+              <Tooltip title={lang.market_tt}>
                 <Checkbox
                   checked={orderInfo.isInventory ? true : false}
                   onChange={e => setOrder({ isInventory: e.target.checked })}

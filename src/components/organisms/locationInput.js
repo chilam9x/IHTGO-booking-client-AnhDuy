@@ -111,7 +111,7 @@ const LocationInput = props => {
         loading={loading}
       />
       {!loading && (
-        <Tooltip title="Nhập địa điểm rồi ấn ENTER. Có thể chọn theo gợi ý để tăng độ chính xác">
+        <Tooltip title={lang.location}>
           <AutoComplete
             allowClear
             open={open}
@@ -131,7 +131,6 @@ const LocationInput = props => {
             }
           >
             <Input
-              // addonBefore={props.destination ? "B" : "A"}
               onPressEnter={getSuggestions}
               placeholder={
                 props.destination ? lang.sender_add : lang.receive_add

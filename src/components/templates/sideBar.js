@@ -50,7 +50,11 @@ const SideBar = props => {
           }}
         >
           <CustomIcon type="form" style={{ fontSize: 22 }} />
-          <span className="nav-text">Tạo đơn hàng</span>
+          <span className="nav-text">
+            {localStorage.getItem("@lang") === "cn"
+              ? "創建訂單"
+              : "Tạo đơn hàng"}
+          </span>
         </Menu.Item>
         <Menu.Item
           key="2"
@@ -63,7 +67,11 @@ const SideBar = props => {
           }}
         >
           <CustomIcon type="profile" style={{ fontSize: 22 }} />
-          <span className="nav-text">Danh sách đơn</span>
+          <span className="nav-text">
+            {localStorage.getItem("@lang") === "cn"
+              ? "訂單名單"
+              : "Danh sách đơn"}
+          </span>
         </Menu.Item>
         <Menu.Item
           key="3"
@@ -73,7 +81,9 @@ const SideBar = props => {
           }}
         >
           <CustomIcon type="logout" style={{ fontSize: 22 }} />
-          <span className="nav-text">Đăng xuất</span>
+          <span className="nav-text">
+            {localStorage.getItem("@lang") === "cn" ? "登出" : "Đăng xuất"}
+          </span>
         </Menu.Item>
       </Menu>
     </Sider>

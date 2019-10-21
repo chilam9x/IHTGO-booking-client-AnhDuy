@@ -120,8 +120,8 @@ const Main = () => {
           <Result
             title={
               <>
-                Vị trí chưa xác định <br />
-                Vui lòng nhập đầy đủ thông tin để xác định vị trí!
+                {lang.no_map1} <br />
+                {lang.no_map2}
               </>
             }
             extra={
