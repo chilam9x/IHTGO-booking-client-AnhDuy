@@ -4,7 +4,6 @@ import styled from "styled-components";
 import { withRouter } from "react-router";
 import { dispatch, useGlobalState } from "../../Store";
 import { SET_MENU } from "../../utils/actions";
-
 const CustomIcon = styled(Icon)`
   color: #3fa0e4;
 `;

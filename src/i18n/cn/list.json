@@ -1,13 +1,13 @@
 {
-    "code" :"Mã vận đơn",
-    "or_name" :"Tên đơn hàng",
-    "price" : "Tổng tiền",
-    "sendadd" : "Nơi gửi",
-    "recadd" : "Nơi nhận",
-    "credate" : "Ngày tạo",
-    "all" : "Tất cả",
-    "waiting" : "Đơn chưa giao",
-    "finish" : "Đơn đã giao",
-    "cancel" :"Đơn đã hủy",
-    "more" : "Xem thêm"
+    "code" :"訂單編號",
+    "or_name" :"訂單名稱",
+    "price" : "總費用",
+    "sendadd" : "寄貨點",
+    "recadd" : "收貨點",
+    "credate" : "創建日期",
+    "all" : "全部",
+    "waiting" : "已確認",
+    "finish" : "已到達",
+    "cancel" :"已取消",
+    "more" : "其他信息"
 }

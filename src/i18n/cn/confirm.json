@@ -14,5 +14,7 @@
     "back" : "返回",
     "confirm" : "確認",
     "scan" :"二維馬",
-    "sign" : "簽名"
+    "sign" : "簽名",
+    "order_info": "訂單詳細信息",
+    "option": "額外服務"
 }

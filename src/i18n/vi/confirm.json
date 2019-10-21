@@ -1,9 +1,9 @@
 {
     "or_name":"Tên đơn hàng",
     "code" : "Mã đơn hàng",
-    "payment" : "Người thanh toán cước",
-    "sender": "Người gửi trả",
-    "receiver" : "Người nhận trả",
+    "payment" : "Người thanh toán",
+    "sender": "Người gửi",
+    "receiver" : "Người nhận",
     "send_info" : "Thông tin người gửi",
     "rec_info" : "Thông tin người nhận",
     "name":"Họ tên",
@@ -14,5 +14,7 @@
     "back" : "Quay lại",
     "confirm" : "Xác nhận đơn hàng",
     "scan" :"Quét mã",
-    "sign" : "Chữ ký"
+    "sign" : "Chữ ký",
+    "order_info" : "Thông số đơn hàng",
+    "option" : "Tùy chọn thêm"
 }

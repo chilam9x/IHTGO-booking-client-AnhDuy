@@ -1,13 +1,5 @@
 import React, { useRef } from "react";
-import {
-  Descriptions,
-  Modal,
-  Button,
-  Icon,
-  Divider,
-  Avatar,
-  Typography
-} from "antd";
+import { Descriptions, Modal, Button, Icon, Typography } from "antd";
 import ReactToPrint from "react-to-print";
 import QRCode from "qrcode.react";
 import languages from "../../utils/languages";
@@ -46,20 +38,22 @@ const BillForm = props => {
     >
       <div ref={componentRef}>
         <Typography.Title>
-          <Avatar
-            shape="square"
-            size={80}
+          <img
+            style={{ height: 50 }}
             src="https://ihtgo.com.vn/public/Images/Index/logo.png"
           />{" "}
           <b>IHTGO</b>
-          <QRCode value={String(props.data.code)} size={80} />
+          <QRCode
+            value={String(props.data.code)}
+            size={60}
+            style={{ marginLeft: "40%" }}
+          />
         </Typography.Title>
-        <Divider orientation="left">{lang.send_info}</Divider>
         <Descriptions
           size="small"
           column={{ xxl: 3, xl: 2, lg: 2, md: 2, sm: 2, xs: 1 }}
         >
-          <Descriptions.Item label={<Icon type="user" />} span={2}>
+          <Descriptions.Item label={lang.sender} span={2}>
             {props.data.sender_name}
           </Descriptions.Item>
           <Descriptions.Item label={<Icon type="phone" />} span={1}>
@@ -69,12 +63,11 @@ const BillForm = props => {
             {props.data.sender_address}
           </Descriptions.Item>
         </Descriptions>
-        <Divider orientation="left">{lang.rec_info}</Divider>
         <Descriptions
           size="small"
           column={{ xxl: 3, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
         >
-          <Descriptions.Item label={<Icon type="user" />} span={2}>
+          <Descriptions.Item label={lang.receiver} span={2}>
             {props.data.receive_name}
           </Descriptions.Item>
           <Descriptions.Item label={<Icon type="phone" />} span={1}>
@@ -93,7 +86,7 @@ const BillForm = props => {
             {props.data.distance && props.data.distance + " km"}
           </Descriptions.Item>
           <Descriptions.Item
-            label={lang2.length + lang2.width + lang2.height}
+            label={lang2.length + "x" + lang2.width + "x" + lang2.height}
             span={1}
           >
             {getSize()}
@@ -125,14 +118,12 @@ const BillForm = props => {
             {props.data.total_price} vnđ
           </Descriptions.Item>
         </Descriptions>
+        <Typography.Paragraph>Ghi chú: {props.data.note}</Typography.Paragraph>
         <Descriptions
           layout="vertical"
           size="small"
           column={{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
         >
-          <Descriptions.Item label={lang.scan} span={1}>
-            <QRCode value={String(props.data.code)} size={100} />
-          </Descriptions.Item>
           <Descriptions.Item
             label={lang.sign + "1"}
             span={1}
@@ -146,7 +137,6 @@ const BillForm = props => {
             span={1}
           ></Descriptions.Item>
         </Descriptions>
-        <Typography.Paragraph>{props.data.note}</Typography.Paragraph>
       </div>
     </Modal>
   );
