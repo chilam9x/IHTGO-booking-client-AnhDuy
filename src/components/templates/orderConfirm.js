@@ -133,11 +133,11 @@ const OrderConfirm = props => {
   return props.finish ? (
     <Result
       status="success"
-      title="Bạn đã đặt hàng thành công!"
+      title={lang.success}
       subTitle={
         <>
-          Mã vận đơn: {orderInfo.created_id} <br />
-          Tổng số tiền cước: {orderInfo.created_price} vnđ
+          {lang.code}: {orderInfo.created_id} <br />
+          {lang.price}: {orderInfo.created_price} vnđ
         </>
       }
       extra={[
@@ -146,9 +146,9 @@ const OrderConfirm = props => {
           key="console"
           onClick={() => window.location.replace("/orders")}
         >
-          Danh sách đơn hàng
+          {lang.list}
         </Button>,
-        <Button onClick={props.reset}>Tạo đơn hàng</Button>
+        <Button onClick={props.reset}>{lang.create}</Button>
       ]}
     />
   ) : (
@@ -174,7 +174,7 @@ const OrderConfirm = props => {
           banner
         />
       )}
-      <Tooltip title="Nhập mã vận đơn được in sẵn trên tờ bill">
+      <Tooltip title={lang.code_tip}>
         <Input
           allowClear
           placeholder={lang.code}

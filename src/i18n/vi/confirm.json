@@ -16,5 +16,9 @@
     "scan" :"Quét mã",
     "sign" : "Chữ ký",
     "order_info" : "Thông số đơn hàng",
-    "option" : "Tùy chọn thêm"
+    "option" : "Tùy chọn thêm",
+    "code_tip":"Nhập mã vận đơn được in sẵn trên tờ bill",
+    "success" : "Bạn đã đặt hàng thành công!",
+    "list":"Danh sách đơn hàng",
+    "create":"Tạo đơn hàng"
 }

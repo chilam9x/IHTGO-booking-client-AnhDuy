@@ -41,7 +41,7 @@ const BillForm = props => {
           <img
             style={{ height: 50 }}
             src="https://ihtgo.com.vn/public/Images/Index/logo.png"
-          />{" "}
+          />
           <b>IHTGO</b>
           <QRCode
             value={String(props.data.code)}
