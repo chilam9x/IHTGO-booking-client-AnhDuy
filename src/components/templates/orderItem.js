@@ -120,7 +120,7 @@ const OrderItem = props => {
             <Row>
               <Col span={24}>
                 <DescriptionItem
-                  title="Địa chỉ"
+                  title={lang2.add}
                   content={state.order.sender_address}
                 />
               </Col>

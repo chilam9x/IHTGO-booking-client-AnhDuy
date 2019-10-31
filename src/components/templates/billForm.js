@@ -118,7 +118,9 @@ const BillForm = props => {
             {props.data.total_price} vnđ
           </Descriptions.Item>
         </Descriptions>
-        <Typography.Paragraph>Ghi chú: {props.data.note}</Typography.Paragraph>
+        <Typography.Paragraph>
+          {lang.note}: {props.data.note}
+        </Typography.Paragraph>
         <Descriptions
           layout="vertical"
           size="small"

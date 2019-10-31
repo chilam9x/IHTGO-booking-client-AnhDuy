@@ -133,7 +133,7 @@ const LocationInput = props => {
             <Input
               onPressEnter={getSuggestions}
               placeholder={
-                props.destination ? lang.sender_add : lang.receive_add
+                props.destination ? lang.receive_add : lang.sender_add
               }
             />
           </AutoComplete>
