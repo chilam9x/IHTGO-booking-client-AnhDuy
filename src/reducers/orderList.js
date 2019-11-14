@@ -5,14 +5,17 @@ import {
   SET_ORDER_LIST_FINISHED,
   SET_ORDER_LIST_CANCELLED,
   RESET_ORDER_LIST_ALL,
+  RESET_ORDER_LIST_SEARCH,
   RESET_ORDER_LIST_WAITING,
   RESET_ORDER_LIST_FINISHED,
-  RESET_ORDER_LIST_CANCELLED
+  RESET_ORDER_LIST_CANCELLED,
+  SET_ORDER_LIST_SEARCH
 } from "../utils/actions";
 import { ALL } from "../utils/constants";
 const initState = {
   current_option: ALL,
   all: [],
+  search: [],
   waiting: [],
   cancelled: [],
   finished: []
@@ -25,6 +28,13 @@ export default function companyReducer(state = initState, action) {
       return {
         ...state,
         all: state.all ? [...state.all, ...action.orders] : action.orders
+      };
+    case SET_ORDER_LIST_SEARCH:
+      return {
+        ...state,
+        search: state.search
+          ? [...state.search, ...action.orders]
+          : action.orders
       };
     case SET_ORDER_LIST_WAITING:
       return {
@@ -51,6 +61,11 @@ export default function companyReducer(state = initState, action) {
       return {
         ...state,
         all: []
+      };
+    case RESET_ORDER_LIST_SEARCH:
+      return {
+        ...state,
+        search: []
       };
     case RESET_ORDER_LIST_WAITING:
       return {

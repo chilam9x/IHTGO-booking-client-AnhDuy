@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Menu, Table, Tag, Button, Icon } from "antd";
+import React, { useState, useEffect } from "react";
+import { Menu, Table, Tag, Button, Icon, Input } from "antd";
 import PulseLoader from "react-spinners/PulseLoader";
 import DynamicImport from "../../utils/lazyImport";
 import axios from "../../utils/axios";
@@ -7,12 +7,21 @@ import { dispatch, useGlobalState } from "../../Store";
 import {
   SET_ORDER_LIST,
   SET_ORDER_LIST_ALL,
+  SET_ORDER_LIST_SEARCH,
   SET_ORDER_LIST_WAITING,
   SET_ORDER_LIST_FINISHED,
   SET_ORDER_LIST_CANCELLED
 } from "../../utils/actions";
-import { ALL, WAITING, FINISHED, CANCELLED } from "../../utils/constants";
+import {
+  ALL,
+  WAITING,
+  FINISHED,
+  CANCELLED,
+  SEARCH
+} from "../../utils/constants";
 import languages from "../../utils/languages";
+import useFormInput from "../../utils/useFormInput";
+
 const lang = languages("list");
 const OrderItem = DynamicImport(() => import("../templates/orderItem"));
 
@@ -88,7 +97,7 @@ const OrderList = props => {
   const [loading, setLoading] = useState(true);
 
   const [orders] = useGlobalState("orderList");
-
+  const search = useFormInput(null);
   const onClose = () => {
     setVisible(false);
   };
@@ -103,7 +112,7 @@ const OrderList = props => {
       setVisible(true);
     }
     if (!orders.all || orders.all.length === 0) {
-      getAll();
+      onSearch();
     } else {
       setLoading(false);
     }
@@ -137,6 +146,33 @@ const OrderList = props => {
         });
       })
       .finally(() => setLoading(false));
+  };
+
+  const onSearch = () => {
+    if (search.value && search.value != "") {
+      dispatch({
+        type: SET_ORDER_LIST,
+        orders: {
+          current_option: SEARCH
+        }
+      });
+      setLoading(true);
+      axios
+        .post("customer/search-all", {
+          search: search.value,
+          skip: orders.search ? orders.search.length : 0
+        })
+        .then(res => {
+          console.log(res.data);
+          dispatch({
+            type: SET_ORDER_LIST_SEARCH,
+            orders: res.data
+          });
+        })
+        .finally(() => setLoading(false));
+    } else {
+      getAll();
+    }
   };
 
   const getWaiting = () => {
@@ -184,21 +220,21 @@ const OrderList = props => {
   const loadMore = () => {
     setLoading(true);
     orders.current_option === ALL
-      ? getAll()
+      ? onSearch()
       : orders.current_option === WAITING
       ? getWaiting()
       : orders.current_option === FINISHED
       ? getFinished()
       : orders.current_option === CANCELLED
       ? getCancelled()
-      : getAll();
+      : onSearch();
   };
 
   return (
     <div style={{ height: "100%", padding: 30 }}>
       <Menu selectedKeys={[orders.current_option]} mode="horizontal">
         <Menu.Item
-          key={ALL}
+          key={ALL || SEARCH}
           onClick={() =>
             dispatch({
               type: SET_ORDER_LIST,
@@ -252,14 +288,15 @@ const OrderList = props => {
           <Icon type="tag" theme="filled" style={{ color: "red" }} />
           {lang.cancel}
         </Menu.Item>
-        {/* <Menu.Item>
+        <Menu.Item>
           <Input.Search
+            {...search}
             allowClear
             placeholder="Tìm đơn hàng theo mã vận đơn"
-            onSearch={search}
+            onSearch={onSearch}
             style={{ width: 400, marginLeft: 20 }}
           />
-        </Menu.Item> */}
+        </Menu.Item>
       </Menu>
       <br />
       <Table
@@ -275,6 +312,8 @@ const OrderList = props => {
             ? orders.finished
             : orders.current_option === CANCELLED
             ? orders.cancelled
+            : orders.current_option === SEARCH
+            ? orders.search
             : orders.all
         }
         pagination={false}
