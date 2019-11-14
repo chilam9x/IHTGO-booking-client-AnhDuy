@@ -9,5 +9,6 @@
     "waiting" : "已確認",
     "finish" : "已到達",
     "cancel" :"已取消",
-    "more" : "其他信息"
+    "more" : "其他信息",
+    "search" : "寻找"
 }

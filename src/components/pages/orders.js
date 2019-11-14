@@ -21,6 +21,7 @@ import {
 } from "../../utils/constants";
 import languages from "../../utils/languages";
 import useFormInput from "../../utils/useFormInput";
+import moment from "moment";
 
 const lang = languages("list");
 const OrderItem = DynamicImport(() => import("../templates/orderItem"));
@@ -84,7 +85,7 @@ const columns = [
     title: lang.credate,
     dataIndex: "created_at",
     key: "created_at",
-    render: text => text //moment(text, "YYYYMMDD hh:mm:ss").fromNow()
+    render: text => moment(text).format("DD/MM/YYYY")
   }
 ];
 
@@ -292,7 +293,7 @@ const OrderList = props => {
           <Input.Search
             {...search}
             allowClear
-            placeholder="Tìm đơn hàng theo mã vận đơn"
+            placeholder={lang.search}
             onSearch={onSearch}
             style={{ width: 400, marginLeft: 20 }}
           />
