@@ -93,11 +93,15 @@ const OrderItem = props => {
               {lang.code} {state.order.coupon_code}
             </p>
             <p style={{ ...pStyle, marginBottom: 10 }}>
-              {lang.or_name}: {state.order.name} ({state.order.code}){" "}
+              {lang.or_name}: {state.order.name} ({state.order.code})
               <Button
                 type="danger"
                 icon="printer"
-                onClick={() => setPrint(true)}
+                onClick={() =>
+                  window.open(
+                    "https://admin.ihtgo.com.vn/print-booking/" + state.order.id
+                  )
+                }
               >
                 {lang2.print}
               </Button>
