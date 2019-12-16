@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Input,
   Divider,
@@ -36,6 +36,10 @@ const OrderConfirm = props => {
   const [orderInfo] = useGlobalState("orderInfo");
   const [sourceLocation] = useGlobalState("sourceLocation");
   const [desLocation] = useGlobalState("desLocation");
+
+  useEffect(() => {
+    console.log(12345678);
+  }, []);
 
   const onChange = e => {
     setState({
@@ -119,8 +123,8 @@ const OrderConfirm = props => {
           dispatch({
             type: SET_ORDER_INFO,
             order: {
-              created_id: res.data.data.id,
-              created_price: res.data.data.total_price
+              created_id: res.data.data ? res.data.data.id : "",
+              created_price: res.data.data ? res.data.data.total_price : ""
             }
           });
           props.next();
@@ -186,8 +190,8 @@ const OrderConfirm = props => {
       </Tooltip>
       <Divider orientation="left">{lang.payment}</Divider>
       <Radio.Group onChange={onChange} value={state.value}>
-        <Radio value={1}>{lang.sender}</Radio>
-        <Radio value={2}>{lang.receiver}</Radio>
+        <Radio value={1}>{lang.receiver}</Radio>
+        <Radio value={2}>{lang.sender}</Radio>
       </Radio.Group>
       <Divider orientation="left">{lang.send_info}</Divider>
       {state.senderInvalid && (
@@ -199,7 +203,11 @@ const OrderConfirm = props => {
         />
       )}
       <AutoComplete
-        dataSource={JSON.parse(localStorage.getItem("@sender_names"))}
+        // dataSource={
+        //   localStorage.getItem("@sender_names")
+        //     ? JSON.parse(localStorage.getItem("@sender_names"))
+        //     : []
+        // }
         allowClear
         placeholder={lang.name}
         style={{ width: "100%", marginBottom: 10 }}
@@ -221,7 +229,11 @@ const OrderConfirm = props => {
       )}
       <AutoComplete
         allowClear
-        dataSource={JSON.parse(localStorage.getItem("@sender_phones"))}
+        // dataSource={
+        //   localStorage.getItem("@sender_phones")
+        //     ? JSON.parse(localStorage.getItem("@sender_phones"))
+        //     : []
+        // }
         placeholder={lang.phone}
         style={{ width: "100%" }}
         value={orderInfo.sender_phone}
@@ -242,7 +254,11 @@ const OrderConfirm = props => {
       <AutoComplete
         allowClear
         placeholder={lang.name}
-        dataSource={JSON.parse(localStorage.getItem("@receive_names"))}
+        // dataSource={
+        //   localStorage.getItem("@receive_names")
+        //     ? JSON.parse(localStorage.getItem("@receive_names"))
+        //     : []
+        // }
         style={{ width: "100%", marginBottom: 10 }}
         value={orderInfo.receiver_name}
         onChange={value => setOrder({ receiver_name: value })}
@@ -262,7 +278,11 @@ const OrderConfirm = props => {
       )}
       <AutoComplete
         allowClear
-        dataSource={JSON.parse(localStorage.getItem("@receive_phones"))}
+        // dataSource={
+        //   localStorage.getItem("@receive_phones")
+        //     ? JSON.parse(localStorage.getItem("@receive_phones"))
+        //     : []
+        // }
         placeholder={lang.phone}
         style={{ width: "100%" }}
         value={orderInfo.receiver_phone}

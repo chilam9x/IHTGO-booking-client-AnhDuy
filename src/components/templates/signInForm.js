@@ -22,8 +22,14 @@ const SignInForm = props => {
     axios
       .post("customer/load-histories", { token })
       .then(res => {
-        localStorage.setItem("@sender_add", JSON.stringify(res.data.send_add));
-        localStorage.setItem("@receive_add", JSON.stringify(res.data.rec_add));
+        localStorage.setItem(
+          "@sender_add",
+          res.data.send_add ? JSON.stringify(res.data.send_add) : []
+        );
+        localStorage.setItem(
+          "@receive_add",
+          res.data.rec_add ? JSON.stringify(res.data.rec_add) : []
+        );
         localStorage.setItem(
           "@sender_names",
           JSON.stringify(res.data.send_names)

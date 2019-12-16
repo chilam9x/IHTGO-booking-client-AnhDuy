@@ -22,6 +22,7 @@ const LocationInput = props => {
   const [location] = useGlobalState(
     props.destination ? "desLocation" : "sourceLocation"
   );
+
   const [state, setState] = useState({
     places: props.destination
       ? JSON.parse(localStorage.getItem("@receive_add"))
@@ -49,10 +50,11 @@ const LocationInput = props => {
           location: {
             lat,
             lng,
-            place:
-              address +
-              " " +
-              getProvinceName(response.results[0].address_components)
+            place: response.results[0].formatted_address
+            // place:
+            //   address +
+            //   " " +
+            //   getProvinceName(response.results[0].address_components)
           }
         });
       })
@@ -115,7 +117,7 @@ const LocationInput = props => {
           <AutoComplete
             allowClear
             open={open}
-            dataSource={state.places}
+            // dataSource={state.places}
             style={{ width: "100%" }}
             onSelect={getLocationFromAddress}
             onChange={changeInput}
