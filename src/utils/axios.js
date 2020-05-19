@@ -1,22 +1,22 @@
 import axios from "axios";
 import { message } from "antd";
 import React from "react";
-const API_URL = "https://xxx/api/";
+const API_URL = "http://139.180.195.15/IHTGo-Customer-homepage/api";
 
 axios.defaults.baseURL = "https://iht-cors-server.herokuapp.com/" + API_URL;
 axios.defaults.headers.common.Accept = "application/x-www-form-urlencoded";
 axios.defaults.headers.post["Access-Control-Allow-Origin"] = "*";
 
-axios.interceptors.request.use(async function(config) {
+axios.interceptors.request.use(async function (config) {
   config.headers.Authorization = localStorage.getItem("@token");
   return config;
 });
 
 axios.interceptors.response.use(
-  response => {
+  (response) => {
     return response;
   },
-  error => {
+  (error) => {
     if (error.response && error.response.status === 401) {
       console.log(window.location.pathname);
       if (
