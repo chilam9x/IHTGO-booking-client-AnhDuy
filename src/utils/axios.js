@@ -1,7 +1,7 @@
 import axios from "axios";
 import { message } from "antd";
 import React from "react";
-const API_URL = "https://ihtgo.com.vn/api/";
+const API_URL = "https://xxx/api/";
 
 axios.defaults.baseURL = "https://iht-cors-server.herokuapp.com/" + API_URL;
 axios.defaults.headers.common.Accept = "application/x-www-form-urlencoded";
